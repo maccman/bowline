@@ -1,5 +1,9 @@
 module Bowline
   class Base
+    cattr_accessor :session
+    cattr_accessor :params
+    extend Utils
+    
     class << self
       def js
         Bowline::js
@@ -7,7 +11,7 @@ module Bowline
       alias js page
       
       def inherited(child)
-        js.set("bowline.#{child.name}", child)
+        js.set("$.bowline.#{underscore(child.name)}", child)
       end
       
       def jquery
@@ -20,6 +24,10 @@ module Bowline
       
       def flash
         @@flash ||= Flash.new
+      end
+      
+      def session
+        @@session ||= {}
       end
       
       def show_view(name)
@@ -36,6 +44,7 @@ module Bowline
     attr_reader :element
     
     def initialize(element)
+      # jQuery element
       @element = element
     end
     
@@ -45,7 +54,11 @@ module Bowline
     alias js page
     
     def jquery
-      self.class.jquery.for_element(element)
+      self.class.jquery
+    end
+    
+    def dom
+      self.element[0]
     end
   end
 end

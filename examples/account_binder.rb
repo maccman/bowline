@@ -14,7 +14,7 @@ class AccountBinder < Bowline::Singleton
   
   # Everything has a js_id which is basically the lowercase classname + _ + self.id
   def highlight
-    # Calls $('user_1').highlight()
+    # Calls $(element).highlight()
     self.element.highlight
   end
   

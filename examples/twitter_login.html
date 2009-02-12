@@ -13,6 +13,11 @@
 	<script src="bowline.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
+  <script type="text/javascript" charset="utf-8">
+    jQuery(function($){
+      $.setupForms();
+    });
+  </script>
   
   <form action="twitter_binder.login" method="get">
     <input type="text" name="user" id="user">
@@ -20,6 +25,5 @@
 
     <p><input type="submit" value="Login &rarr;"></p>
   </form>
-  
 </body>
 </html>
