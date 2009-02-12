@@ -1,15 +1,25 @@
 module Bowline
   class JQuery
     def method_missing(sym, args)
-      dollar.send(sym, *args)
+      self.class.dollar.send(sym, *args)
     end
     
-    def for_element(el)
-      Bowline::js.send("$", el)
-    end
-    
-    def dollar
-      Bowline::js.send("$")
+    class << self    
+      def for_element(el)
+        Bowline::js.send("$", el)
+      end
+      
+      def bind(event, fun, data)
+        for_element("document").bind(event, data, fun)
+      end
+         
+      def dollar
+        Bowline::js.send("$")
+      end
+      
+      def bowline
+        dollar.bowline
+      end
     end
   end
 end

@@ -18,6 +18,10 @@ module Bowline
         @@observer ||= Observer.new
       end
       
+      def flash
+        @@flash ||= Flash.new
+      end
+      
       def show_view(name)
         js.window.location = "app://#{name}.html"
       end
@@ -25,6 +29,7 @@ module Bowline
       def setup(d)
         @@elements ||= []
         @@elements << d
+        self.item_sync!
       end
     end
     

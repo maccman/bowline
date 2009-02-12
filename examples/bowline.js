@@ -9,16 +9,25 @@
     $(this).items.invoke = function(name, args){
       rb.new($(this)).send(name, args)
     };
-    
-    $(this).update(function(event, data){
-      rb.getItem(data)
-    });
+  
+    // // need a callback when items is updated - todo
+    // $(this).update(function(event, data){
+    //   rb.getItem(data)
+    // });
     
     rb.setup($(this));
+    
+    return this;
   };
   
+  $.bowline = {
+    flash: function(key, value){
+      alert(value); // todo
+    }
+  }
+  
   // $(function(){
-  //   $('form').click(function(e){
+  //   $('form').bind('click', function(e){
   //     var src = $(this).src.split('.')
   //     binder[src[0]][src[1]]();
   //   });

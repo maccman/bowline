@@ -22,7 +22,8 @@ module Bowline
     
     # JavaScript event
     def on(event, method = nil, &block)
-      Bowline::js.send("$").send("bind", event.to_s, method||block)
+      append(event, method, &block)
+      JQuery.bind(event.to_s, method(:call), event)
     end
   
     def call(event)
