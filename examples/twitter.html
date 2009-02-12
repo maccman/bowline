@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>twitter</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Alex MacCaw">
+	<!-- Date: 2009-01-10 -->
+	<script src="jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="chain.js" type="text/javascript" charset="utf-8"></script>
+	<script src="bowline.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		  jQuery(function($){
+  	    var tweets = $('#tweets').bowline('twitter_binder');
+  	  
+        // Update status
+    	  var update = function(){
+    	    tweets.invoke('update', $('#update').val());
+    	  }
+	    
+        // Add event handlers
+  	    $('#updateForm').submit(update);
+	    
+    	  tweets.invoke('index'); 
+	  });
+	</script>
+</head>
+<body>
+  <div id="tweets">
+    <div class="item">
+      <img class="profile_image_url" />
+      <span class="text">Loading...</span>
+    </div>
+  </div>
+  
+  <form action="updateForm" method="get" accept-charset="utf-8">
+    <input type="text" name="update" id="update">
+    <input type="submit" value="Update &rarr;">
+  </form>
+</body>
+</html>
