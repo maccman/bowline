@@ -26,39 +26,45 @@
     }
   }
   
-  $.fn.bowline = function(name){
-    var rb = $.bowline.init(name);
-    $(this).invoke = rb;
-    $(this).instance = function(){ return rb.new($(this)) }
-    $(this).chain();
-    
-    // invoke on the item - major todo
-    $(this).items.invoke = function(name, args){
-      $(this).instance().send(name, args);
-    };
-    
-    $(this).items.instance_invoke = function(name, args){
-      $(this).instance().send(name, args);
+  $.fn.bowline = {
+    init: function(name, options){
+      var rb = $.bowline.init(name);
+      $(this).rb = rb;
+      $(this).invoke = function(){
+        rb.send.apply(rb, arguments)
+      };
+      $(this).chain(options);
+
+      rb.setup($(this));
+      return this;
     }
+    
+    instance: function(){
+      return $(this).item('root').rb.new($(this))
+    }
+    
+    invoke: function(){
+      if($(this).chain('active')){
+        var rb = instance();
+        return rb.send.apply(rb, arguments);
+      } else {
+        throw 'Not chain active';
+      }
+    },
     
     // Helper methods
-    $(this).items.update = function(args){
-      $(this).instance_invoke('update', args);
-    }
-    $(this).items.destroy = function(args){
-      $(this).instance_invoke('destroy');
-    }
-    $(this).items.save = function(args){
-      $(this).instance_invoke('save');
-    }
-  
-    // // need a callback when items is updated - todo
-    // $(this).update(function(event, data){
-    //   rb.getItem(data)
-    // });
     
-    rb.setup($(this));
+    update: function(args){
+      return invoke('update', args)
+    },
     
-    return this;
+    destroy: function(){
+      return invoke('destroy')
+    }
   };
+  
+  // Shortcut
+  $.fn.invoke = function(name){
+   $(this).bowline.invoke() 
+  }
 })(jQuery)
