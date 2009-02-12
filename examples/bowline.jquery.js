@@ -26,8 +26,9 @@
     }
   }
   
-  $.fn.bowline = {
-    init: function(name, options){
+  $.fn.bowline = function(arg){
+    
+    var init = function(name, options){
       var rb = $.bowline.init(name);
       $(this).rb = rb;
       $(this).invoke = function(){
@@ -37,34 +38,35 @@
 
       rb.setup($(this));
       return this;
-    }
+    };
     
-    instance: function(){
+    var instance = function(){
+      if(!$(this).chain('active')) return;
       return $(this).item('root').rb.new($(this))
-    }
+    };
     
-    invoke: function(){
+    var invoke = function(){
       if($(this).chain('active')){
         var rb = instance();
         return rb.send.apply(rb, arguments);
       } else {
         throw 'Not chain active';
       }
-    },
+    };
     
     // Helper methods
     
-    update: function(args){
-      return invoke('update', args)
-    },
+    var update = function(args){
+      return invoke('update', args);
+    };
     
-    destroy: function(){
-      return invoke('destroy')
-    }
+    var destroy = function(){
+      return invoke('destroy');
+    };
   };
   
   // Shortcut
-  $.fn.invoke = function(name){
-   $(this).bowline.invoke() 
+  $.fn.invoke = function(){
+    $(this).bowline('invoke', arguments) 
   }
 })(jQuery)
