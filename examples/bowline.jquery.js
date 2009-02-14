@@ -19,13 +19,13 @@
     
     flash: function(key, value){
       if($.Chain.jobject(key)){
-        $(document.body).bind("bowline:flash", function(key, value){
+        $(document.body).bind("flash.bowline", function(key, value){
           key.removeClass("notice warning error");
           key.addClass(key);
           key.html(value);
         })
       } else {
-        $(document.body).trigger("bowline:flash", key, value);
+        $(document.body).trigger("flash.bowline", key, value);
       }
     },
     
