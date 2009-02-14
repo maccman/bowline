@@ -3,11 +3,10 @@ module Bowline
     cattr_accessor :items
     def self.items=(args)
       @@items = args
-      @@elements.each {|i| i.items(args) }
     end
     
-    def self.getItem(data)
-      @@items.index(data)
+    def self.item_sync!
+      @@elements.each {|i| i.items(@@items) }
     end
   end
 end

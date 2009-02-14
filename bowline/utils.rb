@@ -8,6 +8,16 @@ module Bowline
        tr("-", "_").
        downcase
     end
+    
+    def to_js(ob)
+      if ob.respond_to?(:to_js)
+        ob.to_js
+      elsif ob.respond_to?(:attributes)
+        ob.attributes
+      else
+        ob
+      end
+    end
   end
 end
     

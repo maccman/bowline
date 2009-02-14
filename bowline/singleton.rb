@@ -7,11 +7,7 @@ module Bowline
     end
     
     def self.item_sync!
-      @@elements.each {|i| i.items(arg) }
-    end
-    
-    def self.getItem(data)
-      return @@item if @@item == data
+      @@elements.each {|i| i.item(to_js(@@item)) }
     end
   end
 end
