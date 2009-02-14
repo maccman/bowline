@@ -1,9 +1,20 @@
 (function($){
   $.bowline = {
-    init: function(name){
+    klass: function(name){
       var rb = $.bowline[name];
       if(!rb) throw 'Unknown class';
       return rb;
+    },
+    
+    test: {
+      setup: function(){
+        console.log('bowline:test', 'setup');
+      },
+      
+      send: function(){
+        console.log('bowline:test', arguments);
+        return({})
+      }
     },
     
     flash: function(key, value){
@@ -26,47 +37,24 @@
     }
   }
   
-  $.fn.bowline = function(arg){
-    
-    var init = function(name, options){
-      var rb = $.bowline.init(name);
-      $(this).rb = rb;
-      $(this).invoke = function(){
-        rb.send.apply(rb, arguments)
-      };
-      $(this).chain(options);
-
-      rb.setup($(this));
-      return this;
-    };
-    
-    var instance = function(){
-      if(!$(this).chain('active')) return;
-      return $(this).item('root').rb.new($(this))
-    };
-    
-    var invoke = function(){
-      if($(this).chain('active')){
-        var rb = instance();
-        return rb.send.apply(rb, arguments);
-      } else {
-        throw 'Not chain active';
-      }
-    };
-    
-    // Helper methods
-    
-    var update = function(args){
-      return invoke('update', args);
-    };
-    
-    var destroy = function(){
-      return invoke('destroy');
-    };
+  $.fn.bowline = function(name, options){
+    var rb = $.bowline.klass(name);
+    this.data('bowline', rb);
+    this.chain(options);
+    rb.setup(this);
+    return this;
   };
   
-  // Shortcut
   $.fn.invoke = function(){
-    $(this).bowline('invoke', arguments) 
+    if(this.chain('active')){
+      if(this.data('bowline')){
+        var rb = this.data('bowline');
+      } else {
+        var rb = this.item('root').invoke('new', this);
+      }
+      return rb.send.apply(rb, arguments);
+    } else {
+      throw 'Not chain active';
+    }
   }
 })(jQuery)
