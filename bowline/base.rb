@@ -33,8 +33,12 @@ module Bowline
       def params=(p)
         case p
         when String
-          # todo - make object from string
-          @@params = p
+          # Stolen from Ramaze
+          m = proc {|_,o,n|o.merge(n,&m)}
+          @@params = params.inject({}) do |hash, (key, value)|
+            parts = key.split(/[\]\[]+/)
+            hash.merge(parts.reverse.inject(value) { |x, i| {i => x} }, &m) 
+          end
         else
           @@params = p
         end
