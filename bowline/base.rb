@@ -30,6 +30,16 @@ module Bowline
         @@session ||= {}
       end
       
+      def params=(p)
+        case p
+        when String
+          # todo - make object from string
+          @@params = p
+        else
+          @@params = p
+        end
+      end
+      
       def show_view(name)
         js.window.location = "app://#{name}.html"
       end

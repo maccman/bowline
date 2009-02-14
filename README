@@ -62,7 +62,7 @@ Usage for a collection (of users):
         // Bind the element users to UserBinder
     	  var users = $('#users').bowline('users_binder', function(){
     	    var self = $(this);
-    	    self.select('.destroy').click(function(){
+    	    self.find('.destroy').click(function(){
     	      self.invoke('destroy');
     	      return false;
     	    })

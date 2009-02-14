@@ -30,10 +30,13 @@
     },
     
     setupForms: function(){
-      // $('form').bind('click', function(e){
-      //   var src = $(this).src.split('.')
-      //   binder[src[0]][src[1]]();
-      // });
+      $('form').bind('submit', function(e){
+        var src = $(this).attr('src').split('.');
+        var rb = $.bowline.klass[src[0]];
+        rb.params = $(this).serialize();
+        rb.send(src[1]);
+        return false;
+      });
     }
   }
   
