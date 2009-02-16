@@ -17,18 +17,6 @@
       }
     },
     
-    flash: function(key, value){
-      if($.Chain.jobject(key)){
-        $(document.body).bind("flash.bowline", function(key, value){
-          key.removeClass("notice warning error");
-          key.addClass(key);
-          key.html(value);
-        })
-      } else {
-        $(document.body).trigger("flash.bowline", key, value);
-      }
-    },
-    
     setupForms: function(){
       $('form').bind('submit', function(e){
         var src = $(this).attr('src').split('.');

@@ -22,10 +22,6 @@ module Bowline
         @@observer ||= Observer.new
       end
       
-      def flash
-        @@flash ||= Flash.new
-      end
-      
       def session
         @@session ||= {}
       end
