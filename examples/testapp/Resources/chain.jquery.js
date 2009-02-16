@@ -1,0 +1,1 @@
+../../../assets/chain.jquery.js

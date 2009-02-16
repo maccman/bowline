@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org" xmlns:appc="http://www.appcelerator.org">
+   <id>com.bowline.test</id>
+   <name>Bowline Test App</name>
+   <version>0.1</version>
+   <window>
+      <id>initial</id>
+      <title>Bowline Test Application</title>
+      <url>app://index.html</url>
+      <width>700</width>
+      <height>850</height>
+      <fullscreen>false</fullscreen>
+      <chrome>true</chrome>
+   </window>
+</ti:app>
