@@ -6,7 +6,7 @@ module Bowline
     
     class << self    
       def for_element(el)
-        Bowline::js.send("$", el)
+        Bowline::js.send("jQuery", el)
       end
       
       def bind(event, fun, data)
@@ -14,7 +14,7 @@ module Bowline
       end
          
       def dollar
-        Bowline::js.send("$")
+        Bowline::js.send("jQuery")
       end
       
       def bowline
