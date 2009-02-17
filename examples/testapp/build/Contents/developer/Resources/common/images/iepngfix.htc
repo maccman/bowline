@@ -1,0 +1,56 @@
+<public:component>
+<public:attach event="onpropertychange" onevent="fixIEImages(0)" />
+
+<script type="text/javascript">
+
+function fixBackgroundPNG(obj)
+{
+
+ 	var filterName = 'DXImageTransform.Microsoft.AlphaImageLoader';
+    var bg = obj.currentStyle.backgroundImage;
+    var bgsrc = bg.substring(5,bg.length-2);
+    var scale = (obj.currentStyle.backgroundRepeat == 'no-repeat') ? 'image' : 'scale';
+    if (obj.style.backgroundImage.match('blank.gif')==null)
+	{
+		obj.style.backgroundImage = 'url('+Appcelerator.Core.getModuleCommonDirectory() + '/images/appcelerator/blank.gif)';    
+		
+	}
+    if (filters[filterName])
+    {
+        filters[filterName].enabled = true;
+        with (filters[filterName]) 
+		{	
+			 if (src!=bgsrc && bgsrc.match('blank.gif')== null) src = bgsrc 
+		};
+    }
+    else
+    {
+        obj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + bgsrc + "', sizingMethod='"+scale+"')";
+    }
+}
+
+function fixIEImages(init)
+{
+    var evt = init ? { propertyName: 'src,background' } : event;
+    var isSrc = /src/.test(evt.propertyName);
+    var isBg = /background/.test(evt.propertyName);
+    var isClass = !init && ((this.className != this._png_class) && (this.className || this._png_class));
+    if (!(isSrc || isBg || isClass)) return;
+    this._png_class = this.className;
+    
+    // Required for Whatever:hover support - erase any set BG if className changes.
+    if (isClass && ((style.backgroundImage.indexOf('url(') == -1) || (style.backgroundImage.indexOf('blank') > -1)))
+    {
+        setTimeout(function() { this.style.backgroundImage = '' }, 0);
+        return;
+    }
+
+    
+	if (this.currentStyle.backgroundImage.match('.png') != null || this.currentStyle.backgroundImage.match('blank.gif')!=null)
+		fixBackgroundPNG(this);
+}
+
+fixIEImages(1);
+
+</script>
+</public:component>

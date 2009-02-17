@@ -1,0 +1,31 @@
+namespace="WML"
+namespaceURI="http://www.wapforum.org/DTD/wml_1.1.xml"
+guardFactoryWith="ENABLE(WML)"
+
+a
+access
+anchor
+br interfaceName=WMLBRElement
+card
+do
+go
+img interfaceName=WMLImageElement
+noop
+onevent interfaceName=WMLOnEventElement
+p
+postfield
+prev
+refresh
+setvar
+template
+timer
+
+#if 0
+# These elements don't need a correponsponding WML*Element class.
+# b, big, em, i, small, strong, u
+#endif
+
+#if 0
+# These elements have a corresponding HTML*Element class, that we want to share code with.
+# fieldset, head, input, meta, optgroup, option, select, table, td, tr
+#endif

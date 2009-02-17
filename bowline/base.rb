@@ -11,7 +11,7 @@ module Bowline
       alias js page
       
       def inherited(child)
-        js.set("$.bowline.#{underscore(child.name)}", child)
+        js.set("jQuery.bowline.#{underscore(child.name)}", child)
       end
       
       def jquery

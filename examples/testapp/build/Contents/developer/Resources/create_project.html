@@ -1,0 +1,79 @@
+<html>
+<body>
+
+	<!-- VARIOUS CREATE PROJECT MESSAGES: HINT, ERROR, SUCCESS, PROGRESS -->
+	<div style="height:18px;line-height:18px" >
+		<div class="section hint_text" 
+			on="l:create.project.request then hide or l:menu[val=create] then show
+			or l:create.project.response[result=success] then effect[fadeIn] after 2300ms">
+			Enter a project name and file location for your new project.
+		</div>
+		<div class="section action_text" style="display:none" 
+		on="(l:menu[val=create] or l:create.project.response) then hide or l:create.project.request then show">
+			<img src="images/lightning.png"/>
+			<span style="position:relative;top:-4px">Creating project...</span>
+		</div>
+		<div class="section success_text" style="display:none" 
+		on="(l:menu[val=create] or l:create.project.request) then hide 
+			or l:create.project.response[result=success] then show
+			or l:create.project.response[result=success] then effect[fadeOut] after 2s">
+			<img src="images/accept.png"/>
+			<span style="position:relative;top:-4px">Project created!</span>
+		</div>
+		<div class="section error_text" style="display:none" 
+		on="(l:menu[val=create] or l:create.project.request) then hide 
+			or l:create.project.response[result=error] then show">
+			<img src="images/error.png"/>
+			<span style="position:relative;top:-4px">
+				<span on="l:create.project.response then value[message]"></span>
+			</span>
+		</div>
+
+	</div>
+	
+	<!-- PROJECT NAME -->
+	<div class="section text">
+		<div>Project Name:</div>
+		<div>
+			<input type="text" id="project_name" validator="required" fieldset="new_project"
+				on="(l:create.project.response[result=success] or l:menu[val=create]) then reset"/> 
+		</div>
+	</div>
+	
+	<!-- PROJECT LOCATION -->
+	<div class="section text">
+		<div>Project Location:</div>
+		<div>
+			<input type="text" id="project_location" style="float:left;width:600px" 
+				validator="required" fieldset="new_project" on="l:file.selected then value[value]
+				or (l:create.project.response[result=success] or l:menu[val=create]) then reset"/> 
+			<div class="button1" 
+				style="float:left;width:23px;height:23px;position:relative;top:1px;margin-left:10px" >
+				<div class="button2" style="height:21px" 
+					on="click then l:show.filedialog">
+					<img src="images/folder_go.png" style="position:relative;top:3px;left:1px"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="clear:both"></div>
+	
+	<!-- CREATE PROJECT BUTTONS -->
+	<div class="section text">
+		<div class="button1" style="float:left;margin-right:10px" >
+			<div class="button2" id="create_project_button"
+			on="click then l:create.project.request if expr[$('#create_project_button').attr('disabled')!=true]" 
+				activators="project_location,project_name"  fieldset="new_project">
+				Create
+			</div>
+		</div>
+		<div class="button1" style="float:left;"  on="click then l:cancel[val=project]">
+			<div class="button2">
+				Cancel
+			</div>
+		</div>
+
+	</div>
+	
+</body>
+</html>

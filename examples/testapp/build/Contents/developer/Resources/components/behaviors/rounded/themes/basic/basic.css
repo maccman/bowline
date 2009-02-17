@@ -1,0 +1,682 @@
+/* 1 */
+body.gecko .app-rounded-top-right-1
+{
+	-moz-border-radius-topright:1px;
+}
+body.gecko .app-rounded-top-left-1
+{
+	-moz-border-radius-topleft:1px;
+}
+body.gecko .app-rounded-bottom-left-1
+{
+	-moz-border-radius-bottomleft:1px;
+}
+body.gecko .app-rounded-bottom-right-1
+{
+	-moz-border-radius-bottomright:1px;
+}
+body.webkit .app-rounded-top-right-1
+{
+	-webkit-border-top-right-radius: 1px;
+}
+body.webkit .app-rounded-top-left-1
+{
+	-webkit-border-top-left-radius: 1px;
+}
+body.webkit .app-rounded-bottom-left-1
+{
+	-webkit-border-bottom-left-radius: 1px;
+}
+body.webkit .app-rounded-bottom-right-1
+{
+	-webkit-border-bottom-right-radius: 1px;
+}
+
+/* 2 */
+body.gecko .app-rounded-top-right-2
+{
+	-moz-border-radius-topright:2px;
+}
+body.gecko .app-rounded-top-left-2
+{
+	-moz-border-radius-topleft:2px;
+}
+body.gecko .app-rounded-bottom-left-2
+{
+	-moz-border-radius-bottomleft:2px;
+}
+body.gecko .app-rounded-bottom-right-2
+{
+	-moz-border-radius-bottomright:2px;
+}
+body.webkit .app-rounded-top-right-2
+{
+	-webkit-border-top-right-radius: 2px;
+}
+body.webkit .app-rounded-top-left-2
+{
+	-webkit-border-top-left-radius: 2px;
+}
+body.webkit .app-rounded-bottom-left-2
+{
+	-webkit-border-bottom-left-radius: 2px;
+}
+body.webkit .app-rounded-bottom-right-2
+{
+	-webkit-border-bottom-right-radius: 2px;
+}
+
+/* 3 */
+body.gecko .app-rounded-top-right-3
+{
+	-moz-border-radius-topright:3px;
+}
+body.gecko .app-rounded-top-left-3
+{
+	-moz-border-radius-topleft:3px;
+}
+body.gecko .app-rounded-bottom-left-3
+{
+	-moz-border-radius-bottomleft:3px;
+}
+body.gecko .app-rounded-bottom-right-3
+{
+	-moz-border-radius-bottomright:3px;
+}
+body.webkit .app-rounded-top-right-3
+{
+	-webkit-border-top-right-radius: 3px;
+}
+body.webkit .app-rounded-top-left-3
+{
+	-webkit-border-top-left-radius: 3px;
+}
+body.webkit .app-rounded-bottom-left-3
+{
+	-webkit-border-bottom-left-radius: 3px;
+}
+body.webkit .app-rounded-bottom-right-3
+{
+	-webkit-border-bottom-right-radius: 3px;
+}
+
+/* 4 */
+body.gecko .app-rounded-top-right-4
+{
+	-moz-border-radius-topright:4px;
+}
+body.gecko .app-rounded-top-left-4
+{
+	-moz-border-radius-topleft:4px;
+}
+body.gecko .app-rounded-bottom-left-4
+{
+	-moz-border-radius-bottomleft:4px;
+}
+body.gecko .app-rounded-bottom-right-4
+{
+	-moz-border-radius-bottomright:4px;
+}
+body.webkit .app-rounded-top-right-4
+{
+	-webkit-border-top-right-radius: 4px;
+}
+body.webkit .app-rounded-top-left-4
+{
+	-webkit-border-top-left-radius: 4px;
+}
+body.webkit .app-rounded-bottom-left-4
+{
+	-webkit-border-bottom-left-radius: 4px;
+}
+body.webkit .app-rounded-bottom-right-4
+{
+	-webkit-border-bottom-right-radius: 4px;
+}
+
+/* 5 */
+body.gecko .app-rounded-top-right-5
+{
+	-moz-border-radius-topright:5px;
+}
+body.gecko .app-rounded-top-left-5
+{
+	-moz-border-radius-topleft:5px;
+}
+body.gecko .app-rounded-bottom-left-5
+{
+	-moz-border-radius-bottomleft:5px;
+}
+body.gecko .app-rounded-bottom-right-5
+{
+	-moz-border-radius-bottomright:5px;
+}
+body.webkit .app-rounded-top-right-5
+{
+	-webkit-border-top-right-radius: 5px;
+}
+body.webkit .app-rounded-top-left-5
+{
+	-webkit-border-top-left-radius: 5px;
+}
+body.webkit .app-rounded-bottom-left-5
+{
+	-webkit-border-bottom-left-radius: 5px;
+}
+body.webkit .app-rounded-bottom-right-5
+{
+	-webkit-border-bottom-right-radius: 5px;
+}
+
+/* 6 */
+body.gecko .app-rounded-top-right-6
+{
+	-moz-border-radius-topright:6px;
+}
+body.gecko .app-rounded-top-left-6
+{
+	-moz-border-radius-topleft:6px;
+}
+body.gecko .app-rounded-bottom-left-6
+{
+	-moz-border-radius-bottomleft:6px;
+}
+body.gecko .app-rounded-bottom-right-6
+{
+	-moz-border-radius-bottomright:6px;
+}
+body.webkit .app-rounded-top-right-6
+{
+	-webkit-border-top-right-radius: 6px;
+}
+body.webkit .app-rounded-top-left-6
+{
+	-webkit-border-top-left-radius: 6px;
+}
+body.webkit .app-rounded-bottom-left-6
+{
+	-webkit-border-bottom-left-radius: 6px;
+}
+body.webkit .app-rounded-bottom-right-6
+{
+	-webkit-border-bottom-right-radius: 6px;
+}
+
+/* 7 */
+body.gecko .app-rounded-top-right-7
+{
+	-moz-border-radius-topright:7px;
+}
+body.gecko .app-rounded-top-left-7
+{
+	-moz-border-radius-topleft:7px;
+}
+body.gecko .app-rounded-bottom-left-7
+{
+	-moz-border-radius-bottomleft:7px;
+}
+body.gecko .app-rounded-bottom-right-7
+{
+	-moz-border-radius-bottomright:7px;
+}
+body.webkit .app-rounded-top-right-7
+{
+	-webkit-border-top-right-radius: 7px;
+}
+body.webkit .app-rounded-top-left-7
+{
+	-webkit-border-top-left-radius: 7px;
+}
+body.webkit .app-rounded-bottom-left-7
+{
+	-webkit-border-bottom-left-radius: 7px;
+}
+body.webkit .app-rounded-bottom-right-7
+{
+	-webkit-border-bottom-right-radius: 7px;
+}
+
+/* 8 */
+body.gecko .app-rounded-top-right-8
+{
+	-moz-border-radius-topright:8px;
+}
+body.gecko .app-rounded-top-left-8
+{
+	-moz-border-radius-topleft:8px;
+}
+body.gecko .app-rounded-bottom-left-8
+{
+	-moz-border-radius-bottomleft:8px;
+}
+body.gecko .app-rounded-bottom-right-8
+{
+	-moz-border-radius-bottomright:8px;
+}
+body.webkit .app-rounded-top-right-8
+{
+	-webkit-border-top-right-radius: 8px;
+}
+body.webkit .app-rounded-top-left-8
+{
+	-webkit-border-top-left-radius: 8px;
+}
+body.webkit .app-rounded-bottom-left-8
+{
+	-webkit-border-bottom-left-radius: 8px;
+}
+body.webkit .app-rounded-bottom-right-8
+{
+	-webkit-border-bottom-right-radius: 8px;
+}
+
+/* 9 */
+body.gecko .app-rounded-top-right-9
+{
+	-moz-border-radius-topright:9px;
+}
+body.gecko .app-rounded-top-left-9
+{
+	-moz-border-radius-topleft:9px;
+}
+body.gecko .app-rounded-bottom-left-9
+{
+	-moz-border-radius-bottomleft:9px;
+}
+body.gecko .app-rounded-bottom-right-9
+{
+	-moz-border-radius-bottomright:9px;
+}
+body.webkit .app-rounded-top-right-9
+{
+	-webkit-border-top-right-radius: 9px;
+}
+body.webkit .app-rounded-top-left-9
+{
+	-webkit-border-top-left-radius: 9px;
+}
+body.webkit .app-rounded-bottom-left-9
+{
+	-webkit-border-bottom-left-radius: 9px;
+}
+body.webkit .app-rounded-bottom-right-9
+{
+	-webkit-border-bottom-right-radius: 9px;
+}
+
+/* 10 */
+body.gecko .app-rounded-top-right-10
+{
+	-moz-border-radius-topright:10px;
+}
+body.gecko .app-rounded-top-left-10
+{
+	-moz-border-radius-topleft:10px;
+}
+body.gecko .app-rounded-bottom-left-10
+{
+	-moz-border-radius-bottomleft:10px;
+}
+body.gecko .app-rounded-bottom-right-10
+{
+	-moz-border-radius-bottomright:10px;
+}
+body.webkit .app-rounded-top-right-10
+{
+	-webkit-border-top-right-radius: 10px;
+}
+body.webkit .app-rounded-top-left-10
+{
+	-webkit-border-top-left-radius: 10px;
+}
+body.webkit .app-rounded-bottom-left-10
+{
+	-webkit-border-bottom-left-radius: 10px;
+}
+body.webkit .app-rounded-bottom-right-10
+{
+	-webkit-border-bottom-right-radius: 10px;
+}
+
+/* 11 */
+body.gecko .app-rounded-top-right-11
+{
+	-moz-border-radius-topright:11px;
+}
+body.gecko .app-rounded-top-left-11
+{
+	-moz-border-radius-topleft:11px;
+}
+body.gecko .app-rounded-bottom-left-11
+{
+	-moz-border-radius-bottomleft:11px;
+}
+body.gecko .app-rounded-bottom-right-11
+{
+	-moz-border-radius-bottomright:11px;
+}
+body.webkit .app-rounded-top-right-11
+{
+	-webkit-border-top-right-radius: 11px;
+}
+body.webkit .app-rounded-top-left-11
+{
+	-webkit-border-top-left-radius: 11px;
+}
+body.webkit .app-rounded-bottom-left-11
+{
+	-webkit-border-bottom-left-radius: 11px;
+}
+body.webkit .app-rounded-bottom-right-11
+{
+	-webkit-border-bottom-right-radius: 11px;
+}
+
+/* 12 */
+body.gecko .app-rounded-top-right-12
+{
+	-moz-border-radius-topright:12px;
+}
+body.gecko .app-rounded-top-left-12
+{
+	-moz-border-radius-topleft:12px;
+}
+body.gecko .app-rounded-bottom-left-12
+{
+	-moz-border-radius-bottomleft:12px;
+}
+body.gecko .app-rounded-bottom-right-12
+{
+	-moz-border-radius-bottomright:12px;
+}
+body.webkit .app-rounded-top-right-12
+{
+	-webkit-border-top-right-radius: 12px;
+}
+
+body.webkit .app-rounded-top-left-12
+{
+	-webkit-border-top-left-radius: 12px;
+}
+body.webkit .app-rounded-bottom-left-12
+{
+	-webkit-border-bottom-left-radius: 12px;
+}
+body.webkit .app-rounded-bottom-right-12
+{
+	-webkit-border-bottom-right-radius: 12px;
+}
+
+/* 13 */
+body.gecko .app-rounded-top-right-13
+{
+	-moz-border-radius-topright:13px;
+}
+body.gecko .app-rounded-top-left-13
+{
+	-moz-border-radius-topleft:13px;
+}
+body.gecko .app-rounded-bottom-left-13
+{
+	-moz-border-radius-bottomleft:13px;
+}
+body.gecko .app-rounded-bottom-right-13
+{
+	-moz-border-radius-bottomright:13px;
+}
+body.webkit .app-rounded-top-right-13
+{
+	-webkit-border-top-right-radius: 13px;
+}
+body.webkit .app-rounded-top-left-13
+{
+	-webkit-border-top-left-radius: 13px;
+}
+body.webkit .app-rounded-bottom-left-13
+{
+	-webkit-border-bottom-left-radius: 13px;
+}
+body.webkit .app-rounded-bottom-right-13
+{
+	-webkit-border-bottom-right-radius: 13px;
+}
+
+/* 14 */
+body.gecko .app-rounded-top-right-14
+{
+	-moz-border-radius-topright:14px;
+}
+body.gecko .app-rounded-top-left-14
+{
+	-moz-border-radius-topleft:14px;
+}
+body.gecko .app-rounded-bottom-left-14
+{
+	-moz-border-radius-bottomleft:14px;
+}
+body.gecko .app-rounded-bottom-right-14
+{
+	-moz-border-radius-bottomright:14px;
+}
+body.webkit .app-rounded-top-right-14
+{
+	-webkit-border-top-right-radius: 14px;
+}
+body.webkit .app-rounded-top-left-14
+{
+	-webkit-border-top-left-radius: 14px;
+}
+body.webkit .app-rounded-bottom-left-14
+{
+	-webkit-border-bottom-left-radius: 14px;
+}
+body.webkit .app-rounded-bottom-right-14
+{
+	-webkit-border-bottom-right-radius: 14px;
+}
+
+/* 15 */
+body.gecko .app-rounded-top-right-15
+{
+	-moz-border-radius-topright:15px;
+}
+body.gecko .app-rounded-top-left-15
+{
+	-moz-border-radius-topleft:15px;
+}
+body.gecko .app-rounded-bottom-left-15
+{
+	-moz-border-radius-bottomleft:15px;
+}
+body.gecko .app-rounded-bottom-right-15
+{
+	-moz-border-radius-bottomright:15px;
+}
+body.webkit .app-rounded-top-right-15
+{
+	-webkit-border-top-right-radius: 15px;
+}
+body.webkit .app-rounded-top-left-15
+{
+	-webkit-border-top-left-radius: 15px;
+}
+body.webkit .app-rounded-bottom-left-15
+{
+	-webkit-border-bottom-left-radius: 15px;
+}
+body.webkit .app-rounded-bottom-right-15
+{
+	-webkit-border-bottom-right-radius: 15px;
+}
+
+/* 16 */
+body.gecko .app-rounded-top-right-16
+{
+	-moz-border-radius-topright:16px;
+}
+body.gecko .app-rounded-top-left-16
+{
+	-moz-border-radius-topleft:16px;
+}
+body.gecko .app-rounded-bottom-left-16
+{
+	-moz-border-radius-bottomleft:16px;
+}
+body.gecko .app-rounded-bottom-right-16
+{
+	-moz-border-radius-bottomright:16px;
+}
+body.webkit .app-rounded-top-right-16
+{
+	-webkit-border-top-right-radius: 16px;
+}
+body.webkit .app-rounded-top-left-16
+{
+	-webkit-border-top-left-radius: 16px;
+}
+body.webkit .app-rounded-bottom-left-16
+{
+	-webkit-border-bottom-left-radius: 16px;
+}
+body.webkit .app-rounded-bottom-right-16
+{
+	-webkit-border-bottom-right-radius: 16px;
+}
+
+/* 17 */
+body.gecko .app-rounded-top-right-17
+{
+	-moz-border-radius-topright:17px;
+}
+body.gecko .app-rounded-top-left-17
+{
+	-moz-border-radius-topleft:17px;
+}
+body.gecko .app-rounded-bottom-left-17
+{
+	-moz-border-radius-bottomleft:17px;
+}
+body.gecko .app-rounded-bottom-right-17
+{
+	-moz-border-radius-bottomright:17px;
+}
+body.webkit .app-rounded-top-right-17
+{
+	-webkit-border-top-right-radius: 17px;
+}
+body.webkit .app-rounded-top-left-17
+{
+	-webkit-border-top-left-radius: 17px;
+}
+body.webkit .app-rounded-bottom-left-17
+{
+	-webkit-border-bottom-left-radius: 17px;
+}
+body.webkit .app-rounded-bottom-right-17
+{
+	-webkit-border-bottom-right-radius: 17px;
+}
+
+/* 18 */
+body.gecko .app-rounded-top-right-18
+{
+	-moz-border-radius-topright:18px;
+}
+body.gecko .app-rounded-top-left-18
+{
+	-moz-border-radius-topleft:18px;
+}
+body.gecko .app-rounded-bottom-left-18
+{
+	-moz-border-radius-bottomleft:18px;
+}
+body.gecko .app-rounded-bottom-right-18
+{
+	-moz-border-radius-bottomright:18px;
+}
+body.webkit .app-rounded-top-right-18
+{
+	-webkit-border-top-right-radius: 18px;
+}
+body.webkit .app-rounded-top-left-18
+{
+	-webkit-border-top-left-radius: 18px;
+}
+body.webkit .app-rounded-bottom-left-18
+{
+	-webkit-border-bottom-left-radius: 18px;
+}
+body.webkit .app-rounded-bottom-right-18
+{
+	-webkit-border-bottom-right-radius: 18px;
+}
+
+/* 19 */
+body.gecko .app-rounded-top-right-19
+{
+	-moz-border-radius-topright:19px;
+}
+body.gecko .app-rounded-top-left-19
+{
+	-moz-border-radius-topleft:19px;
+}
+body.gecko .app-rounded-bottom-left-19
+{
+	-moz-border-radius-bottomleft:19px;
+}
+body.gecko .app-rounded-bottom-right-19
+{
+	-moz-border-radius-bottomright:19px;
+}
+body.webkit .app-rounded-top-right-19
+{
+	-webkit-border-top-right-radius: 19px;
+}
+body.webkit .app-rounded-top-left-19
+{
+	-webkit-border-top-left-radius: 19px;
+}
+body.webkit .app-rounded-bottom-left-19
+{
+	-webkit-border-bottom-left-radius: 19px;
+}
+body.webkit .app-rounded-bottom-right-19
+{
+	-webkit-border-bottom-right-radius: 19px;
+}
+
+/* 20 */
+body.gecko .app-rounded-top-right-20
+{
+	-moz-border-radius-topright:20px;
+}
+body.gecko .app-rounded-top-left-20
+{
+	-moz-border-radius-topleft:20px;
+}
+body.gecko .app-rounded-bottom-left-20
+{
+	-moz-border-radius-bottomleft:20px;
+}
+body.gecko .app-rounded-bottom-right-20
+{
+	-moz-border-radius-bottomright:20px;
+}
+body.webkit .app-rounded-top-right-20
+{
+	-webkit-border-top-right-radius: 20px;
+}
+body.webkit .app-rounded-top-left-20
+{
+	-webkit-border-top-left-radius: 20px;
+}
+body.webkit .app-rounded-bottom-left-20
+{
+	-webkit-border-bottom-left-radius: 20px;
+}
+body.webkit .app-rounded-bottom-right-20
+{
+	-webkit-border-bottom-right-radius: 20px;
+}
+
+
