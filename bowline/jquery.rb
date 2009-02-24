@@ -10,7 +10,7 @@ module Bowline
       end
       
       def bind(event, fun, data)
-        for_element("document.body").bind(event, data, fun)
+        for_element("body").bind(event, data, fun)
       end
          
       def dollar

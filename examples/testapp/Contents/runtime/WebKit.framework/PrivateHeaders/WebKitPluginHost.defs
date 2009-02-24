@@ -1,0 +1,120 @@
+/*
+ * Copyright (C) 2008 Apple Inc. All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY APPLE INC. ``AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE INC. OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ */
+
+#include <WebKit/WebKitPluginHostTypes.defs>
+
+subsystem WebKitPluginHost 300;
+
+serverprefix WKPH;
+userprefix _WKPH;
+
+routine CheckInWithPluginHost(pluginHostPort :mach_port_t;
+                              options :plist_bytes_t;
+                              clientPort :mach_port_make_send_t;
+                              renderPort :mach_port_copy_send_t);
+
+routine InstantiatePlugin(pluginHostPort :mach_port_t;
+                          options :plist_bytes_t;
+                          out pluginID :uint32_t;
+                          out renderContextID :uint32_t;
+                          out useSoftwareRenderer :boolean_t);
+
+simpleroutine ResizePluginInstance(pluginHostPort :mach_port_t;
+                                   pluginID :uint32_t;
+                                   x :double;
+                                   y :double;
+                                   width :double;
+                                   height :double);
+simpleroutine PluginInstanceFocusChanged(pluginHostPort :mach_port_t;
+                                         pluginID :uint32_t;
+                                         hasFocus :boolean_t);
+simpleroutine PluginInstanceWindowFocusChanged(pluginHostPort :mach_port_t;
+                                         pluginID :uint32_t;
+                                         hasFocus :boolean_t);
+simpleroutine PluginInstanceWindowFrameChanged(pluginHostPort :mach_port_t;
+                                               pluginID :uint32_t;
+                                               x :double;
+                                               y :double;
+                                               width :double;
+                                               height :double;
+                                               maxScreenY :double);
+
+simpleroutine PluginInstanceMouseEvent(pluginHostPort :mach_port_t;
+                                       pluginID :uint32_t;
+                                       timestamp :double;
+                                       eventType :uint32_t;
+                                       modifierFlags :uint32_t;
+                                       pluginX :double;
+                                       pluginY :double;
+                                       screenX :double;
+                                       screenY :double;
+                                       maxScreenY :double;
+                                       buttonNumber :int32_t;
+                                       clickCount :int32_t;
+                                       deltaX :double;
+                                       deltaY :double;
+                                       deltaZ: double);
+
+simpleroutine PluginInstanceStartTimers(pluginHostPort :mach_port_t;
+                                        pluginID :uint32_t;
+                                        throttleTimers :boolean_t);
+simpleroutine PluginInstanceStopTimers(pluginHostPort :mach_port_t;
+                                       pluginID :uint32_t);
+
+simpleroutine DestroyPluginInstance(pluginHostPort :mach_port_t;
+                                    pluginID :uint32_t);
+
+
+// Streams
+simpleroutine StartStream(pluginHostPort :mach_port_t;
+                          pluginID :uint32_t;
+                          streamID :uint32_t;
+                          responseURL :data_t;
+                          expectedContentLength :int64_t;
+                          lastModifiedTimeInterval :double;
+                          mimeType :data_t;
+                          headers :data_t);
+
+simpleroutine StreamDidReceiveData(pluginHostPort :mach_port_t;
+                                   pluginID :uint32_t;
+                                   streamID :uint32_t;
+                                   data :data_t);
+
+simpleroutine StreamDidFinishLoading(pluginHostPort :mach_port_t;
+                                     pluginID :uint32_t;
+                                     streamID :uint32_t);
+
+simpleroutine StreamDidFail(pluginHostPort :mach_port_t;
+                            pluginID :uint32_t;
+                            streamID :uint32_t;
+                            reason :int16_t);
+
+// Replies
+
+simpleroutine LoadURLReply(pluginHostPort :mach_port_t;
+                           pluginID :uint32_t;
+                           resultCode :uint16_t;
+                           requestID :uint32_t);
+
