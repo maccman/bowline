@@ -206,7 +206,14 @@ module Bowline
     end
     
     def load_app_config
-      # load application.yml
+      app_config = configuration.app_config
+      return unless app_config
+      Object.const_set("AppConfig", Class.new {
+        app_config.keys.each do |key|
+          cattr_accessor key
+          send("#{key}=", app_config[key])
+        end
+      })
     end
     
     def process
@@ -283,6 +290,8 @@ module Bowline
      # <tt>config/database.yml</tt>.)
      attr_accessor :database_configuration_file
      
+     attr_accessor :app_config_file
+     
      # An array of additional paths to prepend to the load path. By default,
      # all +app+, +lib+, +vendor+ and mock paths are included in this list.
      attr_accessor :load_paths
@@ -358,6 +367,7 @@ module Bowline
        self.cache_classes                = default_cache_classes
        self.whiny_nils                   = default_whiny_nils
        self.database_configuration_file  = default_database_configuration_file
+       self.app_config_file              = default_app_config_file
        self.gems                         = default_gems
        
        for framework in default_frameworks
@@ -385,12 +395,17 @@ module Bowline
        ::APP_ROOT.replace @root_path
      end
      
+     def app_config
+       require 'erb'
+       YAML::load(ERB.new(IO.read(app_config_file)).result) if File.exists?(app_config_file)
+     end
+     
      # Loads and returns the contents of the #database_configuration_file. The
      # contents of the file are processed via ERB before being sent through
      # YAML::load.
      def database_configuration
        require 'erb'
-       YAML::load(ERB.new(IO.read(database_configuration_file)).result)
+       YAML::load(ERB.new(IO.read(database_configuration_file)).result) if File.exists?(database_configuration_file)
      end
      
      # Adds a block which will be executed after bowline has been fully initialized.
@@ -457,6 +472,10 @@ module Bowline
      
      def default_database_configuration_file
        File.join(root_path, 'config', 'database.yml')
+     end
+     
+     def default_app_config_file
+       File.join(root_path, 'config', 'application.yml')
      end
      
      def default_binder_paths
