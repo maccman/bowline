@@ -1,17 +1,25 @@
 module Bowline
   def self.js
-    Window if defined?(Window)
+    if defined?(Window)
+      Window
+    else
+      Class.new do
+        def self.method_missing(*a)
+        end
+      end
+    end
   end
 end
 
-$: << File.dirname(__FILE__)
+# todo
+require File.dirname(__FILE__) + '/lib/ext/class'
+require File.dirname(__FILE__) + '/lib/ext/string'
+require File.dirname(__FILE__) + '/lib/gem_dependency'
+require File.dirname(__FILE__) + '/lib/initializer'
 
-require 'bowline/ext/class'
-require 'bowline/ext/string'
+require File.dirname(__FILE__) + '/lib/jquery'
+require File.dirname(__FILE__) + '/lib/observer'
 
-require 'bowline/jquery'
-require 'bowline/observer'
-
-require 'bowline/base'
-require 'bowline/collection'
-require 'bowline/singleton'
+require File.dirname(__FILE__) + '/lib/base'
+require File.dirname(__FILE__) + '/lib/collection'
+require File.dirname(__FILE__) + '/lib/singleton'
