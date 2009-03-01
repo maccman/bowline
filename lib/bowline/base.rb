@@ -9,10 +9,6 @@ module Bowline
       end
       alias :page :js
       
-      def inherited(child)
-        js.set("jQuery.bowline.#{child.name.underscore}", child)
-      end
-      
       def jquery
         @@jquery ||= JQuery.new
       end
@@ -23,6 +19,10 @@ module Bowline
       
       def session
         @@session ||= {}
+      end
+      
+      def show_view(name)
+        js.window.location = "app://#{name}.html"
       end
       
       def params=(p)
@@ -39,14 +39,17 @@ module Bowline
         end
       end
       
-      def show_view(name)
-        js.window.location = "app://#{name}.html"
-      end
-      
       def setup(d)
         @@elements ||= []
         @@elements << d
         self.item_sync!
+      end
+      
+      def inherited(child)
+        return if self == Bowline::Base
+        name = child.name.underscore
+        name = name.split('/').last
+        js.set("jQuery.bowline.#{name}", child)
       end
       
       protected
@@ -76,6 +79,14 @@ module Bowline
     
     def jquery
       self.class.jquery
+    end
+    
+    def observer
+      self.class.observer
+    end
+    
+    def show_view(*args)
+      self.class.show_view(*args)
     end
     
     def dom
