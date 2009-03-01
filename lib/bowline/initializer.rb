@@ -90,8 +90,7 @@ module Bowline
     
     def initialize_database
       if defined?(ActiveRecord)
-        ActiveRecord::Base.configurations = configuration.database_configuration
-        ActiveRecord::Base.establish_connection
+        ActiveRecord::Base.establish_connection(configuration.database_configuration)
       end
     end
     
@@ -151,8 +150,9 @@ module Bowline
     def initialize_framework_settings
       (configuration.frameworks - [:active_support]).each do |framework|
         base_class = framework.to_s.camelize.constantize.const_get("Base")
-
-        configuration.send(framework).each do |setting, value|
+        settings = configuration.send(framework)
+        next if !settings
+        settings.each do |setting, value|
           base_class.send("#{setting}=", value)
         end
       end
@@ -371,7 +371,7 @@ module Bowline
        self.gems                         = default_gems
        
        for framework in default_frameworks
-         self.send("#{framework}=", {})
+         self.send("#{framework}=", Bowline::OrderedOptions.new)
        end
      end
      
@@ -494,4 +494,39 @@ module Bowline
        []
      end
   end
+end
+
+# Needs to be duplicated from Active Support since its needed before Active
+# Support is available. Here both Options and Hash are namespaced to prevent
+# conflicts with other implementations AND with the classes residing in Active Support.
+class Bowline::OrderedOptions < Array #:nodoc:
+  def []=(key, value)
+    key = key.to_sym
+
+    if pair = find_pair(key)
+      pair.pop
+      pair << value
+    else
+      self << [key, value]
+    end
+  end
+
+  def [](key)
+    pair = find_pair(key.to_sym)
+    pair ? pair.last : nil
+  end
+
+  def method_missing(name, *args)
+    if name.to_s =~ /(.*)=$/
+      self[$1.to_sym] = args.first
+    else
+      self[name]
+    end
+  end
+
+  private
+    def find_pair(key)
+      self.each { |i| return i if i.first == key }
+      return false
+    end
 end
