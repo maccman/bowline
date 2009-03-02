@@ -1,1 +1,0 @@
-../../../resources/bowline.jquery.js

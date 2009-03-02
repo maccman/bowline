@@ -1,1 +1,0 @@
-../../../resources/jquery.js
