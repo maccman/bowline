@@ -9,6 +9,7 @@ module Bowline
 end
 
 $LOAD_PATH << File.dirname(__FILE__)
+$LOAD_PATH << File.join(File.dirname(__FILE__), *%w[ bowline ])
 
 require 'bowline/ext/class'
 require 'bowline/ext/string'
@@ -21,3 +22,4 @@ require 'bowline/observer'
 require 'bowline/base'
 require 'bowline/collection'
 require 'bowline/singleton'
+

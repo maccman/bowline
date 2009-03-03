@@ -88,6 +88,17 @@ module Bowline
       configuration.load_once_paths.freeze
     end
     
+    def add_plugin_load_paths
+      Dir.glob(configuration.plugin_glob).sort.each do |path|
+        $LOAD_PATH << path
+        ActiveSupport::Dependencies.load_paths << path
+        unless configuration.reload_plugins?
+          ActiveSupport::Dependencies.load_once_paths << path
+        end
+      end
+      $LOAD_PATH.uniq!
+    end
+    
     def initialize_database
       if defined?(ActiveRecord)
         ActiveRecord::Base.establish_connection(configuration.database_configuration)
@@ -171,8 +182,15 @@ module Bowline
       configuration.gems.each { |gem| gem.load }
     end
     
+    def load_plugins
+      Dir.glob(File.join(configuration.plugin_glob, 'init.rb')).sort.each do |path|
+        config = configuration # Need local config variable
+        eval(IO.read(path), binding, path)
+      end
+    end
+    
     def load_application_initializers
-      Dir["#{configuration.root_path}/config/initializers/**/*.rb"].sort.each do |initializer|
+      Dir.glob(configuration.initializer_glob).sort.each do |initializer|
         load(initializer)
       end
     end
@@ -224,6 +242,7 @@ module Bowline
       
       require_frameworks
       set_autoload_paths
+      add_plugin_load_paths
       
       initialize_encoding
       initialize_database
@@ -240,6 +259,7 @@ module Bowline
       load_app_config
       
       load_gems
+      load_plugins
             
       load_application_initializers
       
@@ -321,6 +341,12 @@ module Bowline
      # Set to +true+ if you want to be warned (noisily) when you try to invoke
      # any method of +nil+. Set to +false+ for the standard Ruby behavior.
      attr_accessor :whiny_nils
+     
+     attr_accessor :reload_plugins
+     # Returns true if plugin reloading is enabled.
+     def reload_plugins?
+       !!@reload_plugins
+     end
 
      # An array of gems that this Bowline application depends on.  Bowline will automatically load
      # these gems during installation, and allow you to install any missing gems with:
@@ -351,6 +377,10 @@ module Bowline
      # timezone to <tt>:utc</tt>.
      attr_accessor :time_zone
      
+     attr_accessor :plugin_glob
+     
+     attr_accessor :initializer_glob
+     
      # Create a new Configuration instance, initialized with the default
      # values.
      def initialize
@@ -369,6 +399,8 @@ module Bowline
        self.database_configuration_file  = default_database_configuration_file
        self.app_config_file              = default_app_config_file
        self.gems                         = default_gems
+       self.plugin_glob                  = default_plugin_glob
+       self.initializer_glob             = default_initalizer_glob
        
        for framework in default_frameworks
          self.send("#{framework}=", Bowline::OrderedOptions.new)
@@ -492,6 +524,14 @@ module Bowline
      
      def default_gems
        []
+     end
+     
+     def default_plugin_glob
+       File.join(root_path, *%w{ vendor plugins * })
+     end
+     
+     def default_initalizer_glob
+       File.join(root_path, *%w{ config initializers **/*.rb })
      end
   end
 end
