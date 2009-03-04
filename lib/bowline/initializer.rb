@@ -89,7 +89,7 @@ module Bowline
     end
     
     def add_plugin_load_paths
-      Dir.glob(configuration.plugin_glob).sort.each do |path|
+      Dir.glob(File.join(configuration.plugin_glob, 'lib')).sort.each do |path|
         $LOAD_PATH << path
         ActiveSupport::Dependencies.load_paths << path
         unless configuration.reload_plugins?
