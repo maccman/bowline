@@ -460,8 +460,8 @@ module Bowline
    
      def default_framework_paths
        [
-         File.join(root_path, 'vendor', 'bowline'),
-         File.join(root_path, 'vendor',  'rails', 'activesupport', 'lib')
+         File.join(root_path, 'vendor', 'bowline', 'lib'),
+         File.join(root_path, 'vendor', 'rails', 'activesupport', 'lib')
         ]
      end
      

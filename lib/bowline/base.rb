@@ -72,6 +72,10 @@ module Bowline
       @element = element
     end
     
+    def trigger(event, data = nil)
+      self.element.trigger(event, data)
+    end
+    
     def js
       self.class.js
     end
