@@ -15,17 +15,19 @@ module Bowline
     def initialize
       @listeners = {}
     end
-  
+    
+    # Append block/method to listeners
     def append(event, method = nil, *args, &block)
       (@listeners[event.to_s] ||= []) << [method||block, args]
     end
     
-    # JavaScript event
+    # Like append, but adds it to the body too
     def on(event, method = nil, &block)
       append(event, method, &block)
       JQuery.bind(event.to_s, method(:call), event)
     end
-  
+    
+    # Call event
     def call(event)
       event = event.to_s
       @listeners[event].each do |callback|

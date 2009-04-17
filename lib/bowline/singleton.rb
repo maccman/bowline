@@ -1,13 +1,21 @@
 module Bowline
   class Singleton < Base
     cattr_accessor :item
-    def self.item=(arg)
-      @@item = arg
-      self.item_sync!
-    end
+    class << self
+      def item=(arg)
+        @@item = arg
+        self.item_sync!
+      end
     
-    def self.item_sync!
-      @@elements.each {|i| i.item(to_js(@@item)) }
+      def item_sync!
+        return unless @@item && @@elements
+        # Call the chain.js function 'item' on elements
+        @@elements.each {|i| i.item(@@item.to_js) }
+      end
+      
+      def find(*a)
+        @@item
+      end
     end
   end
 end
