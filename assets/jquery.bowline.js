@@ -1,51 +1,55 @@
 (function($){
   $.bowline = {
+    setup: function(name, el){
+      var rb = eval("bowline_" + name + "_setup");
+      if(!rb) throw 'Unknown class';
+      rb(el);
+    },
+    
     klass: function(name){
-      var rb = $.bowline[name];
+      var rb = eval("bowline_" + name);
       if(!rb) throw 'Unknown class';
       return rb;
     },
     
-    test: {
-      setup: function(){
-        console.log('bowline:test', 'setup');
-      },
-      
-      send: function(){
-        console.log('bowline:test', arguments);
-        return({})
-      }
+    instance: function(name, el){
+      var rb = eval("bowline_" + name + "_instance");
+      if(!rb) throw 'Unknown class';
+      return rb(el);
     },
     
     setupForms: function(){
-      $('form').bind('submit', function(e){
-        var src = $(this).attr('src').split('.');
-        var rb = $.bowline.klass[src[0]];
-        rb.params = $(this).serialize();
-        rb.send(src[1]);
-        return false;
-      });
+      // $('form').bind('submit', function(e){
+      //   var src = $(this).attr('src').split('.');
+      //   var rb = $.bowline.klass[src[0]];
+      //   rb.params = $(this).serialize();
+      //   rb.send(src[1]);
+      //   return false;
+      // });
     }
   }
   
   $.fn.bowline = function(name, options){
-    var rb = $.bowline.klass(name);
-    this.data('bowline', rb);
-    this.chain(options);
-    rb.setup(this);
+    $(this).chain(options);
+    $.bowline.setup(name, $(this));
+    $(this).data('bowline', name);
     return this;
   };
   
   $.fn.invoke = function(){
-    if(this.chain('active')){
-      if(this.data('bowline')){
-        var rb = this.data('bowline');
+    if($(this).chain('active')){
+      if($(this).data('bowline')){
+        // Class method
+        var name = $(this).data('bowline');
+        var func = $.bowline.klass(name);
       } else {
-        var rb = this.item('root').invoke('new', this);
+        // Instance method
+        var name = $(this).item('root').data('bowline');
+        var func = $.bowline.instance(name, $(this));
       }
-      return rb.send.apply(rb, arguments);
+      return func.apply(func, arguments);
     } else {
-      throw 'Not chain active';
+      throw 'Chain not active';
     }
   }
 })(jQuery)

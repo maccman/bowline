@@ -1,7 +1,8 @@
 module Bowline
   def self.js
-    if defined?(Window)
-      Window
+    return $window
+    if defined?(APP_WINDOW)
+      APP_WINDOW
     else
       Class.new { def self.method_missing(*a); self; end }
     end

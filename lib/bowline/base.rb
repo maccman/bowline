@@ -45,15 +45,27 @@ module Bowline
         self.item_sync!
       end
       
+      def instance(el)
+        self.new(el).method(:send)
+      end
+      
+      def invoke(method)
+        # todo *args doesn't work with Titanium
+        send(method)
+      end
+      
       def inherited(child)
         return if self == Bowline::Base
+        return if child == Bowline::Singleton
+        return if child == Bowline::Collection
         name = child.name.underscore
         name = name.split('/').last
-        js.set("jQuery.bowline.#{name}", child)
+        js.send("bowline_#{name}_setup=",    child.method(:setup))
+        js.send("bowline_#{name}_instance=", child.method(:instance))
+        js.send("bowline_#{name}=",          child.method(:invoke))
       end
       
       protected
-      
         def to_js(ob)
           if ob.respond_to?(:to_js)
             ob.to_js
@@ -66,10 +78,12 @@ module Bowline
     end
     
     attr_reader :element
+    attr_reader :item
     
     def initialize(element)
       # jQuery element
       @element = element
+      # todo @item
     end
     
     def trigger(event, data = nil)
@@ -79,7 +93,9 @@ module Bowline
     def js
       self.class.js
     end
+    # todo - decide on API
     alias :page :js
+    alias :window :js
     
     def jquery
       self.class.jquery
