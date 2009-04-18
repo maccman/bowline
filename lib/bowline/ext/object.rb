@@ -3,12 +3,10 @@ class Object
   #  * A hash or
   #  * An array of hashes
   def to_js(opts = {})
-    if respond_to?(:to_js)
-      to_js
-    elsif respond_to?(:attributes)
+    if respond_to?(:attributes)
       attributes
     else
-      ob
+      self
     end
   end
 end

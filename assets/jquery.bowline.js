@@ -51,5 +51,9 @@
     } else {
       throw 'Chain not active';
     }
+  };
+  
+  $.fn.bowlineUpdate = function(items){
+    console.log(items);
   }
 })(jQuery)

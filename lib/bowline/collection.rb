@@ -5,20 +5,21 @@ module Bowline
       def items=(args)
         @@items = args
         self.item_sync!
+        @@items
       end
     
       def item_sync!
         return unless @@items && @@elements
         # todo
         puts "Calling item_sync"
-        p to_js(@@items)
+        p @@items.to_js
         p @@elements
-        js.alert(1)
-        js.alert({})
-        js.alert([{"one" => "two"}])
-        js.alert(@@items)
+        puts "logging..."
+        js.console.log([{"one" => "two"}])
+        # js.console.log(@@items)
         # Call the chain.js function 'items' on elements
-        @@elements.each {|i| i.items(@@items.to_js) }
+        puts "Setting"
+        @@elements.each {|i| i.bowlineUpate([{"name" => "two", "three" => "four"}]) }
       end
     
       def find(id)

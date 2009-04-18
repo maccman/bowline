@@ -1,10 +1,14 @@
 module Bowline
   def self.js
-    return $window
-    if defined?(APP_WINDOW)
-      APP_WINDOW
+    if defined?($window)
+      $window
     else
-      Class.new { def self.method_missing(*a); self; end }
+      Class.new { 
+        def self.method_missing(*a)
+          puts "Sending to Window: #{a.inspect}"
+          self
+        end 
+      }
     end
   end
 end

@@ -50,10 +50,12 @@ module Bowline
         self.new(el).method(:send)
       end
       
-      def invoke(method)
+      def invoke(method, args = [])
         # todo *args doesn't work with Titanium
-        send(method)
+        send(method, *args)
       end
+      
+      # todo - flash?
       
       def inherited(child)
         return if self == Bowline::Base
@@ -70,20 +72,30 @@ module Bowline
     attr_reader :element
     attr_reader :item
     
-    def initialize(element)
-      # jQuery element
-      @element = element
-      # Calling chain.js 'item' function
-      @item    = element.item()
-      if @item
-        @item.with_indifferent_access
-        # If possible, find Ruby object
-        if @item[:id] && respond_to?(:find)
-          @item = find(@item[:id])
+    # Todo
+    # We want initialize method to take
+    # no argument, and for every item in items
+    # to have initialize called on startup,
+    # so they can set up event handlers etc
+    def self.new(element, *args) #:nodoc:
+      allocate.instance_eval do
+        # jQuery element
+        @element = element
+        # Calling chain.js 'item' function
+        @item    = element.item()
+        if @item
+          @item.with_indifferent_access
+          # If possible, find Ruby object
+          if @item[:id] && respond_to?(:find)
+            @item = find(@item[:id])
+          end
         end
+        
+        initialize(*args)
+        self
       end
-    end
-    
+    end    
+
     # Trigger jQuery events on this element
     def trigger(event, data = nil)
       self.element.trigger(event, data)
@@ -127,6 +139,7 @@ module Bowline
     def js
       self.class.js
     end
+    alias :page :js
     
     # See self.class.jquery
     def jquery
