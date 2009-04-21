@@ -26,8 +26,34 @@
       //   rb.send(src[1]);
       //   return false;
       // });
-    }
-  }
+    },
+    
+    // A lot of JS libs require hashes
+    // without any functions in them
+    rubyHash: function( hsh ) {
+      res = {};
+      $.each(hsh, function(key, value){
+        if(typeof(value) != 'function'){
+          res[key] = value;
+        }
+      });
+      return res;
+    },
+
+    // Length on a Ruby array is a function    
+    rubyMap: function( elems, callback ) {
+  		var ret = [];
+
+  		for ( var i = 0, length = elems.length(); i < length; i++ ) {
+  			var value = callback( elems[ i ], i );
+
+  			if ( value != null )
+  				ret[ ret.length ] = value;
+  		}
+
+  		return ret.concat.apply( [], ret );
+  	}
+  },
   
   $.fn.bowline = function(name, options){
     $(this).chain(options);
@@ -53,7 +79,15 @@
     }
   };
   
-  $.fn.bowlineUpdate = function(items){
-    console.log(items);
-  }
+  $.fn.updateCollection = function( items ){
+    items = $.bowline.rubyMap(items, function(n){
+      return $.bowline.rubyHash(n);
+    });
+    $(this).items(items);
+	};
+	
+	$.fn.updateSingleton = function( item ){
+    item = $.bowline.rubyHash(item);
+    $(this).item(item);
+	};
 })(jQuery)

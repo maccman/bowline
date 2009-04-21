@@ -10,16 +10,9 @@ module Bowline
     
       def item_sync!
         return unless @@items && @@elements
-        # todo
-        puts "Calling item_sync"
-        p @@items.to_js
-        p @@elements
-        puts "logging..."
-        js.console.log([{"one" => "two"}])
-        # js.console.log(@@items)
-        # Call the chain.js function 'items' on elements
-        puts "Setting"
-        @@elements.each {|i| i.bowlineUpate([{"name" => "two", "three" => "four"}]) }
+        @@elements.each {|i| 
+          i.updateCollection(@@items.to_js) 
+        }
       end
     
       def find(id)
