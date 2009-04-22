@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org" xmlns:appc="http://www.appcelerator.org">
+   <id><%= app_id %></id>
+   <name><%= app_name %></name>
+   <version>0.1</version>
+   <window>
+      <id>initial</id>
+      <title>Bowline</title>
+      <url>app://public/index.html</url>
+      <width>750</width>
+      <height>800</height>
+      <fullscreen>false</fullscreen>
+      <!--
+      <minimizable>true</minimizable>
+      <maximizable>false</maximizable>
+      <max-width>900</max-width>
+      <max-height>800</max-height>
+      <min-width>400</min-width>
+      <min-height>300</min-height>
+      -->
+      <closeable>true</closeable>
+      <chrome>true</chrome>
+   </window>
+</ti:app>

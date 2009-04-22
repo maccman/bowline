@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require File.join(File.dirname(__FILE__), *%w[.. config environment])
+
+# todo - start Titanium here

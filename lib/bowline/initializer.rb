@@ -172,6 +172,17 @@ module Bowline
       end
     end
     
+    def initialize_rubygems
+      # todo - use custom rubygems on deployment
+      # $LOAD_PATH << File.join(root, 'ruby', 'rubygems')
+      # ::GEM_DIR = File.join(root, 'ruby', 'gems')
+      # $LOAD_PATH << GEM_DIR
+      # ENV['GEM_HOME'] = GEM_DIR
+      # require 'rubygems'
+      # Gem.use_paths(GEM_DIR, [GEM_DIR])
+      # Gem.source_index.refresh!
+    end
+    
     def add_gem_load_paths
       unless configuration.gems.empty?
         configuration.gems.each { |gem| gem.add_load_paths }
@@ -238,6 +249,7 @@ module Bowline
       Bowline.configuration = configuration
       
       set_load_path
+      initialize_rubygems
       add_gem_load_paths
       
       require_frameworks

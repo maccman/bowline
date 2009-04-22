@@ -50,11 +50,6 @@ module Bowline
         self.new(el).method(:send)
       end
       
-      def invoke(method, args = [])
-        # todo *args doesn't work with Titanium
-        send(method, *args)
-      end
-      
       # todo - flash?
       
       def inherited(child)
@@ -65,7 +60,7 @@ module Bowline
         name = name.split('/').last
         js.send("bowline_#{name}_setup=",    child.method(:setup))
         js.send("bowline_#{name}_instance=", child.method(:instance))
-        js.send("bowline_#{name}=",          child.method(:invoke))
+        js.send("bowline_#{name}=",          child.method(:send))
       end    
     end
     

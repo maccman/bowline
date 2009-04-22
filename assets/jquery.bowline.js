@@ -83,11 +83,11 @@
     items = $.bowline.rubyMap(items, function(n){
       return $.bowline.rubyHash(n);
     });
-    $(this).items(items);
+    $(this).items('replace', items);
 	};
 	
 	$.fn.updateSingleton = function( item ){
     item = $.bowline.rubyHash(item);
-    $(this).item(item);
+    $(this).item('replace', item);
 	};
 })(jQuery)
