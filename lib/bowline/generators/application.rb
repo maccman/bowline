@@ -25,8 +25,10 @@ module Bowline::Generators
     
     file :gitignore, "gitignore", ".gitignore"
     
-    glob! "script"
-    glob! "public"
+    empty_directory :public, "public"
+    file :index, "index.html", "index.html"
+    glob! "public/javascripts"
+    glob! "public/stylesheets"
     
     file :jquery,    "../assets/jquery.js",         "public/javascripts/jquery.js"
     file :chainjs,   "../assets/jquery.chain.js",   "public/javascripts/jquery.chain.js"

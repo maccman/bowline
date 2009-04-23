@@ -1,4 +1,4 @@
-exec_path = File.join(APP_ROOT, 'build', 'osx', 'testapp.app')
+exec_path = File.join(APP_ROOT, 'build', 'osx', "#{APP_NAME}.app")
 
 unless File.exist?(exec_path)
   require 'rake'
@@ -7,7 +7,7 @@ unless File.exist?(exec_path)
 end
 
 if ENV['debug']
-  `open #{File.join(exec_path, 'Contents', 'MacOS', 'testapp')}`
+  `open #{File.join(exec_path, 'Contents', 'MacOS', APP_NAME)}`
 else
   `open #{exec_path}`
 end

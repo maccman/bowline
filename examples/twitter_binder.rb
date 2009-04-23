@@ -1,10 +1,9 @@
-class TwitterBinder < Bowline::Collection
-  class << self
-    # What about filters - should they be implemented?
-    cattr_accessor :user, :pass
-    
+class TwitterBinder < Bowline::Binders::Collection
+  cattr_accessor :user, :pass
+  
+  class << self    
     def index
-      self.items = twit.timeline(:user)
+      self.items = timeline
     end
     
     def update(text)
@@ -32,9 +31,16 @@ class TwitterBinder < Bowline::Collection
     end
     
     protected
-    
       def twit
-        Twitter::Base.new(self.user, self.pass)
+        httpauth = Twitter::HTTPAuth.new(self.user, self.pass)
+        Twitter::Base.new(httpauth)
+      end
+      
+      def timeline
+        twit.friends_timeline.collect {|t|
+          t.delete('user')
+          t.to_hash
+        }
       end
   end
 end
