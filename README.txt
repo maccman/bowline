@@ -1,6 +1,6 @@
 = Bowline
 
-  http://github.com/maccman/bowline
+http://github.com/maccman/bowline
   
 = DESCRIPTION
 
