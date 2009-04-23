@@ -1,5 +1,5 @@
 module Bowline
-  VERSION = '0.1'
+  VERSION = '0.1.1'
   
   def self.js
     if defined?($app_window)
