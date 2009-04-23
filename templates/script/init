@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
 if defined?(Titanium)
-  $window = window
+  # The 'window' function is only
+  # available in this scope
+  $app_window = window
 end
 
 require File.join(File.dirname(__FILE__), *%w[.. config environment])

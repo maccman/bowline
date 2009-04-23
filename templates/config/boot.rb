@@ -6,7 +6,7 @@ if defined?(Titanium)
   app_resources = Titanium.App.appURLToPath("app://index.html")
   APP_ROOT = File.dirname(app_resources)
 else
-  APP_ROOT = File.join(File.dirname(__FILE__), "..") unless defined?(APP_ROOT)
+  APP_ROOT = File.join(File.dirname(__FILE__), "..")
 end
 $LOAD_PATH << APP_ROOT
 $LOAD_PATH.uniq!
