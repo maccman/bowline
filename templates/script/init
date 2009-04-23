@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
 
-if defined?(Titanium)
-  # The 'window' function is only
-  # available in this scope
-  $app_window = window
+unless defined?(Titanium)
+  raise "You can't execute this file directly - it's for Titanium"
 end
+
+# The 'window' function is only
+# available in this scope
+$app_window = window
 
 require File.join(File.dirname(__FILE__), *%w[.. config environment])
