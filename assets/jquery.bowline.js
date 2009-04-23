@@ -59,6 +59,7 @@
     $(this).chain(options);
     $.bowline.setup(name, $(this));
     $(this).data('bowline', name);
+    $(this).trigger('setup:bowline');
     return this;
   };
   
@@ -84,10 +85,12 @@
       return $.bowline.rubyHash(n);
     });
     $(this).items('replace', items);
+    $(this).trigger('update:bowline');
 	};
 	
 	$.fn.updateSingleton = function( item ){
     item = $.bowline.rubyHash(item);
     $(this).item('replace', item);
+    $(this).trigger('update:bowline');
 	};
 })(jQuery)
