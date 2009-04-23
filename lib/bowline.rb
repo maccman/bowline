@@ -8,7 +8,7 @@ module Bowline
     else
       Class.new { 
         def self.method_missing(*a)
-          puts "Sending to Window: #{a.inspect}"
+          Bowline.logger.info "Sending to Window: #{a.inspect}"
           self
         end 
       }
@@ -18,6 +18,9 @@ module Bowline
   # Change which page we're on
   def self.show_view(name)
     js.window.location = "app://public/#{name}.html"
+  end
+  
+  class Base
   end
 end
 

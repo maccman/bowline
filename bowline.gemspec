@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.1"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.email = ["info@eribium.org"]
   s.executables = ["bowline-gen"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = ["History.txt", "MIT-LICENSE", "Manifest.txt", "README.txt", "Rakefile", "assets/jquery.bowline.js", "assets/jquery.chain.js", "assets/jquery.js", "bin/bowline-gen", "bowline.gemspec", "examples/account_binder.rb", "examples/example.js", "examples/twitter.html", "examples/twitter_binder.rb", "examples/twitter_login.html", "examples/users_binder.rb", "lib/bowline.rb", "lib/bowline/base.rb", "lib/bowline/collection.rb", "lib/bowline/commands/console.rb", "lib/bowline/commands/generate.rb", "lib/bowline/commands/run.rb", "lib/bowline/ext/array.rb", "lib/bowline/ext/class.rb", "lib/bowline/ext/object.rb", "lib/bowline/ext/string.rb", "lib/bowline/gem_dependency.rb", "lib/bowline/generators.rb", "lib/bowline/generators/application.rb", "lib/bowline/generators/binder.rb", "lib/bowline/generators/migration.rb", "lib/bowline/generators/model.rb", "lib/bowline/initializer.rb", "lib/bowline/jquery.rb", "lib/bowline/observer.rb", "lib/bowline/singleton.rb", "lib/bowline/tasks/app.rake", "lib/bowline/tasks/bowline.rb", "lib/bowline/tasks/database.rake", "lib/bowline/tasks/log.rake", "lib/bowline/tasks/misk.rake", "templates/Rakefile", "templates/app/binders/application.rb", "templates/binder.rb", "templates/config/application.yml", "templates/config/boot.rb", "templates/config/database.yml", "templates/config/environment.rb", "templates/config/manifest", "templates/gitignore", "templates/migration.rb", "templates/model.rb", "templates/public/index.html.erb", "templates/public/javascripts/application.js", "templates/public/stylesheets/application.css", "templates/script/console", "templates/script/init", "templates/script/run", "templates/tiapp.xml"]
+  s.files = ["History.txt", "MIT-LICENSE", "Manifest.txt", "README.txt", "Rakefile", "assets/jquery.bowline.js", "assets/jquery.chain.js", "assets/jquery.js", "bin/bowline-gen", "bowline.gemspec", "examples/account_binder.rb", "examples/example.js", "examples/twitter.html", "examples/twitter_binder.rb", "examples/twitter_login.html", "examples/users_binder.rb", "lib/bowline.rb", "lib/bowline/binders.rb", "lib/bowline/binders/collection.rb", "lib/bowline/binders/singleton.rb", "lib/bowline/commands/console.rb", "lib/bowline/commands/generate.rb", "lib/bowline/commands/run.rb", "lib/bowline/ext/array.rb", "lib/bowline/ext/class.rb", "lib/bowline/ext/object.rb", "lib/bowline/ext/string.rb", "lib/bowline/gem_dependency.rb", "lib/bowline/generators.rb", "lib/bowline/generators/application.rb", "lib/bowline/generators/binder.rb", "lib/bowline/generators/migration.rb", "lib/bowline/generators/model.rb", "lib/bowline/initializer.rb", "lib/bowline/jquery.rb", "lib/bowline/observer.rb", "lib/bowline/tasks/app.rake", "lib/bowline/tasks/bowline.rb", "lib/bowline/tasks/database.rake", "lib/bowline/tasks/log.rake", "lib/bowline/tasks/misk.rake", "templates/Rakefile", "templates/binder.rb", "templates/config/application.yml", "templates/config/boot.rb", "templates/config/database.yml", "templates/config/environment.rb", "templates/config/manifest", "templates/config/tiapp.xml", "templates/gitignore", "templates/migration.rb", "templates/model.rb", "templates/public/index.html.erb", "templates/public/javascripts/application.js", "templates/public/stylesheets/application.css", "templates/script/console", "templates/script/init", "templates/script/run"]
   s.has_rdoc = true
-  s.homepage = %q{  http://github.com/maccman/bowline}
+  s.homepage = %q{http://github.com/maccman/bowline}
   s.rdoc_options = ["--main", "README.txt"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{maccman}

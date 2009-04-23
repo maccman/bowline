@@ -2,7 +2,7 @@
 require File.join(File.dirname(__FILE__), 'boot')
 
 Bowline::Initializer.run do |config|
-  config.name = <%= name.camel_case %>
+  config.name = <%= name.camel_case.inspect %>
     
   # config.gem "net-mdns", :lib => 'net/dns/mdns'
   # config.gem "rack"

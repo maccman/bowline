@@ -23,7 +23,7 @@ module Bowline::Generators
     
     template :rakefile, "Rakefile", "Rakefile"
     
-    file :gitignore "gitignore", ".gitignore"
+    file :gitignore, "gitignore", ".gitignore"
     
     glob! "script"
     glob! "public"
@@ -40,7 +40,7 @@ module Bowline::Generators
     template :environment, "config/environment.rb", "config/environment.rb"
     template :tiapp,       "config/tiapp.xml", "config/tiapp.xml"
     ["application.yml", "database.yml", "manifest", "boot.rb"].each {|action|
-      action = action.sub("#{source_root}/", '')
+      action = File.join('config', action)
       file(action.downcase.gsub(/[^a-z0-9]+/, '_').to_sym, action, action)
     }
   end
