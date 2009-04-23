@@ -33,6 +33,10 @@ module Bowline::Generators
     glob! "config"
     glob! "public"
     
+    file :jquery,    "../assets/jquery.js",         "public/javascripts/jquery.js"
+    file :chainjs,   "../assets/jquery.chain.js",   "public/javascripts/jquery.chain.js"
+    file :bowlinejs, "../assets/jquery.bowline.js", "public/javascripts/jquery.bowline.js"
+    
     empty_directory :models, "app/models"
     template :tiapp, "tiapp.xml", "config/tiapp.xml"
   end
