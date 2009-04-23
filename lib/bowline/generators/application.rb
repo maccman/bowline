@@ -29,7 +29,6 @@ module Bowline::Generators
     end
     
     glob! "script"
-    glob! "app"
     glob! "config"
     glob! "public"
     
@@ -37,7 +36,9 @@ module Bowline::Generators
     file :chainjs,   "../assets/jquery.chain.js",   "public/javascripts/jquery.chain.js"
     file :bowlinejs, "../assets/jquery.bowline.js", "public/javascripts/jquery.bowline.js"
     
+    empty_directory :app, "app"
     empty_directory :models, "app/models"
+    empty_directory :binders, "app/binders"
     template :tiapp, "tiapp.xml", "config/tiapp.xml"
   end
   

@@ -5,7 +5,7 @@ module Bowline::Generators
     DESC
     
     def class_name
-      super + " < Bowline::#{type.to_s.camel_case}"
+      super + " < Bowline::Binders::#{type.to_s.camel_case}"
     end
     
     def modules

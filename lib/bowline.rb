@@ -1,6 +1,7 @@
 module Bowline
   VERSION = '0.1.1'
-  
+
+  # The raw JavaScript window object
   def self.js
     if defined?($app_window)
       $app_window
@@ -12,6 +13,11 @@ module Bowline
         end 
       }
     end
+  end
+  
+  # Change which page we're on
+  def self.show_view(name)
+    js.window.location = "app://public/#{name}.html"
   end
 end
 
@@ -28,6 +34,6 @@ require 'bowline/initializer'
 require 'bowline/jquery'
 require 'bowline/observer'
 
-require 'bowline/base'
-require 'bowline/collection'
-require 'bowline/singleton'
+require 'bowline/binders'
+require 'bowline/binders/collection'
+require 'bowline/binders/singleton'
