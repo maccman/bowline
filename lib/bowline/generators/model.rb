@@ -1,7 +1,11 @@
 module Bowline::Generators
   class ModelGenerator < NamedGenerator
-    def self.source_root
-      File.join(super, 'app', 'models')
+    desc <<-DESC
+      Generates a new model.
+    DESC
+    
+    def modules
+      []
     end
     
     first_argument :name, :required => true, :desc => "model name"

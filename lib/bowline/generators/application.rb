@@ -1,7 +1,15 @@
 module Bowline::Generators
-  class ApplicationGenerator < Generator
+  class ApplicationGenerator < NamedGenerator
+    desc <<-DESC
+      Generates a new application.
+    DESC
+    
     def app_id
       ['bowline', name].join('.')
+    end
+    
+    def destination_root
+      File.join(@destination_root, base_name)
     end
     
     first_argument :name, :required => true, :desc => "application name"
@@ -13,7 +21,7 @@ module Bowline::Generators
     empty_directory :build,   "build"
     empty_directory :log,     "log"
     
-    template :rakefile, "Rakefile"
+    template :rakefile, "Rakefile", "Rakefile"
     
     file :gitignore do |file|
       file.source      = "gitignore"
@@ -24,6 +32,9 @@ module Bowline::Generators
     glob! "app"
     glob! "config"
     glob! "public"
+    
+    empty_directory :models, "app/models"
+    template :tiapp, "tiapp.xml", "config/tiapp.xml"
   end
   
   add :app, ApplicationGenerator

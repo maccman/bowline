@@ -1,4 +1,4 @@
-<% with_modules(modules) do -%>
-  class <%= class_name %> < Binder::Collection
-  end
-<% end -%>
+<%- with_modules(modules) do -%>
+class <%= class_name %>
+end
+<%- end -%>
