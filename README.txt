@@ -20,6 +20,13 @@ info@eribium.org
 http://eribium.org
 http://twitter.com/maccman
 
+= Usage
+
+bowline-gen app bowline_twitter
+cd bowline_twitter
+bowline-gen binder twitter
+
+
 = EXAMPLES
 
 Have a look at the examples for an example twitter client.
