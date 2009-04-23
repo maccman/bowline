@@ -234,6 +234,13 @@ module Bowline
       $KCODE='u' if RUBY_VERSION < '1.9'
     end
     
+    def initialize_name
+      unless configuration.name
+        raise "You must provide an application name in environment.rb"
+      end
+      silence_warnings { Object.const_set "APP_NAME", configuration.name }
+    end
+    
     def load_app_config
       app_config = configuration.app_config
       return unless app_config
@@ -268,6 +275,7 @@ module Bowline
       
       initialize_framework_settings
       
+      initialize_name
       load_app_config
       
       load_gems
@@ -392,6 +400,8 @@ module Bowline
      attr_accessor :plugin_glob
      
      attr_accessor :initializer_glob
+     
+     attr_accessor :name
      
      # Create a new Configuration instance, initialized with the default
      # values.

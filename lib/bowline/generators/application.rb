@@ -23,13 +23,9 @@ module Bowline::Generators
     
     template :rakefile, "Rakefile", "Rakefile"
     
-    file :gitignore do |file|
-      file.source      = "gitignore"
-      file.destination = ".gitignore"
-    end
+    file :gitignore "gitignore", ".gitignore"
     
     glob! "script"
-    glob! "config"
     glob! "public"
     
     file :jquery,    "../assets/jquery.js",         "public/javascripts/jquery.js"
@@ -39,7 +35,14 @@ module Bowline::Generators
     empty_directory :app, "app"
     empty_directory :models, "app/models"
     empty_directory :binders, "app/binders"
-    template :tiapp, "tiapp.xml", "config/tiapp.xml"
+    empty_directory :config, "config"
+    
+    template :environment, "config/environment.rb", "config/environment.rb"
+    template :tiapp,       "config/tiapp.xml", "config/tiapp.xml"
+    ["application.yml", "database.yml", "manifest", "boot.rb"].each {|action|
+      action = action.sub("#{source_root}/", '')
+      file(action.downcase.gsub(/[^a-z0-9]+/, '_').to_sym, action, action)
+    }
   end
   
   add :app, ApplicationGenerator
