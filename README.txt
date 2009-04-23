@@ -1,10 +1,26 @@
-My take on Ruby desktop GUIs (non functional atm)
+= Bowline
 
-Uses Titanium:
-http://titaniumapp.com/
+  http://github.com/maccman/bowline
+  
+= DESCRIPTION
 
+My take on Ruby desktop GUIs
+
+= FEATURES
+
+* Cross platform
+* MVC
+* Uses Webkit
+* View in HTML/JavaScript
+* Binding between HTML & Ruby
+
+= CONTACT
+
+info@eribium.org
+http://eribium.org
 http://twitter.com/maccman
-alex@madebymany.co.uk
+
+= EXAMPLES
 
 Have a look at the examples for an example twitter client.
 
