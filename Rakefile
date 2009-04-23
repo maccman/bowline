@@ -7,6 +7,7 @@ $hoe = Hoe.new('bowline', Bowline::VERSION) do |p|
   p.developer('Alex MacCaw', 'info@eribium.org')
   p.changes              = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   p.rubyforge_name       = 'maccman'
+  p.extra_deps << ['templater', '>=0.3.2']
   p.extra_dev_deps = [
     ['newgem', ">= #{::Newgem::VERSION}"]
   ]
