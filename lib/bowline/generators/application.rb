@@ -30,6 +30,8 @@ module Bowline::Generators
     glob! "public/javascripts"
     glob! "public/stylesheets"
     
+    glob! "script"
+    
     file :jquery,    "../assets/jquery.js",         "public/javascripts/jquery.js"
     file :chainjs,   "../assets/jquery.chain.js",   "public/javascripts/jquery.chain.js"
     file :bowlinejs, "../assets/jquery.bowline.js", "public/javascripts/jquery.bowline.js"
