@@ -26,7 +26,7 @@ module Bowline::Generators
     file :gitignore, "gitignore", ".gitignore"
     
     empty_directory :public, "public"
-    file :index, "index.html", "index.html"
+    file :index, "public/index.html", "public/index.html"
     glob! "public/javascripts"
     glob! "public/stylesheets"
     

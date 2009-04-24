@@ -1,3 +1,4 @@
+.gitignore
 History.txt
 MIT-LICENSE
 Manifest.txt
@@ -50,7 +51,7 @@ templates/config/tiapp.xml
 templates/gitignore
 templates/migration.rb
 templates/model.rb
-templates/public/index.html.erb
+templates/public/index.html
 templates/public/javascripts/application.js
 templates/public/stylesheets/application.css
 templates/script/console
