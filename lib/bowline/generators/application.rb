@@ -9,7 +9,12 @@ module Bowline::Generators
     end
     
     def destination_root
+      # Todo - only works relative
       File.join(@destination_root, base_name)
+    end
+    
+    def full_name
+      File.basename(name).camel_case
     end
     
     first_argument :name, :required => true, :desc => "application name"
@@ -26,7 +31,7 @@ module Bowline::Generators
     file :gitignore, "gitignore", ".gitignore"
     
     empty_directory :public, "public"
-    file :index, "public/index.html", "public/index.html"
+    template :index, "public/index.html", "public/index.html"
     glob! "public/javascripts"
     glob! "public/stylesheets"
     

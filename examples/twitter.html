@@ -11,33 +11,26 @@
 	<script src="jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="chain.js" type="text/javascript" charset="utf-8"></script>
 	<script src="bowline.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" charset="utf-8">
-		  jQuery(function($){
-  	    var tweets = $('#tweets').bowline.init('twitter_binder');
-  	  
-        // Update status
-    	  var update = function(){
-    	    tweets.invoke('update', $('#update').val());
-    	  }
-	    
-        // Add event handlers
-  	    $('#updateForm').submit(update);
-	    
-    	  tweets.invoke('index'); 
-	  });
-	</script>
+  <script type="text/javascript" charset="utf-8">
+    jQuery(function($){
+      var tweets = $('#tweets').bowline('tweets');
+      tweets.invoke('index');
+
+      $('#updateSubmit').click(function(){
+        tweets.invoke('update', $('#updateText').val());
+        return false;
+      })
+    });
+  </script>
 </head>
-<body>
-  <div id="tweets">
-    <div class="item">
-      <img class="profile_image_url" />
-      <span class="text">Loading...</span>
+  <body>
+    <div id="tweets">
+      <div class="item">
+        <span class="text"></span>
+      </div>
     </div>
-  </div>
-  
-  <form action="updateForm" method="get" accept-charset="utf-8">
-    <input type="text" name="update" id="update">
-    <input type="submit" value="Update &rarr;">
-  </form>
+
+    <input type="text" id="updateText">
+    <input type="submit" value="Update &rarr;" id="updateSubmit">
 </body>
 </html>
