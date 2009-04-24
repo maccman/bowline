@@ -1,5 +1,5 @@
 module Bowline
-  VERSION = '0.1.3'
+  VERSION = '0.1.4'
 
   # The raw JavaScript window object
   def self.js
