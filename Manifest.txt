@@ -9,12 +9,11 @@ assets/jquery.chain.js
 assets/jquery.js
 bin/bowline-gen
 bowline.gemspec
-examples/account_binder.rb
+examples/account.rb
 examples/example.js
 examples/twitter.html
-examples/twitter_binder.rb
-examples/twitter_login.html
-examples/users_binder.rb
+examples/tweets.rb
+examples/users.rb
 lib/bowline.rb
 lib/bowline/binders.rb
 lib/bowline/binders/collection.rb
