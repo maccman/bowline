@@ -4,15 +4,15 @@ http://github.com/maccman/bowline
   
 = DESCRIPTION
 
-My take on Ruby desktop GUIs
+Ruby desktop application framework
 
 = FEATURES
 
-* Cross platform
 * MVC
 * Uses Webkit
 * View in HTML/JavaScript
 * Binding between HTML & Ruby
+* Will be cross platform (though only OSX atm)
 
 = CONTACT
 
@@ -20,16 +20,39 @@ info@eribium.org
 http://eribium.org
 http://twitter.com/maccman
 
-= Usage
+= Usage - Building a basic Twitter client
 
-bowline-gen app bowline_twitter
-cd bowline_twitter
-bowline-gen binder twitter
+Build Titanium by following the instructions here:
+http://wiki.github.com/marshall/titanium/build-instructions
 
+Install the gem:
+>> sudo gem install maccman-bowline --source http://gems.github.com
+
+Run the app/binder generators:
+>> bowline-gen app bowline_twitter
+>> cd bowline_twitter
+>> bowline-gen binder tweets
+
+Copy tweets.rb from examples to app/binders/tweets.rb
+Add your Twitter credentials to tweets.rb - in this simple example they're not dynamic.
+
+Copy twitter.html from examples to public/index.html
+
+Install the Twitter gem:
+>> sudo gem install twitter
+
+Add the Twitter gem to config/environment.rb: 
+   config.gem "twitter"
+   
+run:
+>> rake app:package TIPATH=~/path/to/titanium
+
+run:
+./script/run
+
+That's it
 
 = EXAMPLES
-
-Have a look at the examples for an example twitter client.
 
 Usage for a collection (of users):
 
