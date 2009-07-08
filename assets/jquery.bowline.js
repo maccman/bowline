@@ -43,15 +43,12 @@
     // Length on a Ruby array is a function    
     rubyMap: function( elems, callback ) {
   		var ret = [];
-
-  		for ( var i = 0, length = elems.length(); i < length; i++ ) {
+  		for (var i = 0, length = elems.length(); i < length; i++) {
   			var value = callback( elems[ i ], i );
-
-  			if ( value != null )
-  				ret[ ret.length ] = value;
+  			if (value != null)
+  				ret[ret.length] = value;
   		}
-
-  		return ret.concat.apply( [], ret );
+  		return ret.concat.apply([], ret);
   	}
   },
   
@@ -85,12 +82,21 @@
       return $.bowline.rubyHash(n);
     });
     $(this).items('replace', items);
-    $(this).trigger('update:bowline');
+    $(this).trigger('update.bowline');
 	};
 	
 	$.fn.updateSingleton = function( item ){
     item = $.bowline.rubyHash(item);
     $(this).item('replace', item);
-    $(this).trigger('update:bowline');
+    $(this).trigger('update.bowline');
 	};
+	
+	$(function(){
+	  $(document.body).trigger('loading.bowline');
+	  var script = $("<script />");
+	  script.attr('type', 'text/ruby');
+	  script.attr('src',  '../script/init');
+	  $(document.body).append(script);
+	  $(document.body).trigger('loaded.bowline');
+	})
 })(jQuery)

@@ -212,6 +212,11 @@ module Bowline
       end
     end
     
+    def load_application_helpers
+      configuration.helpers.each {|h| Helpers.module_eval { include h } }
+      js.helper = Helpers
+    end
+        
     def load_application_classes
       if configuration.cache_classes
         configuration.eager_load_paths.each do |load_path|
@@ -286,6 +291,7 @@ module Bowline
       after_initialize
       
       load_application_classes
+      load_application_helpers
       
       Bowline.initialized = true
     end
@@ -399,9 +405,19 @@ module Bowline
      
      attr_accessor :plugin_glob
      
+     attr_accessor :helper_glob
+     
      attr_accessor :initializer_glob
      
      attr_accessor :name
+     attr_accessor :id
+     attr_accessor :version
+     attr_accessor :description
+     attr_accessor :publisher
+     attr_accessor :publisher_url
+     attr_accessor :icon
+     attr_accessor :sdk
+     attr_accessor :copyright
      
      # Create a new Configuration instance, initialized with the default
      # values.
@@ -422,6 +438,7 @@ module Bowline
        self.app_config_file              = default_app_config_file
        self.gems                         = default_gems
        self.plugin_glob                  = default_plugin_glob
+       self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
        
        for framework in default_frameworks
@@ -460,6 +477,10 @@ module Bowline
      def database_configuration
        require 'erb'
        YAML::load(ERB.new(IO.read(database_configuration_file)).result) if File.exists?(database_configuration_file)
+     end
+     
+     def helpers
+       helper_glob.map(&:constantize)
      end
      
      # Adds a block which will be executed after bowline has been fully initialized.
@@ -515,6 +536,7 @@ module Bowline
          app/models
          app/remote
          app/binders
+         app/helpers
        ).map { |dir| "#{root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
      end
      
@@ -552,6 +574,10 @@ module Bowline
      
      def default_plugin_glob
        File.join(root_path, *%w{ vendor plugins * })
+     end
+     
+     def default_helper_glob
+       File.join(root_path, *%w{ app helpers *.rb })
      end
      
      def default_initalizer_glob

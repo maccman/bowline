@@ -18,7 +18,7 @@ module Bowline
     
         def find(id)
           @@items.find {|item| 
-            item.id == id if item.respond_to?(:id) 
+            item.id == id
           }
         end
       end

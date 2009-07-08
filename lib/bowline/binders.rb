@@ -34,8 +34,7 @@ module Bowline
           when String
             # Params comes in a string (since it's a
             # serialized form) - we need to make it into
-            # a nestled hash.
-            # Stolen from Ramaze
+            # a nestled hash. Stolen from Ramaze
             m = proc {|_,o,n|o.merge(n,&m)}
             @@params = params.inject({}) do |hash, (key, value)|
               parts = key.split(/[\]\[]+/)
@@ -55,9 +54,7 @@ module Bowline
         def instance(el)
           self.new(el).method(:send)
         end
-      
-        # todo - flash?
-      
+
         def inherited(child)
           return if self == Bowline::Binders::Base
           return if child == Bowline::Binders::Singleton
@@ -73,11 +70,6 @@ module Bowline
       attr_reader :element
       attr_reader :item
     
-      # Todo
-      # We want initialize method to take
-      # no argument, and for every item in items
-      # to have initialize called on startup,
-      # so they can set up event handlers etc
       def self.new(element, *args) #:nodoc:
         allocate.instance_eval do
           # jQuery element
@@ -100,29 +92,6 @@ module Bowline
       # Trigger jQuery events on this element
       def trigger(event, data = nil)
         self.element.trigger(event, data)
-      end
-    
-      # Bind event to element:
-      # bind(:click) { puts "element clicked" }
-      # todo - two events with the same item/event overwrite each other
-      # todo - need initalize method on class - so we can set events there
-      def bind(event, method_name, &block)
-        event_name = [event, item_id].join(":")
-        callback = block
-        callback ||= begin
-          method_name.is_a?(Method) ? 
-            method_name : method(method_name)
-        end
-        self.observer.append(event_name, callback)
-        self.element.bind(
-          event.to_s, 
-          event_name, 
-          self.observer.method(:call)
-        )
-      end
-    
-      def click(method_name = nil, &block)
-        bind(:click, method, &block)
       end
     
       # Raw DOM element
