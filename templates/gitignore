@@ -5,8 +5,6 @@ tmp/*
 TAGS
 *~
 .#*
-db/schema.rb
-db/*_structure.sql
 db/*.sqlite3
 db/*.sqlite
 db/*.db

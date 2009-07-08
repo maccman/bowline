@@ -414,7 +414,7 @@ module Bowline
      attr_accessor :version
      attr_accessor :description
      attr_accessor :publisher
-     attr_accessor :publisher_url
+     attr_accessor :url
      attr_accessor :icon
      attr_accessor :sdk
      attr_accessor :copyright

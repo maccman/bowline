@@ -31,7 +31,10 @@ module Bowline::Generators
     file :gitignore, "gitignore", ".gitignore"
     
     empty_directory :public, "public"
+    
     template :index, "public/index.html", "public/index.html"
+    file :logo, "public/icon.png", "public/icon.png"
+    
     glob! "public/javascripts"
     glob! "public/stylesheets"
     

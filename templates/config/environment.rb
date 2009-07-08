@@ -2,11 +2,11 @@
 require File.join(File.dirname(__FILE__), 'boot')
 
 Bowline::Initializer.run do |config|
-  config.name           = <%= full_name.inspect %>
-  config.id             = "com.<%= full_name %>"
-  config.version        = "0.1.0"
-  config.publisher      = "Example"
-  config.publisher_url  = "http://example.com"
+  config.name       = <%= full_name.inspect %>
+  config.id         = "com.<%= full_name %>"
+  config.version    = "0.1.0"
+  config.publisher  = "Example"
+  config.url        = "http://example.com"
   
   # config.gem "net-mdns", :lib => 'net/dns/mdns'
   # config.gem "rack"
