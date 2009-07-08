@@ -71,6 +71,7 @@ namespace :app do
     dirs.delete(build_path)
     dirs.delete(File.join(APP_ROOT, 'log'))
     dirs.delete(File.join(APP_ROOT, 'tmp'))
+    dirs.delete(File.join(APP_ROOT, 'db'))
     dirs.delete_if {|i| i =~ /\.svn|\.DS_Store/ }
     
     # Todo - check gem dependencies
@@ -79,7 +80,10 @@ namespace :app do
       File.open('manifest', 'w+') {|f| f.write manifest }
       File.open('tiapp.xml', 'w+') {|f| f.write tiapp }
       FileUtils.cp_r(dirs, 'Resources')
-      FileUtils.rm_f(File.join('Resources', 'db', 'application.sqlite3'))
+      FileUtils.cp(
+        File.join(APP_ROOT, 'db', 'schema.rb'), 
+        File.join('Resources', 'db')
+      )
     }
   end
   
