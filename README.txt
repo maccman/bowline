@@ -43,12 +43,10 @@ Install the Twitter gem:
 
 Add the Twitter gem to config/environment.rb: 
    config.gem "twitter"
-   
-run:
->> rake app:bundle TIPATH=~/path/to/titanium
 
 run:
-./script/run
+>> rake app:bundle
+>> rake app:build
 
 That's it
 

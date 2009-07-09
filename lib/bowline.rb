@@ -1,5 +1,5 @@
 module Bowline
-  VERSION = '0.1.6'
+  VERSION = '0.1.8'
 
   # The raw JavaScript window object
   def self.js
@@ -31,6 +31,7 @@ require 'bowline/ext/array'
 require 'bowline/ext/class'
 require 'bowline/ext/string'
 
+require 'bowline/helpers'
 require 'bowline/gem_dependency'
 require 'bowline/initializer'
 

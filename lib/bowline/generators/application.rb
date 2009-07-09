@@ -47,6 +47,7 @@ module Bowline::Generators
     empty_directory :app, "app"
     empty_directory :models, "app/models"
     empty_directory :binders, "app/binders"
+    empty_directory :binders, "app/helpers"
     empty_directory :config, "config"
     
     template :environment, "config/environment.rb", "config/environment.rb"

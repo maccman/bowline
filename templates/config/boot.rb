@@ -1,7 +1,7 @@
 # Don't change this file!
 # Configure your app in config/environment.rb and config/environments/*.rb
 
-APP_ROOT = File.join(File.dirname(__FILE__), "..") unless defined?(APP_ROOT)
+APP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), "..")) unless defined?(APP_ROOT)
 
 bowline_path = File.join(APP_ROOT, *%w[vendor bowline lib bowline.rb])
 

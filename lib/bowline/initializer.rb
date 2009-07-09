@@ -173,14 +173,7 @@ module Bowline
     end
     
     def initialize_rubygems
-      # todo - use custom rubygems on deployment
-      # $LOAD_PATH << File.join(root, 'ruby', 'rubygems')
-      # ::GEM_DIR = File.join(root, 'ruby', 'gems')
-      # $LOAD_PATH << GEM_DIR
-      # ENV['GEM_HOME'] = GEM_DIR
-      # require 'rubygems'
-      # Gem.use_paths(GEM_DIR, [GEM_DIR])
-      # Gem.source_index.refresh!
+      require 'rubygems'
     end
     
     def add_gem_load_paths
@@ -213,8 +206,10 @@ module Bowline
     end
     
     def load_application_helpers
-      configuration.helpers.each {|h| Helpers.module_eval { include h } }
-      js.helper = Helpers
+      helpers = configuration.helpers
+      helpers = helpers.map(&:constantize)
+      helpers.each {|h| Helpers.module_eval { include h } }
+      Bowline.js.helper = Helpers
     end
         
     def load_application_classes
@@ -480,7 +475,7 @@ module Bowline
      end
      
      def helpers
-       helper_glob.map(&:constantize)
+       Dir[helper_glob].map {|f| File.basename(f) }
      end
      
      # Adds a block which will be executed after bowline has been fully initialized.
