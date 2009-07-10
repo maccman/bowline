@@ -95,27 +95,33 @@ Usage for a collection (of users):
 
   <html>
   <head>
-  	<script src="jquery.js"   type="text/javascript" charset="utf-8"></script>
-  	<script src="chain.js"    type="text/javascript" charset="utf-8"></script>
-  	<script src="bowline.js"  type="text/javascript" charset="utf-8"></script>
+  	<script src="javascripts/jquery.js" type="text/javascript"></script>
+  	<script src="javascripts/jquery.chain.js" type="text/javascript"></script>
+    <script src="javascripts/jquery.bowline.js" type="text/javascript"></script>
+    <script src="javascripts/application.js" type="text/javascript"></script>
   	<script type="text/javascript" charset="utf-8">
   		jQuery(function($){
-        // Bind the element users to UserBinder
-    	  var users = $('#users').bowline('users', function(){
-    	    var self = $(this);
-    	    self.find('.destroy').click(function(){
-    	      self.invoke('destroy');
-    	      return false;
-    	    })
-    	  });
+  		  $.bowline.ready(function(){
+          // Bind the element users to UserBinder
+      	  var users = $('#users').bowline('users', function(){
+      	    var self = $(this);
+      	    self.find('.destroy').click(function(){
+      	      self.invoke('destroy');
+      	      return false;
+      	    })
+      	  });
     	
-      	$('#showAdmins').click(function(){
-      	  users.invoke('admins');
-      	  return false;
+        	$('#showAdmins').click(function(){
+        	  users.invoke('admins');
+        	  return false;
+        	});
+    	
+          // Populate with all the users
+        	users.invoke('index');
+        	
+          // Invoke a helper
+        	var time = $.bowline.helper('current_time');
       	});
-    	
-        // Populate with all the users
-      	users.invoke('index');
   	  });
   	</script>
   </head>
