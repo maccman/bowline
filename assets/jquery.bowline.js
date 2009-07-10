@@ -41,11 +41,20 @@
     }
   },
   
+  $.helper = function(){
+    return(
+      bowline_helper.apply(
+        bowline_helper, 
+        arguments
+      )
+    );
+  };
+  
   $.fn.bowline = function(name, options){
     $(this).chain(options);
     $.bowline.setup(name, $(this));
     $(this).data('bowline', name);
-    $(this).trigger('setup:bowline');
+    $(this).trigger('setup.bowline');
     return this;
   };
   

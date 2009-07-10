@@ -8,12 +8,19 @@ module Bowline::Generators
       []
     end
     
+    def module_name
+      "#{self.name.camel_case}Helper"
+    end
+    
+    def file_name
+      "#{name}_helper"
+    end
+    
     first_argument :name, :required => true, :desc => "helper name"
     
-    
-    template :model do |template|
-      template.source       = "model.rb"
-      template.destination  = "app/models/#{file_name}.rb"
+    template :helper do |template|
+      template.source       = "helper.rb"
+      template.destination  = "app/helpers/#{file_name}.rb"
     end
   end
   

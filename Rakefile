@@ -1,7 +1,10 @@
+require File.join(File.dirname(__FILE__), *%w[.. lib bowline])
+
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "bowline"
+    gemspec.version = Bowline::Version::STRING
     gemspec.summary = "Bowline GUI framework"
     gemspec.email = "alex@leadthinking.com"
     gemspec.homepage = "http://github.com/maccman/bowline"

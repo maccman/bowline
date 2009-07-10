@@ -130,10 +130,13 @@ tiprocess:0.4.4
     command << File.join(ti_lib_path, "tibuild.py")
     command << "-d #{build_path}"
     command << "-s #{ti_path}"
-    command << "-r"
+    command << "-r" if ENV['TIRUN']
     command << "-a #{ti_lib_path}"
     command << app_path
 
     exec(command.join(' '))
   end
 end
+
+desc "Bundle and build app"
+task :app => ["app:bundle", "app:build"]

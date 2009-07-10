@@ -45,8 +45,7 @@ Add the Twitter gem to config/environment.rb:
    config.gem "twitter"
 
 run:
->> rake app:bundle
->> rake app:build
+>> script/run
 
 That's it
 

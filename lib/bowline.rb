@@ -15,7 +15,7 @@ module Bowline
   
   # Change which page we're on
   def self.show_view(name)
-    js.window.location = "app://public/#{name}.html"
+    js.location = "app://public/#{name}.html"
   end
   
   class Base
@@ -23,6 +23,8 @@ module Bowline
 end
 
 $LOAD_PATH << File.dirname(__FILE__)
+
+require 'bowline/version'
 
 require 'bowline/ext/object'
 require 'bowline/ext/array'

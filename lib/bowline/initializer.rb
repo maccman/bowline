@@ -209,7 +209,7 @@ module Bowline
       helpers = configuration.helpers
       helpers = helpers.map(&:constantize)
       helpers.each {|h| Helpers.module_eval { include h } }
-      Bowline.js.helper = Helpers
+      Helpers.init
     end
         
     def load_application_classes
@@ -475,7 +475,7 @@ module Bowline
      end
      
      def helpers
-       Dir[helper_glob].map {|f| File.basename(f) }
+       Dir[helper_glob].map {|f| File.basename(f, '.rb').classify }
      end
      
      # Adds a block which will be executed after bowline has been fully initialized.
@@ -514,6 +514,7 @@ module Bowline
          app/binders
          app/models
          app/remote
+         app/helpers
          lib
          vendor
        ).map { |dir| "#{root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
@@ -528,9 +529,9 @@ module Bowline
 
      def default_eager_load_paths
        %w(
+         app/binders
          app/models
          app/remote
-         app/binders
          app/helpers
        ).map { |dir| "#{root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
      end
