@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.1.8"
+  s.version = "0.1.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2009-07-09}
+  s.date = %q{2009-07-10}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
     ".gitignore",
      "History.txt",
      "MIT-LICENSE",
+     "Manifest.txt",
      "README.txt",
      "Rakefile",
      "VERSION",
@@ -46,6 +47,7 @@ Gem::Specification.new do |s|
      "lib/bowline/generators.rb",
      "lib/bowline/generators/application.rb",
      "lib/bowline/generators/binder.rb",
+     "lib/bowline/generators/helper.rb",
      "lib/bowline/generators/migration.rb",
      "lib/bowline/generators/model.rb",
      "lib/bowline/helpers.rb",
