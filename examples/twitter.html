@@ -5,24 +5,22 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Twitter</title>
-  <!-- 
-	<script src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js" type="text/javascript"></script>
-	 -->
 	<script src="javascripts/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="javascripts/jquery.chain.js" type="text/javascript" charset="utf-8"></script>
   <script src="javascripts/jquery.bowline.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../script/init" type="text/ruby" charset="utf-8"></script>
   <script src="javascripts/application.js" type="text/javascript" charset="utf-8"></script>
   <link rel="stylesheet" href="stylesheets/application.css" type="text/css" charset="utf-8">
   <script type="text/javascript" charset="utf-8">
     jQuery(function($){
-      var tweets = $('#tweets').bowline('tweets');
-      tweets.invoke('index');
+      $.bowline.ready(function(){
+        var tweets = $('#tweets').bowline('tweets');
+        tweets.invoke('index');
 
-      $('#updateSubmit').click(function(){
-        tweets.invoke('update', $('#updateText').val());
-        return false;
-      })
+        $('#updateSubmit').click(function(){
+          tweets.invoke('update', $('#updateText').val());
+          return false;
+        });
+      });
     });
   </script>
 </head>

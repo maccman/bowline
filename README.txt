@@ -22,8 +22,8 @@ http://twitter.com/maccman
 
 = Usage - Building a basic Twitter client
 
-Build Titanium by following the instructions here:
-http://wiki.github.com/marshall/titanium/build-instructions
+Install the Titanium SDK:
+http://www.appcelerator.com/products/download-titanium/download/
 
 Install the gem:
 >> sudo gem install maccman-bowline --source http://gems.github.com
