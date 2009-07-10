@@ -86,7 +86,7 @@
     // var script = $("<script />");
     // script.attr('type', 'text/ruby');
     // script.attr('src',  '../script/init');
-    // $(document.body).append(script);
+    // $('head').append(script);
 	  $(document.body).trigger('loaded.bowline');
 	})
 })(jQuery)
