@@ -56,6 +56,8 @@ module Bowline::Generators
       action = File.join('config', action)
       file(action.downcase.gsub(/[^a-z0-9]+/, '_').to_sym, action, action)
     }
+    
+    empty_directory :initializers, "config/initializers"
   end
   
   add :app, ApplicationGenerator
