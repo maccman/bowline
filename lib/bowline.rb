@@ -1,6 +1,4 @@
 module Bowline
-  VERSION = '0.1.8'
-
   # The raw JavaScript window object
   def self.js
     if defined?($app_window)
