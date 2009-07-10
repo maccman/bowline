@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.1.10"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
@@ -18,10 +18,8 @@ Gem::Specification.new do |s|
     ".gitignore",
      "History.txt",
      "MIT-LICENSE",
-     "Manifest.txt",
      "README.txt",
      "Rakefile",
-     "VERSION",
      "assets/jquery.bowline.js",
      "assets/jquery.chain.js",
      "assets/jquery.js",
@@ -59,6 +57,7 @@ Gem::Specification.new do |s|
      "lib/bowline/tasks/database.rake",
      "lib/bowline/tasks/log.rake",
      "lib/bowline/tasks/misc.rake",
+     "lib/bowline/version.rb",
      "templates/Rakefile",
      "templates/binder.rb",
      "templates/config/application.yml",
@@ -68,6 +67,7 @@ Gem::Specification.new do |s|
      "templates/config/manifest",
      "templates/config/tiapp.xml",
      "templates/gitignore",
+     "templates/helper.rb",
      "templates/migration.rb",
      "templates/model.rb",
      "templates/public/icon.png",

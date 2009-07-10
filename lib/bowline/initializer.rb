@@ -208,7 +208,7 @@ module Bowline
     def load_application_helpers
       helpers = configuration.helpers
       helpers = helpers.map(&:constantize)
-      helpers.each {|h| Helpers.module_eval { include h } }
+      helpers.each {|h| Helpers.module_eval { extend h } }
       Helpers.init
     end
         
@@ -252,6 +252,10 @@ module Bowline
       })
     end
     
+    def initialize_js
+      Bowline.js.bowline_loaded
+    end
+    
     def process
       Bowline.configuration = configuration
       
@@ -287,6 +291,8 @@ module Bowline
       
       load_application_classes
       load_application_helpers
+      
+      initialize_js
       
       Bowline.initialized = true
     end

@@ -91,11 +91,10 @@
 	
 	$(function(){
 	  $(document.body).trigger('loading.bowline');
-    // Todo - http://support.appcelerator.net/discussions/support/117-ruby-script-tag-cant-be-added-dynamically
-    // var script = $("<script />");
-    // script.attr('type', 'text/ruby');
-    // script.attr('src',  '../script/init');
-    // $('head').append(script);
+    var script = $("<script />");
+    script.attr('type', 'text/ruby');
+    script.attr('src',  '../script/init');
+    $('head').append(script);
 	  $(document.body).trigger('loaded.bowline');
 	})
 })(jQuery)

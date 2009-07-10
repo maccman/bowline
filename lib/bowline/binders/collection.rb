@@ -1,23 +1,26 @@
 module Bowline
   module Binders
     class Collection < Base
-      cattr_accessor :items
       class << self
         def items=(args)
-          @@items = args
+          @items = args
           self.item_sync!
-          @@items
+          @items
+        end
+        
+        def items
+          @items ||= []
         end
     
         def item_sync!
-          return unless @@items && @@elements
-          @@elements.each {|i| 
-            i.updateCollection(@@items.to_js) 
+          return unless @items && @elements
+          @elements.each {|i| 
+            i.updateCollection(@items.to_js) 
           }
         end
     
         def find(id)
-          @@items.find {|item| 
+          @items.find {|item| 
             item.id == id
           }
         end

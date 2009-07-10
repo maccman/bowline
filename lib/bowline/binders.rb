@@ -1,8 +1,6 @@
 module Bowline
   module Binders
-    class Base
-      cattr_accessor :params
-    
+    class Base    
       class << self
         # See Bowline::js
         def js
@@ -16,7 +14,7 @@ module Bowline
       
         # See the Observer class
         def observer
-          @@observer ||= Observer.new
+          @observer ||= Observer.new
         end
         
         # See Bowline::logger
@@ -28,6 +26,10 @@ module Bowline
         def show_view(*args)
           Bowline::show_view(*args)
         end
+        
+        def params
+          @params
+        end
       
         def params=(p)
           case p
@@ -36,18 +38,18 @@ module Bowline
             # serialized form) - we need to make it into
             # a nestled hash. Stolen from Ramaze
             m = proc {|_,o,n|o.merge(n,&m)}
-            @@params = params.inject({}) do |hash, (key, value)|
+            @params = params.inject({}) do |hash, (key, value)|
               parts = key.split(/[\]\[]+/)
               hash.merge(parts.reverse.inject(value) { |x, i| {i => x} }, &m) 
             end
           else
-            @@params = p
+            @params = p
           end
         end
       
         def setup(d)
-          @@elements ||= []
-          @@elements << d
+          @elements ||= []
+          @elements << d
           self.item_sync!
         end
       

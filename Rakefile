@@ -1,10 +1,7 @@
-require File.join(File.dirname(__FILE__), *%w[.. lib bowline])
-
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "bowline"
-    gemspec.version = Bowline::Version::STRING
     gemspec.summary = "Bowline GUI framework"
     gemspec.email = "alex@leadthinking.com"
     gemspec.homepage = "http://github.com/maccman/bowline"
@@ -15,4 +12,9 @@ begin
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+end
+
+task :write_version do 
+  require File.join(File.dirname(__FILE__), *%w[lib bowline])
+  File.open('VERSION', 'w') {|f| f.write Bowline::Version::STRING }
 end
