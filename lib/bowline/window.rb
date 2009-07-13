@@ -1,6 +1,10 @@
 module Bowline
   class Window
-    def initialize(obj = Titanium.UI.mainWindow.window)
+    def self.window
+      defined?(Titanium) && Titanium.UI.mainWindow.window
+    end
+    
+    def initialize(obj = self.window)
       @object = obj
     end
     
