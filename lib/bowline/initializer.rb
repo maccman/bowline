@@ -65,7 +65,7 @@ module Bowline
     end
     
     def set_load_path
-      load_paths = configuration.load_paths + configuration.framework_paths
+      load_paths = configuration.load_paths
       load_paths.reverse_each { |dir| $LOAD_PATH.unshift(dir) if File.directory?(dir) }
       $LOAD_PATH.uniq!
     end
@@ -181,13 +181,14 @@ module Bowline
     def load_gems
       configuration.gems.each do |dep| 
         options = {
-          :require_as => dep.name
+          :lib => dep.name
         }.merge(dep.options)
 
         begin
-          require options[:require_as]
+          gem dep.name, *dep.versions
+          require options[:lib]
         rescue LoadError => e
-          puts "was unable to require #{dep.name} as '#{options[:require_as]}'
+          puts "was unable to require #{dep.name} as '#{options[:lib]}'
           Reason: #{e.class.name} error raised with message: #{e.message}"
         end
       end
@@ -330,8 +331,6 @@ module Bowline
      attr_accessor :bowline
      
      attr_accessor :frameworks
-     
-     attr_accessor :framework_paths
 
      # Whether or not classes should be cached (set to false if you want
      # application classes to be reloaded on each request)
@@ -427,13 +426,11 @@ module Bowline
      attr_accessor :sdk
      attr_accessor :copyright
      
-     # Create a new Configuration instance, initialized with the default
-     # values.
+     # Create a new Configuration instance, initialized with the default values.
      def initialize
        set_root_path!
        
        self.frameworks                   = default_frameworks
-       self.framework_paths              = default_framework_paths
        self.load_paths                   = default_load_paths
        self.load_once_paths              = default_load_once_paths
        self.eager_load_paths             = default_eager_load_paths
@@ -509,16 +506,7 @@ module Bowline
      def default_frameworks
        [:active_support, :bowline]
      end
-   
-     def default_framework_paths
-       [
-         File.join(root_path, 'vendor', 'bowline', 'lib'),
-         File.join(root_path, 'vendor', 'rails', 'activesupport',  'lib'),
-         File.join(root_path, 'vendor', 'rails', 'activerecord',   'lib'),
-         File.join(root_path, 'vendor', 'rails', 'activeresource', 'lib')
-        ]
-     end
-     
+        
      def default_load_paths
        paths = []
 
@@ -579,7 +567,10 @@ module Bowline
      end
      
      def default_gems
-       []
+       gems = []
+       gems << Dependencies::Dependency.new("bowline", Bowline::Version::STRING)
+       gems << Dependencies::Dependency.new("activesupport")
+       gems
      end
      
      def default_gem_path
