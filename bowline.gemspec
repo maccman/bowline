@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.3.3"
+  s.version = "0.3.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
      "examples/twitter.html",
      "examples/users.rb",
      "lib/bowline.rb",
+     "lib/bowline/async.rb",
      "lib/bowline/binders.rb",
      "lib/bowline/binders/collection.rb",
      "lib/bowline/binders/singleton.rb",
@@ -74,6 +75,7 @@ Gem::Specification.new do |s|
      "lib/bowline/tasks/log.rake",
      "lib/bowline/tasks/misc.rake",
      "lib/bowline/version.rb",
+     "lib/bowline/window.rb",
      "templates/Rakefile",
      "templates/binder.rb",
      "templates/config/application.yml",
