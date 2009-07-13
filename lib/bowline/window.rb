@@ -4,7 +4,7 @@ module Bowline
       defined?(Titanium) && Titanium.UI.mainWindow.window
     end
     
-    def initialize(obj = self.window)
+    def initialize(obj = self.class.window)
       @object = obj
     end
     
