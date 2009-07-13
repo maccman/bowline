@@ -85,7 +85,14 @@ tiprocess:0.4.4
       Rake::Task['app:configure'].invoke
     end
     
-    # Todo - check gem dependencies
+    conf = Bowline.configuration
+    repo = Dependencies::Repository.new(
+      conf.gem_path
+    )
+    if conf.gems.length > repo.installed.length
+      Rake::Task['gems:sync'].invoke
+    end
+    
     FileUtils.rm_rf(app_path)
     FileUtils.makedirs(app_path)
     
@@ -117,14 +124,30 @@ tiprocess:0.4.4
     build_path    = File.join(APP_ROOT, 'build')
     app_path      = File.join(build_path, 'app')
 
-    # Todo - cross OS
-    ti_path = ENV['TIPATH'] || '/Library/Application Support/Titanium'
-    ti_lib_path = Dir[File.join(ti_path, "sdk", "*", "*")][0]
-    
-    # Space in path
+    ti_path = ENV['TIPATH'] || begin 
+      if RUBY_PLATFORM =~ /darwin/
+        '/Library/Application Support/Titanium'
+      elsif RUBY_PLATFORM =~ /win/
+        'C:/ProgramData/Titanium'
+      elsif RUBY_PLATFORM =~ /linux/
+        '/opt/titanium'
+      else
+        raise "Unknown platform"
+      end
+    end
+
+    unless File.directory?(ti_path)
+      raise "Titanium SDK not found, " \
+              "install the SDK or " \
+              "specify the ENV variable TIPATH"
+    end
+
+    ti_lib_path = Dir[File.join(ti_path, "sdk", "*", "*")][-1]
+
+    # Space in osx path
     ti_path.gsub!(' ', '\ ')
     ti_lib_path.gsub!(' ', '\ ')
-    
+
     command = []
     command << File.join(ti_lib_path, "tibuild.py")
     command << "-d #{build_path}"

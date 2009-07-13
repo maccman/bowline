@@ -27,7 +27,7 @@ require 'bowline/ext/string'
 require 'bowline/window'
 require 'bowline/async'
 require 'bowline/helpers'
-require 'bowline/gem_dependency'
+require 'bowline/dependencies/lib/dependencies'
 require 'bowline/initializer'
 
 require 'bowline/jquery'

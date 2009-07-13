@@ -65,7 +65,7 @@ module Bowline
     end
     
     def set_load_path
-      load_paths = configuration.load_paths + configuration.framework_paths
+      load_paths = configuration.load_paths
       load_paths.reverse_each { |dir| $LOAD_PATH.unshift(dir) if File.directory?(dir) }
       $LOAD_PATH.uniq!
     end
@@ -172,18 +172,26 @@ module Bowline
       end
     end
     
-    def initialize_rubygems
+    def initialize_gems
       require 'rubygems'
-    end
-    
-    def add_gem_load_paths
-      unless configuration.gems.empty?
-        configuration.gems.each { |gem| gem.add_load_paths }
-      end
+      Gem.clear_paths
+      Gem.path.unshift(configuration.gem_path)
     end
     
     def load_gems
-      configuration.gems.each { |gem| gem.load }
+      configuration.gems.each do |dep| 
+        options = {
+          :lib => dep.name
+        }.merge(dep.options)
+
+        begin
+          gem dep.name, *dep.versions
+          require options[:lib]
+        rescue LoadError => e
+          puts "was unable to require #{dep.name} as '#{options[:lib]}'
+          Reason: #{e.class.name} error raised with message: #{e.message}"
+        end
+      end
     end
     
     def load_plugins
@@ -260,8 +268,7 @@ module Bowline
       Bowline.configuration = configuration
       
       set_load_path
-      initialize_rubygems
-      add_gem_load_paths
+      initialize_gems
       
       require_frameworks
       set_autoload_paths
@@ -324,8 +331,6 @@ module Bowline
      attr_accessor :bowline
      
      attr_accessor :frameworks
-     
-     attr_accessor :framework_paths
 
      # Whether or not classes should be cached (set to false if you want
      # application classes to be reloaded on each request)
@@ -378,7 +383,7 @@ module Bowline
      # An array of gems that this Bowline application depends on.  Bowline will automatically load
      # these gems during installation, and allow you to install any missing gems with:
      #
-     #   rake gems:install
+     #   rake gems:sync
      #
      # You can add gems with the #gem method.
      attr_accessor :gems
@@ -394,10 +399,11 @@ module Bowline
      # To require a library be installed, but not attempt to load it, pass :lib => false
      #
      #   config.gem 'qrp', :version => '0.4.1', :lib => false
-     def gem(name, options = {})
-       # todo
-       @gems << Bowline::GemDependency.new(name, options)
+     def gem(*args)
+       @gems << Dependencies::Dependency.new(*args)
      end
+     
+     attr_accessor :gem_path
      
      # Sets the default +time_zone+.  Setting this will enable +time_zone+
      # awareness for Active Record models and set the Active Record default
@@ -420,13 +426,11 @@ module Bowline
      attr_accessor :sdk
      attr_accessor :copyright
      
-     # Create a new Configuration instance, initialized with the default
-     # values.
+     # Create a new Configuration instance, initialized with the default values.
      def initialize
        set_root_path!
        
        self.frameworks                   = default_frameworks
-       self.framework_paths              = default_framework_paths
        self.load_paths                   = default_load_paths
        self.load_once_paths              = default_load_once_paths
        self.eager_load_paths             = default_eager_load_paths
@@ -438,6 +442,7 @@ module Bowline
        self.database_configuration_file  = default_database_configuration_file
        self.app_config_file              = default_app_config_file
        self.gems                         = default_gems
+       self.gem_path                     = default_gem_path
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
@@ -501,16 +506,7 @@ module Bowline
      def default_frameworks
        [:active_support, :bowline]
      end
-   
-     def default_framework_paths
-       [
-         File.join(root_path, 'vendor', 'bowline', 'lib'),
-         File.join(root_path, 'vendor', 'rails', 'activesupport',  'lib'),
-         File.join(root_path, 'vendor', 'rails', 'activerecord',   'lib'),
-         File.join(root_path, 'vendor', 'rails', 'activeresource', 'lib')
-        ]
-     end
-     
+        
      def default_load_paths
        paths = []
 
@@ -571,7 +567,14 @@ module Bowline
      end
      
      def default_gems
-       []
+       gems = []
+       gems << Dependencies::Dependency.new("bowline", Bowline::Version::STRING)
+       gems << Dependencies::Dependency.new("activesupport")
+       gems
+     end
+     
+     def default_gem_path
+      File.join(root_path, *%w{ vendor gems })
      end
      
      def default_plugin_glob

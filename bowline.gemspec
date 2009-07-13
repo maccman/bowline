@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.3.1"
+  s.version = "0.3.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2009-07-11}
+  s.date = %q{2009-07-13}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -38,11 +38,25 @@ Gem::Specification.new do |s|
      "lib/bowline/commands/console.rb",
      "lib/bowline/commands/generate.rb",
      "lib/bowline/commands/run.rb",
+     "lib/bowline/dependencies/FAQ.markdown",
+     "lib/bowline/dependencies/MIT-LICENSE",
+     "lib/bowline/dependencies/README.markdown",
+     "lib/bowline/dependencies/Rakefile",
+     "lib/bowline/dependencies/TODO.markdown",
+     "lib/bowline/dependencies/init.rb",
+     "lib/bowline/dependencies/lib/dependencies.rb",
+     "lib/bowline/dependencies/lib/dependencies/dependency.rb",
+     "lib/bowline/dependencies/lib/dependencies/reader.rb",
+     "lib/bowline/dependencies/lib/dependencies/repository.rb",
+     "lib/bowline/dependencies/lib/ext/common.rb",
+     "lib/bowline/dependencies/lib/ext/rubygems.rb",
+     "lib/bowline/dependencies/lib/template/app_script.rb",
+     "lib/bowline/dependencies/spec/spec.opts",
+     "lib/bowline/dependencies/tasks/dependencies.rake",
      "lib/bowline/ext/array.rb",
      "lib/bowline/ext/class.rb",
      "lib/bowline/ext/object.rb",
      "lib/bowline/ext/string.rb",
-     "lib/bowline/gem_dependency.rb",
      "lib/bowline/generators.rb",
      "lib/bowline/generators/application.rb",
      "lib/bowline/generators/binder.rb",
@@ -56,6 +70,7 @@ Gem::Specification.new do |s|
      "lib/bowline/tasks/app.rake",
      "lib/bowline/tasks/bowline.rb",
      "lib/bowline/tasks/database.rake",
+     "lib/bowline/tasks/gems.rake",
      "lib/bowline/tasks/log.rake",
      "lib/bowline/tasks/misc.rake",
      "lib/bowline/version.rb",

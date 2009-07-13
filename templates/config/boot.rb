@@ -3,9 +3,10 @@
 
 APP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), "..")) unless defined?(APP_ROOT)
 
-bowline_path = File.join(APP_ROOT, *%w[vendor bowline lib bowline.rb])
+gems_path    = File.join(APP_ROOT, *%w{vendor gems gems})
+bowline_path = Dir[File.join(gems_path, *%w{{maccman-bowline*,bowline*} lib bowline.rb})][-1]
 
-if File.exist?(bowline_path)
+if bowline_path
   require bowline_path
 else
   require "rubygems"

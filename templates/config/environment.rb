@@ -11,6 +11,6 @@ Bowline::Initializer.run do |config|
   # config.gem "net-mdns", :lib => 'net/dns/mdns'
   # config.gem "rack"
   # config.gem "rubyzip", :lib => 'zip/zip'
-
-  config.frameworks += [:active_record, :active_resource]
+  # Bowline Edge:
+  # config.gem "maccman-bowline", :lib => "bowline", :source => "http://gems.github.com"
 end
