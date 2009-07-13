@@ -85,14 +85,6 @@ tiprocess:0.4.4
       Rake::Task['app:configure'].invoke
     end
     
-    conf = Bowline.configuration
-    repo = Dependencies::Repository.new(
-      conf.gem_path
-    )
-    if conf.gems.length > repo.installed.length
-      Rake::Task['gems:sync'].invoke
-    end
-    
     FileUtils.rm_rf(app_path)
     FileUtils.makedirs(app_path)
     
