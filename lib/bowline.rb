@@ -32,7 +32,7 @@ require 'bowline/ext/class'
 require 'bowline/ext/string'
 
 require 'bowline/helpers'
-require 'bowline/gem_dependency'
+require 'bowline/dependencies/lib/dependencies'
 require 'bowline/initializer'
 
 require 'bowline/jquery'

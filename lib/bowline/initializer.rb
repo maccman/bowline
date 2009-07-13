@@ -172,18 +172,25 @@ module Bowline
       end
     end
     
-    def initialize_rubygems
+    def initialize_gems
       require 'rubygems'
-    end
-    
-    def add_gem_load_paths
-      unless configuration.gems.empty?
-        configuration.gems.each { |gem| gem.add_load_paths }
-      end
+      Gem.clear_paths
+      Gem.path.unshift(configuration.gem_path)
     end
     
     def load_gems
-      configuration.gems.each { |gem| gem.load }
+      configuration.gems.each do |dep| 
+        options = {
+          :require_as => dep.name
+        }.merge(dep.options)
+
+        begin
+          require options[:require_as]
+        rescue LoadError => e
+          puts "was unable to require #{dep.name} as '#{options[:require_as]}'
+          Reason: #{e.class.name} error raised with message: #{e.message}"
+        end
+      end
     end
     
     def load_plugins
@@ -260,8 +267,7 @@ module Bowline
       Bowline.configuration = configuration
       
       set_load_path
-      initialize_rubygems
-      add_gem_load_paths
+      initialize_gems
       
       require_frameworks
       set_autoload_paths
@@ -378,7 +384,7 @@ module Bowline
      # An array of gems that this Bowline application depends on.  Bowline will automatically load
      # these gems during installation, and allow you to install any missing gems with:
      #
-     #   rake gems:install
+     #   rake gems:sync
      #
      # You can add gems with the #gem method.
      attr_accessor :gems
@@ -394,10 +400,11 @@ module Bowline
      # To require a library be installed, but not attempt to load it, pass :lib => false
      #
      #   config.gem 'qrp', :version => '0.4.1', :lib => false
-     def gem(name, options = {})
-       # todo
-       @gems << Bowline::GemDependency.new(name, options)
+     def gem(*args)
+       @gems << Dependencies::Dependency.new(*args)
      end
+     
+     attr_accessor :gem_path
      
      # Sets the default +time_zone+.  Setting this will enable +time_zone+
      # awareness for Active Record models and set the Active Record default
@@ -438,6 +445,7 @@ module Bowline
        self.database_configuration_file  = default_database_configuration_file
        self.app_config_file              = default_app_config_file
        self.gems                         = default_gems
+       self.gem_path                     = default_gem_path
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
@@ -572,6 +580,10 @@ module Bowline
      
      def default_gems
        []
+     end
+     
+     def default_gem_path
+      File.join(root_path, *%w{ vendor gems })
      end
      
      def default_plugin_glob
