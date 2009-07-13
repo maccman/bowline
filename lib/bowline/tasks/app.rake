@@ -22,7 +22,6 @@ tifilesystem:0.4.4
 tiplatform:0.4.4
 tiui:0.4.4
 javascript:0.4.4
-tianalytics:0.4.4
 ruby:0.4.4
 tidatabase:0.4.4
 tidesktop:0.4.4

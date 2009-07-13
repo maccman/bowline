@@ -1,16 +1,9 @@
+Thread.abort_on_exception = true
+
 module Bowline
   # The raw JavaScript window object
   def self.js
-    if defined?($app_window)
-      $app_window
-    else
-      Class.new { 
-        def self.method_missing(*a)
-          Bowline.logger.info "Sending to Window: #{a.inspect}"
-          self
-        end 
-      }
-    end
+    Window.new
   end
   
   # Change which page we're on
@@ -31,6 +24,8 @@ require 'bowline/ext/array'
 require 'bowline/ext/class'
 require 'bowline/ext/string'
 
+require 'bowline/window'
+require 'bowline/async'
 require 'bowline/helpers'
 require 'bowline/gem_dependency'
 require 'bowline/initializer'

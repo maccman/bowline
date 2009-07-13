@@ -1,6 +1,6 @@
 module Bowline
   module Binders
-    class Base    
+    class Base
       class << self
         # See Bowline::js
         def js

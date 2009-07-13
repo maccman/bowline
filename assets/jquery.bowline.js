@@ -107,10 +107,12 @@
 	};
 	
 	$(function(){
-	  $(document.body).trigger('loading.bowline');
-    var script = $("<script />");
-    script.attr('type', 'text/ruby');
-    script.attr('src',  '../script/init');
-    $('head').append(script);
+	  setTimeout(function(){
+  	  $(document.body).trigger('loading.bowline');
+      var script = $("<script />");
+      script.attr('type', 'text/ruby');
+      script.attr('src',  '../script/init');
+      $('head').append(script);
+    }, 100);
 	})
 })(jQuery)
