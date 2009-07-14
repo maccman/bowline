@@ -185,8 +185,8 @@ module Bowline
         }.merge(dep.options)
 
         begin
-          gem dep.name, *dep.versions
-          require options[:lib]
+          activated = gem(dep.name, *dep.versions)
+          require(options[:lib]) if activated && options[:lib]
         rescue LoadError => e
           puts "was unable to require #{dep.name} as '#{options[:lib]}'
           Reason: #{e.class.name} error raised with message: #{e.message}"
@@ -568,7 +568,9 @@ module Bowline
      
      def default_gems
        gems = []
-       gems << Dependencies::Dependency.new("bowline", Bowline::Version::STRING)
+       gems << Dependencies::Dependency.new(
+        "bowline", Bowline::Version::STRING, :lib => false
+       )
        gems << Dependencies::Dependency.new("activesupport")
        gems
      end
