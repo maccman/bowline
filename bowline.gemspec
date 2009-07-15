@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2009-07-13}
+  s.date = %q{2009-07-14}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -82,8 +82,6 @@ Gem::Specification.new do |s|
      "templates/config/boot.rb",
      "templates/config/database.yml",
      "templates/config/environment.rb",
-     "templates/config/manifest",
-     "templates/config/tiapp.xml",
      "templates/gitignore",
      "templates/helper.rb",
      "templates/migration.rb",

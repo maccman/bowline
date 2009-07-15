@@ -51,8 +51,7 @@ module Bowline::Generators
     empty_directory :config, "config"
     
     template :environment, "config/environment.rb", "config/environment.rb"
-    template :tiapp,       "config/tiapp.xml", "config/tiapp.xml"
-    ["application.yml", "database.yml", "manifest", "boot.rb"].each {|action|
+    ["application.yml", "database.yml", "boot.rb"].each {|action|
       action = File.join('config', action)
       file(action.downcase.gsub(/[^a-z0-9]+/, '_').to_sym, action, action)
     }
