@@ -183,10 +183,11 @@ module Bowline
         options = {
           :lib => dep.name
         }.merge(dep.options)
-
+        
+        next unless options[:lib]
         begin
-          activated = gem(dep.name, *dep.versions)
-          require(options[:lib]) if activated && options[:lib]
+          gem(dep.name, *dep.versions)
+          require(options[:lib])
         rescue LoadError => e
           puts "was unable to require #{dep.name} as '#{options[:lib]}'
           Reason: #{e.class.name} error raised with message: #{e.message}"

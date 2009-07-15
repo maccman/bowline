@@ -2,7 +2,7 @@ module Bowline
   module Version #:nodoc:
     MAJOR    = 0
     MINOR    = 3
-    TINY     = 7
+    TINY     = 9
     
     STRING   = [MAJOR, MINOR, TINY].join('.')
     
