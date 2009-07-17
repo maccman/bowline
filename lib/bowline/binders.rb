@@ -46,11 +46,17 @@ module Bowline
             @params = p
           end
         end
-      
+        
+        attr_reader :elements
         def setup(d)
           @elements ||= []
           @elements << d
           self.item_sync!
+        end
+        
+        def trigger(event, data = nil)
+          @elements ||= []
+          @elements.map {|e| e.trigger(event.to_s, data) }
         end
       
         def instance(el)
@@ -93,7 +99,7 @@ module Bowline
 
       # Trigger jQuery events on this element
       def trigger(event, data = nil)
-        self.element.trigger(event, data)
+        self.element.trigger(event.to_s, data)
       end
     
       # Raw DOM element

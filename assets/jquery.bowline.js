@@ -1,21 +1,24 @@
 (function($){
   var init = false;
+  var TI = Titanium;
+  var UI = TI.UI;
+  var mainWin = UI.mainWindow.window;
   
   $.bowline = {
     setup: function(name, el){
-      var rb = eval("bowline_" + name + "_setup");
+      var rb = mainWin.eval("bowline_" + name + "_setup");
       if(!rb) throw 'Unknown class';
       rb(el);
     },
     
     klass: function(name){
-      var rb = eval("bowline_" + name);
+      var rb = mainWin.eval("bowline_" + name);
       if(!rb) throw 'Unknown class';
       return rb;
     },
     
     instance: function(name, el){
-      var rb = eval("bowline_" + name + "_instance");
+      var rb = mainWin.eval("bowline_" + name + "_instance");
       if(!rb) throw 'Unknown class';
       return rb(el);
     },
@@ -28,10 +31,41 @@
         )
       );
     },
+
+    load: function(){
+      $(function(){
+    	  setTimeout(function(){
+      	  $(document.body).trigger('loading.bowline');
+          var script = $("<script />");
+          script.attr('type', 'text/ruby');
+          script.attr('src',  '../script/init');
+          $('head').append(script);
+        }, 100);
+    	});
+    },
     
     ready: function(func){
       if(init) return func();
       $(document).bind('loaded.bowline', func);
+    },
+    
+    dialog: function(name, options, callback){
+      if(!callback && typeof(options) == 'function') {
+        callback = options;
+        options  = {};
+      }
+      $.extend(options, {
+        'url': 'app://public/' + name + '.html',
+        'height': 200,
+        'width': 350,
+        'transparency': 0.9,
+        'resizable': false,
+        'usingChrome': false,
+        'onclose': function(res){
+          if(callback) callback(res);
+        }
+      });
+      return Titanium.UI.showDialog(options);
     },
     
     setupForms: function(){
@@ -86,7 +120,16 @@
         var name = $(this).item('root').data('bowline');
         var func = $.bowline.instance(name, $(this));
       }
-      return func.apply(func, arguments);
+      var args = $.makeArray(arguments);
+      var opts = args.pop();
+      if(typeof(opts) == "object" && opts.async){
+        setTimeout(function(){
+          func.apply(func, args);
+        }, 100);
+      } else {
+        args.push(opts);
+        func.apply(func, args);
+      }
     } else {
       throw 'Chain not active';
     }
@@ -106,13 +149,8 @@
     $(this).trigger('update.bowline');
 	};
 	
-	$(function(){
-	  setTimeout(function(){
-  	  $(document.body).trigger('loading.bowline');
-      var script = $("<script />");
-      script.attr('type', 'text/ruby');
-      script.attr('src',  '../script/init');
-      $('head').append(script);
-    }, 100);
-	})
+  // main window
+	if(UI.getCurrentWindow().isTopMost()){
+	  $.bowline.load();
+	}
 })(jQuery)

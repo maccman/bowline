@@ -1,8 +1,7 @@
 require 'fileutils'
 namespace :app do  
   task :configure => :environment do
-    build_path    = File.join(APP_ROOT, 'build')
-        
+    config_path = File.join(APP_ROOT, 'config')
     conf = Bowline.configuration
     
     # Titanium complains about whitespace
@@ -66,8 +65,7 @@ tiprocess:0.4.4
 </ti:app>
     EOF
     
-    FileUtils.makedirs(build_path)
-    FileUtils.cd(build_path) do
+    FileUtils.cd(config_path) do
       File.open('manifest', 'w+') {|f| f.write manifest }
       File.open('tiapp.xml', 'w+') {|f| f.write tiapp }
     end
@@ -75,14 +73,19 @@ tiprocess:0.4.4
   
   desc "Bundles up app into executables"  
   task :bundle do
-    build_path    = File.join(APP_ROOT, 'build')
-    app_path      = File.join(build_path, 'app')
+    build_path  = File.join(APP_ROOT, 'build')
+    app_path    = File.join(build_path, 'app')
+    config_path = File.join(APP_ROOT, 'config')
     
-    tiapp    = File.join(build_path, 'tiapp.xml')
-    manifest = File.join(build_path, 'manifest')
-    
-    if !File.exists?(tiapp) || !File.exists?(manifest)
+    tiapp    = File.join(config_path, 'tiapp.xml')
+    manifest = File.join(config_path, 'manifest')
+    env      = File.join(config_path, 'environment.rb')
+        
+    if !File.exists?(tiapp) || 
+        !File.exists?(manifest)
       Rake::Task['app:configure'].invoke
+    elsif File.mtime(tiapp) < File.mtime(env)
+      puts "You may need to run 'rake app:configure'"
     end
     
     FileUtils.rm_rf(app_path)
