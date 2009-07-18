@@ -17,14 +17,14 @@ Ruby desktop application framework
 = INTRODUCTION
 
 If you've ever wished creating a desktop application was as simple
-as creating, a Rails website then you'll be interested in Bowline.
+as creating a Rails website you'll be interested in Bowline.
 
 Bowline lets you take your existing skills and apply them to the desktop.
 You can write apps in HTML/JavaScript/Ruby without having to worry about
 different platforms or a complex GUI API.
 
 Compared to existing Ruby desktop frameworks, such as Shoes, Bowline's strengths
-are adherence to MVC and use of HTML/JavaScript. We think that although Ruby is 
+are its adherence to MVC and use of HTML/JavaScript. We think that, although Ruby is 
 a great language for the backend, the view should be written in languages designed 
 for that purpose, HTML and JavaScript.
 

@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.3.9"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2009-07-15}
+  s.date = %q{2009-07-18}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
