@@ -47,7 +47,10 @@ module Bowline
           end
         end
         
-        attr_reader :elements
+        def elements
+          @elements
+        end
+        
         def setup(d)
           @elements ||= []
           @elements << d
@@ -56,14 +59,22 @@ module Bowline
         
         def trigger(event, data = nil)
           @elements ||= []
-          @elements.map {|e| e.trigger(event.to_s, data) }
+          @elements.map {|e| 
+            e.trigger(format_event(event), data) 
+          }
+        end
+        
+        def loading(&block)
+          trigger(:loading, true)
+          yield
+          trigger(:loading, false)
         end
       
-        def instance(el)
+        def instance(el) #:nodoc
           self.new(el).method(:send)
         end
 
-        def inherited(child)
+        def inherited(child) #:nodoc
           return if self == Bowline::Binders::Base
           return if child == Bowline::Binders::Singleton
           return if child == Bowline::Binders::Collection
@@ -72,7 +83,13 @@ module Bowline
           js.send("bowline_#{name}_setup=",    child.method(:setup))
           js.send("bowline_#{name}_instance=", child.method(:instance))
           js.send("bowline_#{name}=",          child.method(:send))
-        end    
+        end
+        
+        def format_event(name) #:nodoc
+          name.is_a?(Array) ? 
+            name.join('.') : 
+              name.to_s
+        end
       end
     
       attr_reader :element
@@ -99,7 +116,10 @@ module Bowline
 
       # Trigger jQuery events on this element
       def trigger(event, data = nil)
-        self.element.trigger(event.to_s, data)
+        self.element.trigger(
+          self.class.format_event(event), 
+          data
+        )
       end
     
       # Raw DOM element
