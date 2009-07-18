@@ -57,6 +57,8 @@ module Bowline::Generators
     }
     
     empty_directory :initializers, "config/initializers"
+    
+    file :readme, "../README.txt", "README"
   end
   
   add :app, ApplicationGenerator

@@ -30,8 +30,8 @@ module Bowline
         def params
           @params
         end
-      
-        def params=(p)
+        
+        def params=(p) #:nodoc:
           case p
           when String
             # Params comes in a string (since it's a
@@ -51,7 +51,7 @@ module Bowline
           @elements
         end
         
-        def setup(d)
+        def setup(d) #:nodoc:
           @elements ||= []
           @elements << d
           self.item_sync!
@@ -70,11 +70,11 @@ module Bowline
           trigger(:loading, false)
         end
       
-        def instance(el) #:nodoc
+        def instance(el) #:nodoc:
           self.new(el).method(:send)
         end
 
-        def inherited(child) #:nodoc
+        def inherited(child) #:nodoc:
           return if self == Bowline::Binders::Base
           return if child == Bowline::Binders::Singleton
           return if child == Bowline::Binders::Collection
@@ -85,7 +85,7 @@ module Bowline
           js.send("bowline_#{name}=",          child.method(:send))
         end
         
-        def format_event(name) #:nodoc
+        def format_event(name) #:nodoc:
           name.is_a?(Array) ? 
             name.join('.') : 
               name.to_s
