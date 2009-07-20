@@ -1,5 +1,5 @@
 class Array
-  def to_js(opts = {})
-    map {|i| i.to_js(opts) }
+  def to_js
+    map {|i| i.to_js }
   end
 end
