@@ -1,15 +1,31 @@
 module Bowline
   module Binders
     class Collection < Base
+      class ItemsProxy
+        def initialize(&block)
+          @callback = block
+          @items = []
+        end
+        
+        def method_missing(*args)
+          @diff = @items.hash
+          res = @items.send(*args)
+          if @diff != @items.hash
+            @callback.call
+          end
+          res
+        end
+      end
+      
       class << self
         def items=(args)
-          @items = args
-          self.item_sync!
-          @items
+          items.replace(args)
         end
         
         def items
-          @items ||= []
+          @items ||= ItemsProxy.new {
+            self.item_sync!
+          }
         end
     
         def item_sync!

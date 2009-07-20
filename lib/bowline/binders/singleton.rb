@@ -14,7 +14,7 @@ module Bowline
         def item_sync!
           return unless @item && @elements
           value = @item.to_js
-          value[:_id] = @item.__id__
+          value.merge!({:_id => @item.__id__})
           value.stringify_keys!
           # Call the chain.js function 'item' on elements
           @elements.each {|i| 
