@@ -7,10 +7,14 @@ module Bowline
           @items = []
         end
         
-        def method_missing(*args)
-          @diff = @items.hash
-          res = @items.send(*args)
-          if @diff != @items.hash
+        def real
+          @items
+        end
+        
+        def method_missing(*args, &block)
+          diff = @items.hash
+          res = @items.send(*args, &block)
+          if diff != @items.hash
             @callback.call
           end
           res
@@ -19,7 +23,11 @@ module Bowline
       
       class << self
         def items=(args)
-          items.replace(args)
+          if args
+            items.replace(args)
+          else
+            items.clear
+          end
         end
         
         def items
@@ -30,7 +38,7 @@ module Bowline
     
         def item_sync!
           return unless @items && @elements
-          value = @items.map {|item|
+          value = @items.real.map {|item|
             hash = item.to_js
             hash.merge!({:_id => item.__id__})
             hash.stringify_keys 
@@ -41,7 +49,7 @@ module Bowline
         end
     
         def find(id)
-          @items.find {|item| 
+          @items.real.find {|item| 
             item.__id__ == id
           }
         end
