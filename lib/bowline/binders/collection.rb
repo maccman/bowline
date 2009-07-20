@@ -14,14 +14,19 @@ module Bowline
     
         def item_sync!
           return unless @items && @elements
-          @elements.each {|i| 
-            i.updateCollection(@items.to_js) 
+          value = @items.map {|item|
+            hash = item.to_js
+            hash.merge!({:_id => item.__id__})
+            hash.stringify_keys 
+          }
+          @elements.each {|i|
+            i.updateCollection(value) 
           }
         end
     
         def find(id)
           @items.find {|item| 
-            item.id == id
+            item.__id__ == id
           }
         end
       end

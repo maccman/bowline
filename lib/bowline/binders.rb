@@ -95,24 +95,16 @@ module Bowline
       attr_reader :element
       attr_reader :item
     
-      def self.new(element, *args) #:nodoc:
-        allocate.instance_eval do
-          # jQuery element
-          @element = element
-          # Calling chain.js 'item' function
-          @item    = element.item()
-          if @item
-            @item.with_indifferent_access
-            # If possible, find Ruby object
-            if @item[:id] && respond_to?(:find)
-              @item = find(@item[:id])
-            end
-          end
-        
-          initialize(*args)
-          self
+      def initialize(element, *args) #:nodoc:
+        # jQuery element
+        @element = element
+        # Calling chain.js 'item' function
+        @item    = element.item()
+        if @item
+          # If possible, find Ruby object
+          @item = self.class.find(@item._id.to_i)
         end
-      end    
+      end
 
       # Trigger jQuery events on this element
       def trigger(event, data = nil)
