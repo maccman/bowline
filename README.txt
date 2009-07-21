@@ -12,12 +12,14 @@ Ruby desktop application framework
 * Uses Webkit
 * View in HTML/JavaScript
 * Binding between HTML & Ruby
-* Cross platform (osx/linux/windows)
+* Cross platform (only osx atm)
 
 = INTRODUCTION
 
 If you've ever wished creating a desktop application was as simple
 as creating a Rails website you'll be interested in Bowline.
+Bowline is a Ruby GUI framework. You can design and build your 
+applications in an agile way, deploying them cross platform.
 
 Bowline lets you take your existing skills and apply them to the desktop.
 You can write apps in HTML/JavaScript/Ruby without having to worry about
