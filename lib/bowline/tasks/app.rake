@@ -119,7 +119,7 @@ tiprocess:0.4.4
     build_path    = File.join(APP_ROOT, 'build')
     app_path      = File.join(build_path, 'app')
 
-    ti_path = ENV['TIPATH'] || begin 
+    ti_path = ENV['TIPATH'] ? ENV['TIPATH'].dup : begin 
       if RUBY_PLATFORM =~ /darwin/
         '/Library/Application Support/Titanium'
       elsif RUBY_PLATFORM =~ /win/
