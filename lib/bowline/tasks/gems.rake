@@ -1,6 +1,8 @@
 namespace :gems do
   desc "Install gems locally"
   task :sync => [:environment] do
+    require 'bowline/dependencies/lib/ext/rubygems'
+    
     conf = Bowline.configuration
     repo = Dependencies::Repository.new(
       conf.gem_path

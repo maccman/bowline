@@ -1,14 +1,13 @@
 require 'erb'
 require 'rubygems'
+require 'rubygems/uninstaller'
 require 'rubygems/dependency_installer'
 
-Gem.pre_install_hooks.push(proc do |installer|
-  unless File.file?(File.join(installer.bin_dir, "common.rb"))
-    FileUtils.mkdir_p(installer.bin_dir)
-    FileUtils.cp(File.join(File.dirname(__FILE__), "common.rb"),
-                 File.join(installer.bin_dir,      "common.rb"))
-  end
+# We only require this in 'rake gems:sync' since
+# it contains some advanced Gem features that aren't
+# available in earlier versions, such as pre_install_hooks
 
+Gem.pre_install_hooks.push(proc do |installer|
   name = installer.spec.name
 
   puts "+ #{name}"
@@ -100,14 +99,6 @@ class ::Gem::SpecFetcher
     else
       old_fetch(*args)
     end
-  end
-end
-
-class ::Gem::Installer
-  def app_script_text(bin_file_name)
-    template = File.read(File.join(File.dirname(__FILE__), '..', 'template' , "app_script.rb"))
-    erb = ERB.new(template)
-    erb.result(binding)
   end
 end
 

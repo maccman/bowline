@@ -91,7 +91,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/maccman/bowline}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.4}
+  s.rubygems_version = %q{1.3.5}
   s.summary = %q{Bowline GUI framework}
   s.test_files = [
     "examples/account.rb",
