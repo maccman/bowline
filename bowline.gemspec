@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.4.3"
+  s.version = "0.4.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
@@ -47,6 +47,7 @@ Gem::Specification.new do |s|
      "lib/bowline/dependencies/lib/dependencies/dependency.rb",
      "lib/bowline/dependencies/lib/dependencies/repository.rb",
      "lib/bowline/dependencies/lib/ext/rubygems.rb",
+     "lib/bowline/dependencies/lib/template/app_script.rb",
      "lib/bowline/ext/array.rb",
      "lib/bowline/ext/class.rb",
      "lib/bowline/ext/object.rb",
