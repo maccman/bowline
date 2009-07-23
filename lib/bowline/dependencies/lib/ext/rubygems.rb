@@ -42,7 +42,7 @@ class ::Gem::Uninstaller
       uninstaller = Gem::Uninstaller.new(
         name,
         :version => "#{op} #{version}",
-        :install_dir => Dir.pwd / "gems",
+        :install_dir => File.join(Dir.pwd, "vendor", "gems"),
         :all => true,
         :ignore => true,
         :executables => true
