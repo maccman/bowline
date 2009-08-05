@@ -150,7 +150,7 @@
 	};
 	
   // main window
-	if(UI.currentWindow.equals(UI.mainWindow)){
-	  $.bowline.load();
-	}
+  if(UI.currentWindow.equals(UI.mainWindow)){
+    $.bowline.load();
+  }
 })(jQuery)
