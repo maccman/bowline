@@ -136,8 +136,8 @@ $.bowline.helper('name', 'arg1', ['arg2'])
 
 = MODELS
 
-Bowline plans to fully support ActiveRecord and the Sqlite3 database.
-This is still in development though.
+Bowline supports ActiveRecord and the Sqlite3 database.
+The packaging for databases is still in development though.
 
 = THEMES
 
