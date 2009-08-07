@@ -143,7 +143,7 @@ tiprocess:0.4.4
     ti_path.gsub!(' ', '\ ')
     ti_lib_path.gsub!(' ', '\ ')
 
-    command = []
+    command = ['python']
     command << File.join(ti_lib_path, "tibuild.py")
     command << "-d #{build_path}"
     command << "-s #{ti_path}"
