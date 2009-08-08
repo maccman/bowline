@@ -75,7 +75,7 @@ Run application:
 = BINDERS
 
 Binders are the core of Bowline, they're classes that you can bind HTML to.
-This means, if you can data in the class, the HTML also automatically changes.
+Binders contain data. If you modify the binder's data the HTML automatically updates.
 It's a one way relationship though.
 
 You can think of binders as similar to controllers in Rails.
