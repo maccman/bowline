@@ -270,6 +270,7 @@ module Bowline
       
       set_load_path
       initialize_gems
+      load_gems
       
       require_frameworks
       set_autoload_paths
@@ -290,7 +291,6 @@ module Bowline
       initialize_name
       load_app_config
       
-      load_gems
       load_plugins
             
       load_application_initializers
@@ -427,6 +427,8 @@ module Bowline
      attr_accessor :sdk
      attr_accessor :copyright
      
+     attr_accessor :titanium_version
+     
      # Create a new Configuration instance, initialized with the default values.
      def initialize
        set_root_path!
@@ -447,6 +449,10 @@ module Bowline
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
+       
+       self.publisher                    = default_publisher
+       self.copyright                    = default_copyright
+       self.titanium_version             = default_titanium_version
        
        for framework in default_frameworks
          self.send("#{framework}=", Bowline::OrderedOptions.new)
@@ -590,6 +596,18 @@ module Bowline
      
      def default_initalizer_glob
        File.join(root_path, *%w{ config initializers **/*.rb })
+     end
+     
+     def default_titanium_version
+      "0.4.4"
+     end
+     
+     def default_publisher
+      "Bowline"
+     end
+     
+     def default_copyright
+      "Copyright © #{Time.now.year}"
      end
   end
 end
