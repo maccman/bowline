@@ -599,7 +599,7 @@ module Bowline
      end
      
      def default_titanium_version
-      "0.4.4"
+      "0.6.0"
      end
      
      def default_publisher
