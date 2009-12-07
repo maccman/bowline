@@ -607,7 +607,7 @@ module Bowline
      end
      
      def default_copyright
-      "Copyright © #{Time.now.year}"
+      "Copyright #{Time.now.year}"
      end
   end
 end
