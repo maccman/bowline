@@ -5,16 +5,15 @@ module Bowline::Generators
     DESC
     
     def class_name
-      super + " < Bowline::Binders::#{type.to_s.camel_case}"
+      super + "Binder < Bowline::Binders::Base"
     end
     
-    def modules
-      ['Binders']
+    def file_name
+      super + "_binder"
     end
     
     first_argument :name, :required => true, :desc => "binder name"
-    option :type, :desc => "Binder type (collection/singleton)", :default => "collection"
-    
+        
     template :binder do |template|
       template.source       = "binder.rb"
       template.destination  = "app/binders/#{file_name}.rb"

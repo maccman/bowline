@@ -1,165 +1,151 @@
 module Bowline
   module Binders
     class Base
+      extend Bowline::Watcher::Base
+      include Bowline::Desktop::Bridge::ClassMethods
+      js_expose
+      
+      # TODO - setup
+      
       class << self
-        # See Bowline::js
-        def js
-          Bowline::js
-        end
-      
-        # Equivalent of the 'jQuery' function
-        def jquery
-          @@jquery ||= JQuery.new
-        end
-      
-        # See the Observer class
-        def observer
-          @observer ||= Observer.new
+        # TODO - use something more secure than 'send'
+        def invoke(meth, *args) #:nodoc:
+          send(meth, *args)
         end
         
-        # See Bowline::logger
-        def logger
-          Bowline::logger
-        end
-      
-        # See Bowline::show_view
-        def show_view(*args)
-          Bowline::show_view(*args)
+        def instance_invoke(id, meth, *args) #:nodoc:
+          self.new(id).send(meth, *args)
         end
         
-        def params
-          @params
+        def find(id)
+          klass.find(id)
         end
         
-        def params=(p) #:nodoc:
-          case p
-          when String
-            # Params comes in a string (since it's a
-            # serialized form) - we need to make it into
-            # a nestled hash. Stolen from Ramaze
-            m = proc {|_,o,n|o.merge(n,&m)}
-            @params = params.inject({}) do |hash, (key, value)|
-              parts = key.split(/[\]\[]+/)
-              hash.merge(parts.reverse.inject(value) { |x, i| {i => x} }, &m) 
-            end
-          else
-            @params = p
+        def all
+          klass.all
+        end
+        
+        def created(item)
+          bowline.created(
+            id, 
+            item.id, 
+            item.to_js
+          ).call
+        end
+        
+        def updated(item)
+          bowline.updated(
+            id, 
+            item.id, 
+            item.to_js
+          ).call
+        end
+        
+        def removed(item)
+          bowline.removed(
+            id, 
+            item.id
+          ).call
+        end
+        
+        protected
+          # klass needs to respond to:
+          #  * all
+          #  * find(id)
+          #  * after_create(method)
+          #  * after_update(method)
+          #  * after_destroy(method)
+          #
+          # klass instance needs to respond to:
+          #   * id
+          #   * to_js
+          def expose(klass)
+            @klass = klass
+            @klass.after_create(method(:created))
+            @klass.after_update(method(:updated))
+            @klass.after_destroy(method(:removed))
           end
-        end
-        
-        def elements
-          @elements
-        end
-        
-        def setup(d) #:nodoc:
-          @elements ||= []
-          @elements << d
-          self.item_sync!
-        end
-        
-        def trigger(event, data = nil)
-          @elements ||= []
-          @elements.map {|e| 
-            e.trigger(format_event(event), data) 
-          }
-        end
-        
-        def loading(&block)
-          trigger(:loading, true)
-          yield
-          trigger(:loading, false)
-        end
+          
+          def klass
+            @klass || raise("klass not set - see expose method")
+          end
+          
+          # See Bowline::page
+          def page
+            Bowline::page
+          end
+          
+          def bowline
+            Bowline::bowline
+          end
       
-        def instance(el) #:nodoc:
-          self.new(el).method(:send)
-        end
-
-        def inherited(child) #:nodoc:
-          return if self == Bowline::Binders::Base
-          return if child == Bowline::Binders::Singleton
-          return if child == Bowline::Binders::Collection
-          name = child.name.underscore
-          name = name.split('/').last
-          js.send("bowline_#{name}_setup=",    child.method(:setup))
-          js.send("bowline_#{name}_instance=", child.method(:instance))
-          js.send("bowline_#{name}=",          child.method(:send))
-        end
+          # Equivalent of the 'jQuery' function
+          def jquery
+            JQuery.new
+          end
         
-        def format_event(name) #:nodoc:
-          name.is_a?(Array) ? 
-            name.join('.') : 
-              name.to_s
-        end
+          # See Bowline::logger
+          def logger
+            Bowline::logger
+          end
+        
+          def trigger(event, data = nil)
+            bowline.trigger(
+              id,
+              format_event(event), 
+              data
+            ).call
+          end
+        
+          def loading(&block)
+            trigger(:loading, true)
+            yield
+            trigger(:loading, false)
+          end
+          
+          def id #:nodoc:
+            [name, __id__].join("_")
+          end
+        
+          def format_event(name) #:nodoc:
+            name.is_a?(Array) ? 
+              name.join('.') : 
+                name.to_s
+          end
       end
     
       attr_reader :element
       attr_reader :item
     
-      def initialize(element, *args) #:nodoc:
-        # jQuery element
-        @element = element
-        # Calling chain.js 'item' function
-        @item    = element.item()
-        if @item
-          # If possible, find Ruby object
-          @item = self.class.find(@item._id.to_i)
-        end
-      end
-
-      # Trigger jQuery events on this element
-      def trigger(event, data = nil)
-        self.element.trigger(
-          self.class.format_event(event), 
-          data
-        )
-      end
-    
-      # Raw DOM element
-      def dom
-        self.element[0]
-      end
-    
-      # Shortcut methods
-    
-      # See self.class.show_view
-      def show_view(*args)
-        self.class.show_view(*args)
-      end
-    
-      # See self.class.js
-      def js
-        self.class.js
-      end
-      alias :page :js
-    
-      # See self.class.jquery
-      def jquery
-        self.class.jquery
-      end
-    
-      # See self.class.observer
-      def observer
-        self.class.observer
+      def initialize(id, *args) #:nodoc:
+        @element = JQuery.for_id(id)
+        @item    = self.class.find(id)
       end
       
-      # See self.class.logger
-      def logger
-        self.class.logger
-      end
+      protected
+        # Trigger jQuery events on this element
+        def trigger(event, data = nil)
+          element.trigger(
+            self.class.format_event(event), 
+            data
+          ).call
+        end
     
-      private
-        # This is just a unique identifier
-        # for the item - and isn't
-        # used in the dom
-        def item_id
-          if item.respond_to?(:dom_id)
-            item.dom_id
-          else
-            [
-              item.id, 
-              self.class.name.underscore
-            ].join("_")
-          end
+        # Shortcut methods
+    
+        # See self.class.js
+        def page
+          self.class.page
+        end
+    
+        # See self.class.jquery
+        def jquery
+          self.class.jquery
+        end
+      
+        # See self.class.logger
+        def logger
+          self.class.logger
         end
     end
   end

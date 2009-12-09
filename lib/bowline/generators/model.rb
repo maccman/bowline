@@ -4,11 +4,20 @@ module Bowline::Generators
       Generates a new model.
     DESC
     
+    def class_name
+      if local
+        super + " < Bowline::LocalModel"
+      else
+        super + " < ActiveRecord::Base"
+      end
+    end
+    
     def modules
       []
     end
     
     first_argument :name, :required => true, :desc => "model name"
+    second_argument :local, :required => false
     
     template :model do |template|
       template.source       = "model.rb"

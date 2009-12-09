@@ -262,7 +262,8 @@ module Bowline
     end
     
     def initialize_js
-      Bowline.js.bowline_loaded
+      return unless Bowline::Desktop.enabled?
+      Bowline::Desktop::JS.setup
     end
     
     def process
@@ -426,9 +427,7 @@ module Bowline
      attr_accessor :icon
      attr_accessor :sdk
      attr_accessor :copyright
-     
-     attr_accessor :titanium_version
-     
+          
      # Create a new Configuration instance, initialized with the default values.
      def initialize
        set_root_path!
@@ -452,7 +451,6 @@ module Bowline
        
        self.publisher                    = default_publisher
        self.copyright                    = default_copyright
-       self.titanium_version             = default_titanium_version
        
        for framework in default_frameworks
          self.send("#{framework}=", Bowline::OrderedOptions.new)
@@ -597,11 +595,7 @@ module Bowline
      def default_initalizer_glob
        File.join(root_path, *%w{ config initializers **/*.rb })
      end
-     
-     def default_titanium_version
-      "0.6.0"
-     end
-     
+          
      def default_publisher
       "Bowline"
      end

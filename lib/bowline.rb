@@ -1,18 +1,15 @@
 Thread.abort_on_exception = true
 
 module Bowline
-  # The raw JavaScript window object
-  def self.js
-    Window.new
+  def page
+    Bowline::Desktop::Proxy.new
   end
-  
-  # Change which page we're on
-  def self.show_view(name)
-    js.location = "app://public/#{name}.html"
+  module_function :page
+
+  def bowline
+    page.Bowline
   end
-  
-  class Base
-  end
+  module_function :bowline
 end
 
 $LOAD_PATH << File.dirname(__FILE__)
@@ -24,15 +21,17 @@ require 'bowline/ext/array'
 require 'bowline/ext/class'
 require 'bowline/ext/string'
 
-require 'bowline/window'
-require 'bowline/async'
+require 'bowline/watcher'
+require 'bowline/local_model'
+
+require 'bowline/desktop/js'
+require 'bowline/desktop/proxy'
+require 'bowline/desktop/bridge'
+
 require 'bowline/helpers'
 require 'bowline/dependencies/lib/dependencies'
 require 'bowline/initializer'
 
 require 'bowline/jquery'
-require 'bowline/observer'
 
 require 'bowline/binders'
-require 'bowline/binders/collection'
-require 'bowline/binders/singleton'

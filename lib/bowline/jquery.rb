@@ -7,24 +7,13 @@ module Bowline
     
     class << self
       # Equivalent to: $('#item_id')
-      def for_element(el)
-        Bowline::js.send("jQuery", el)
-      end
-      
-      # For binding global events
-      # Equivalent to: $('body').bind()
-      def bind(event, fun, data)
-        for_element("body").bind(event, data, fun)
+      def for_id(id)
+        Bowline::page.jQuery("##{id}")
       end
       
       # Equivalent to: $
       def dollar
-        Bowline::js.send("jQuery")
-      end
-      
-      # Equivalent to: $.bowline
-      def bowline
-        dollar.bowline
+        Bowline::page.jQuery
       end
     end
   end

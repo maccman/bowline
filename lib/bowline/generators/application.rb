@@ -40,9 +40,10 @@ module Bowline::Generators
     
     glob! "script"
     
-    file :jquery,    "../assets/jquery.js",         "public/javascripts/jquery.js"
-    file :chainjs,   "../assets/jquery.chain.js",   "public/javascripts/jquery.chain.js"
-    file :bowlinejs, "../assets/jquery.bowline.js", "public/javascripts/jquery.bowline.js"
+    file :jquery,    "../assets/jquery.js",        "public/javascripts/jquery.js"
+    file :chainjs,   "../assets/jquery.chain.js",  "public/javascripts/jquery.chain.js"
+    file :json2js,   "../assets/json2.js",         "public/javascripts/json2.js"
+    file :bowlinejs, "../assets/bowline.js",       "public/javascripts/bowline.js"
     
     empty_directory :app, "app"
     empty_directory :models, "app/models"

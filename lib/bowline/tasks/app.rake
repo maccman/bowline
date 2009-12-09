@@ -1,42 +1,14 @@
+# TODO - major work
+
 require 'fileutils'
 namespace :app do  
   task :configure => :environment do
     config_path = File.join(APP_ROOT, 'config')
     conf = Bowline.configuration
     
-    tiversion = conf.titanium_version
-    
-    # Titanium complains about whitespace
-    manifest =  <<-EOF
-#appname:#{conf.name}
-#appid:#{conf.id}
-#publisher:#{conf.publisher}
-#image:public/logo.png
-#url:#{conf.url}
-#guid:0e70684a-dd4b-4d97-9396-6bc01ba10a4e
-#desc:#{conf.description}
-#type:desktop
-runtime:#{tiversion}
-api:#{tiversion}
-tiapp:#{tiversion}
-tifilesystem:#{tiversion}
-tiplatform:#{tiversion}
-tiui:#{tiversion}
-javascript:#{tiversion}
-ruby:#{tiversion}
-tidatabase:#{tiversion}
-tidesktop:#{tiversion}
-tigrowl:#{tiversion}
-timedia:#{tiversion}
-timonkey:#{tiversion}
-tinetwork:#{tiversion}
-tinotification:#{tiversion}
-tiprocess:#{tiversion}
-    EOF
-    
     tiapp = <<-EOF
 <?xml version='1.0' encoding='UTF-8'?>
-<ti:app xmlns:ti='http://ti.appcelerator.org'>
+<bowline:app>
   <id>#{conf.id}</id>
   <name>#{conf.name}</name>
   <version>#{conf.version}</version>
@@ -61,12 +33,11 @@ tiprocess:#{tiversion}
     <minimizable>true</minimizable>
     <closeable>true</closeable>
   </window>
-</ti:app>
+</bowline:app>
     EOF
     
     FileUtils.cd(config_path) do
-      File.open('manifest', 'w+') {|f| f.write manifest }
-      File.open('tiapp.xml', 'w+') {|f| f.write tiapp }
+      File.open('bowline.xml', 'w+') {|f| f.write tiapp }
     end
   end
   

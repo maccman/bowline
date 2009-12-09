@@ -1,4 +1,3 @@
-<%- with_modules(modules) do -%>
 class <%= class_name %>
   class << self
     def index
@@ -6,4 +5,3 @@ class <%= class_name %>
   end
   
 end
-<%- end -%>
