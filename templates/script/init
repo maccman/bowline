@@ -1,18 +1,2 @@
 #!/usr/bin/env ruby
-
-unless defined?(Titanium)
-  raise "You can't execute this file directly - it's for Titanium"
-end
-
-# Hack for load paths - Titanium doesn't add .
-app_resources = Titanium.App.appURLToPath("app://index.html")
-APP_ROOT = File.dirname(app_resources)
-
-$LOAD_PATH << APP_ROOT
-$LOAD_PATH.uniq!
-
-# The 'window' function is only
-# available in this scope
-$app_window = window
-
 require File.join(*%w[config environment])

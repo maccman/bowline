@@ -10,7 +10,12 @@ module Bowline
     page.Bowline
   end
   module_function :bowline
+  
+  module Base
+  end
 end
+
+require 'active_support'
 
 $LOAD_PATH << File.dirname(__FILE__)
 
@@ -21,9 +26,11 @@ require 'bowline/ext/array'
 require 'bowline/ext/class'
 require 'bowline/ext/string'
 
+require 'bowline/logging'
 require 'bowline/watcher'
 require 'bowline/local_model'
 
+require 'bowline/desktop'
 require 'bowline/desktop/js'
 require 'bowline/desktop/proxy'
 require 'bowline/desktop/bridge'

@@ -2,12 +2,14 @@ module Bowline
   module Binders
     class Base
       extend Bowline::Watcher::Base
-      include Bowline::Desktop::Bridge::ClassMethods
+      extend Bowline::Desktop::Bridge::ClassMethods
       js_expose
       
-      # TODO - setup
-      
       class << self
+        def setup
+          self.items = all
+        end
+        
         # TODO - use something more secure than 'send'
         def invoke(meth, *args) #:nodoc:
           send(meth, *args)
@@ -25,9 +27,13 @@ module Bowline
           klass.all
         end
         
+        def items=(items)
+          bowline.populate(name, items)
+        end
+        
         def created(item)
           bowline.created(
-            id, 
+            name, 
             item.id, 
             item.to_js
           ).call
@@ -35,7 +41,7 @@ module Bowline
         
         def updated(item)
           bowline.updated(
-            id, 
+            name, 
             item.id, 
             item.to_js
           ).call
@@ -43,7 +49,7 @@ module Bowline
         
         def removed(item)
           bowline.removed(
-            id, 
+            name, 
             item.id
           ).call
         end
@@ -91,7 +97,7 @@ module Bowline
         
           def trigger(event, data = nil)
             bowline.trigger(
-              id,
+              name,
               format_event(event), 
               data
             ).call
@@ -101,10 +107,6 @@ module Bowline
             trigger(:loading, true)
             yield
             trigger(:loading, false)
-          end
-          
-          def id #:nodoc:
-            [name, __id__].join("_")
           end
         
           def format_event(name) #:nodoc:

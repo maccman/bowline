@@ -6,6 +6,7 @@ module Bowline
     def enabled?
       $0 == "bowline"
     end
+    module_function :enabled?
     
     @@loaded = false
     def loaded

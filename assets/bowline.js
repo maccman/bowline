@@ -2,11 +2,11 @@ var Bowline = {
   msgs: [],
   callbacks: {},
   uuid: 0,
-  bound: {},
+  bounds: {},
   
   id: function(){
     return ++uuid;
-  }
+  },
   
   // Usage: invoke(klass, method, *args)
   invoke: function(){
@@ -15,11 +15,11 @@ var Bowline = {
     var method  = args.shift();
     var id      = id();
     
-    var bopts   = args.pop();
-    if(typeof(bopts) == "object" && bopts.callback){
-      callbacks[id] = bopts.callback;
+    var callback  = args.pop();
+    if(typeof(callback) == "function"){
+      callbacks[id] = callback;
     } else {
-      args.push(bopts);
+      args.push(callback);
     }
     
     msgs.push({
@@ -38,15 +38,17 @@ var Bowline = {
   },
   
   helper: function(){
-    // TODO
+    var args = $.makeArray(arguments);
+    args.unshift("Helper");
+    invoke(args);
   },
   
   bind: function(el, klass, options){
     el = jQuery(el);
     el.chain(options);
     el.data('bowline', klass);
-    if(!bound[klass]) bound[klass] = [];
-    bound[klass].push(el);
+    if(!bounds[klass]) bounds[klass] = [];
+    bounds[klass].push(el);
   },
   
   // Bowline functions
@@ -63,6 +65,12 @@ var Bowline = {
   invokeCallback: function(id, res){
     // TODO - delete callback after
     callbacks[id](JSON.parse(res));
+  },
+  
+  populate: function(klass, items){
+    jQuery.each(callbacks[klass], function(){
+      this.items('replace', items);
+    });
   },
   
   created: function(klass, id, item){
@@ -90,6 +98,12 @@ var Bowline = {
   },
   
   // System functions
+  
+  setup: function(){
+    for(var klass in bounds){
+      invoke(klass, 'setup')
+    };
+  },
   
   findItem: function(el, id){
     return jQuery.grep(el.items(true), function(n, i){
@@ -130,3 +144,7 @@ function($){
     Bowline.bind.apply(this, args);
   };
 }(jQuery);
+
+jQuery(function(){
+  Bowline.setup()
+});

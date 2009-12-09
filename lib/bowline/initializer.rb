@@ -218,7 +218,6 @@ module Bowline
       helpers = configuration.helpers
       helpers = helpers.map(&:constantize)
       helpers.each {|h| Helpers.module_eval { extend h } }
-      Helpers.init
     end
         
     def load_application_classes
@@ -264,6 +263,7 @@ module Bowline
     def initialize_js
       return unless Bowline::Desktop.enabled?
       Bowline::Desktop::JS.setup
+      Bowline::Desktop::Bridge.setup
     end
     
     def process
@@ -574,9 +574,11 @@ module Bowline
      def default_gems
        gems = []
        gems << Dependencies::Dependency.new(
-        "bowline", Bowline::Version::STRING, :lib => false
+         "bowline", Bowline::Version::STRING, :lib => false
        )
-       gems << Dependencies::Dependency.new("activesupport")
+       gems << Dependencies::Dependency.new(
+         "activesupport", :lib => "active_support"
+       )
        gems
      end
      
