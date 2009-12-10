@@ -3,6 +3,7 @@ var Bowline = {
   callbacks: {},
   uuid: 0,
   bounds: {},
+  trace: false,
   
   id: function(){
     return ++Bowline.uuid;
@@ -18,22 +19,24 @@ var Bowline = {
     var callback  = args.pop();
     if(typeof(callback) == "function"){
       Bowline.callbacks[id] = callback;
-    } else {
+    } else if(callback) {
       args.push(callback);
     }
-    
-    Bowline.msgs.push({
+    var msg = {
       klass:klass, 
       method:method, 
       args:args, 
       id:id
-    });
+    };
+    Bowline.log("New message:")
+    Bowline.log(msg);
+    Bowline.msgs.push(msg);
   },
   
   // Usage: instanceInvoke(klass, id, method, *args)
   instanceInvoke: function(){
     var args = $.makeArray(arguments);
-    args.splice(1, 0, "instance");
+    args.splice(1, 0, "instance_invoke");
     Bowline.invoke.apply(this, args);
   },
   
@@ -86,6 +89,7 @@ var Bowline = {
   
   created: function(klass, id, item){
     if(!Bowline.bounds[klass]) return true;
+    if(!item.id) item.id = id;
     jQuery.each(Bowline.bounds[klass], function(){
       this.items('add', item);
     });
@@ -94,8 +98,9 @@ var Bowline = {
   
   updated: function(klass, id, item){
     if(!Bowline.bounds[klass]) return true;
+    if(!item.id) item.id = id;
     jQuery.each(Bowline.bounds[klass], function(){
-      this.items('update', Bowline.findItem(this, id));
+      Bowline.findItem(this, id).item('replace', item);
     });
     return true;
   },
@@ -103,7 +108,7 @@ var Bowline = {
   removed: function(klass, id){
     if(!Bowline.bounds[klass]) return true;
     jQuery.each(Bowline.bounds[klass], function(){
-      this.items('remove', Bowline.findItem(this, id));
+      Bowline.findItem(this, id).item('remove');
     });
     return true;
   },
@@ -125,7 +130,8 @@ var Bowline = {
   },
   
   log: function(msg){
-    console.log(msg);
+    if(Bowline.trace)
+      console.log(msg);
   }
 };
 

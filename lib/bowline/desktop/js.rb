@@ -11,14 +11,26 @@ module Bowline
       
         def call
           if Desktop.enabled?
-            debug "JS eval: #{str}"
-            result = JSON.parse(run_js_script(str))
+            trace "JS eval: #{str}"
+            result = parse(run_js_script(str))
             Thread.new { prok.call(result) } if prok
             result
           else
             trace "Pseudo JS eval: #{str}"
           end
         end
+        
+        private
+          def parse(str)
+            # This is crazy! The JSON 
+            # lib can't parse booleans
+            case str
+            when "true"  then true
+            when "false" then false
+            else
+              JSON.parse(str)
+            end
+          end
       end
 
       def poll
@@ -42,7 +54,7 @@ module Bowline
       end
       module_function :eval
     
-      private      
+      private
         def run_scripts
           while script = scripts.shift
             script.call

@@ -11,11 +11,6 @@ module Bowline
           true
         end
         
-        # TODO - use something more secure than 'send'
-        def invoke(meth, *args) #:nodoc:
-          send(meth, *args)
-        end
-        
         def instance_invoke(id, meth, *args) #:nodoc:
           self.new(id).send(meth, *args)
         end
@@ -132,6 +127,10 @@ module Bowline
             self.class.format_event(event), 
             data
           ).call
+        end
+        
+        def remove!
+          self.class.removed(item)
         end
     
         # Shortcut methods

@@ -14,6 +14,8 @@ module Bowline
       end
       
       class Message
+        include Bowline::Logging
+        
         def self.from_array(arr)
           arr.map {|i| self.new(i) }
         end
@@ -23,18 +25,24 @@ module Bowline
           @id     = atts[:id]
           @klass  = atts[:klass]
           @method = atts[:method]
+          @args   = atts[:args] || []
         end
         
         def invoke          
           # TODO - error support
+          trace "JS invoking: #{@klass}.#{@method}(#{@args.join(',')})"
           klass = @klass.constantize
           if klass.respond_to?(:js_exposed?) && 
               klass.js_exposed?
-            result = klass.send(@method)
+            result = klass.send(@method, *@args)
             proxy  = Proxy.new
             proxy.Bowline.invokeCallback(@id, result)
             run_js_script(proxy.to_s)
-          end          
+          else
+            raise "Method not allowed"
+          end
+        rescue => e
+          log_error e
         end
       end
       

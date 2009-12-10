@@ -40,12 +40,13 @@ module Bowline
     def initialize(atts = {})
       @attributes = {}.with_indifferent_access
       @attributes.replace(atts)
+      @attributes[:id] ||= __id__
       @new_record = true
     end
   
     # Override __id__
     def id
-      @attributes[:id] || __id__
+      @attributes[:id]
     end
   
     def update(atts)
