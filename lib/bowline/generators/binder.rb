@@ -4,8 +4,13 @@ module Bowline::Generators
       Generates a new binder, either a collection one, or a singleton one.
     DESC
     
+    alias :plain_class_name :class_name
     def class_name
       super + "Binder < Bowline::Binders::Base"
+    end
+    
+    def expose_name
+      plain_class_name.singularize
     end
     
     def file_name
