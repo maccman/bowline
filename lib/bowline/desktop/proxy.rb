@@ -21,7 +21,7 @@ module Bowline
         if @crumbs.empty?
           raise "No method provided"
         end
-        string = to_js
+        string = to_s
         string << "()" unless string.last == ")"
         Bowline::Desktop::JS.eval(
           "Bowline.invokeJS(#{string.inspect});", 
@@ -45,17 +45,19 @@ module Bowline
         if method_name.last == "="
           call
         end
+        self
       end
       
       def to_s
-        @crumps.inject("") do |str, (method, args)|
-          str << method
+        (@crumbs || []).inject([]) do |arr, (method, args)|
+          str = method
           if args.any?
             str << "(" + args.to_json[1..-2] + ")"
           end
-          str
-        end
+          arr << str
+        end.join(".")
       end
+      alias :to_js :to_s
       
       def inspect
         "<#{self.class.name} #{to_s}>"

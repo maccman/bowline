@@ -5,9 +5,11 @@ module Bowline
         def js_expose(opts = {})
           # TODO - implement options, 
           # like :except and :only
-          define_method(:js_exposed?) do
-            true
-          end
+          instance_eval <<-RUBY
+            def js_exposed?
+              true
+            end
+          RUBY
         end
       end
       
@@ -17,13 +19,13 @@ module Bowline
         end
         
         def initialize(atts)
-          atts.with_indifferent_access!
+          atts    = atts.with_indifferent_access
           @id     = atts[:id]
           @klass  = atts[:klass]
           @method = atts[:method]
         end
         
-        def invoke
+        def invoke          
           # TODO - error support
           klass = @klass.constantize
           if klass.respond_to?(:js_exposed?) && 
@@ -32,7 +34,7 @@ module Bowline
             proxy  = Proxy.new
             proxy.Bowline.invokeCallback(@id, result)
             run_js_script(proxy.to_s)
-          end
+          end          
         end
       end
       

@@ -8,6 +8,7 @@ module Bowline
       class << self
         def setup
           self.items = all
+          true
         end
         
         # TODO - use something more secure than 'send'
@@ -28,7 +29,7 @@ module Bowline
         end
         
         def items=(items)
-          bowline.populate(name, items)
+          bowline.populate(name, items.to_js).call
         end
         
         def created(item)

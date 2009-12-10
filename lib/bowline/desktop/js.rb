@@ -32,7 +32,7 @@ module Bowline
     
       def eval(str, method = nil, &block)
         script = Script.new(str, method||block)
-        if Thread.current == Thread.main
+        if Thread.current == Thread.main || !Bowline.enabled?
           script.call
         else
           scripts << script
