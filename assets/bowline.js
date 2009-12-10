@@ -5,7 +5,7 @@ var Bowline = {
   bounds: {},
   
   id: function(){
-    return ++uuid;
+    return ++Bowline.uuid;
   },
   
   // Usage: invoke(klass, method, *args)
@@ -13,16 +13,16 @@ var Bowline = {
     var args    = $.makeArray(arguments);
     var klass   = args.shift();
     var method  = args.shift();
-    var id      = id();
+    var id      = Bowline.id();
     
     var callback  = args.pop();
     if(typeof(callback) == "function"){
-      callbacks[id] = callback;
+      Bowline.callbacks[id] = callback;
     } else {
       args.push(callback);
     }
     
-    msgs.push({
+    Bowline.msgs.push({
       klass:klass, 
       method:method, 
       args:args, 
@@ -34,76 +34,84 @@ var Bowline = {
   instanceInvoke: function(){
     var args = $.makeArray(arguments);
     args.splice(1, 0, "instance");
-    invoke.apply(this, args);
+    Bowline.invoke.apply(this, args);
   },
   
   helper: function(){
     var args = $.makeArray(arguments);
     args.unshift("Helper");
-    invoke(args);
+    Bowline.invoke(args);
   },
   
   bind: function(el, klass, options){
     el = jQuery(el);
     el.chain(options);
     el.data('bowline', klass);
-    if(!bounds[klass]) bounds[klass] = [];
-    bounds[klass].push(el);
+    if(!Bowline.bounds[klass]) 
+      Bowline.bounds[klass] = [];
+    Bowline.bounds[klass].push(el);
+    jQuery(function(){
+      Bowline.invoke(klass, "setup");
+    });
   },
   
   // Bowline functions
   
   pollJS: function(){
-    return JSON.stringify(msgs);
-  }
+    var res = JSON.stringify(Bowline.msgs);
+    Bowline.msgs = [];
+    return res;
+  },
   
   invokeJS: function(str){
-    log("Evaling: " + str);
+    Bowline.log("Invoking: " + str);
     return JSON.stringify(eval(str));
   },
   
   invokeCallback: function(id, res){
-    // TODO - delete callback after
-    callbacks[id](JSON.parse(res));
+    Bowline.log("Callback: " + id);
+    if(!Bowline.callbacks[id]) return true;
+    Bowline.callbacks[id](JSON.parse(res));
+    delete Bowline.callbacks[id];
+    return true;
   },
   
   populate: function(klass, items){
-    jQuery.each(callbacks[klass], function(){
+    jQuery.each(Bowline.bounds[klass], function(){
       this.items('replace', items);
     });
+    return true;
   },
   
   created: function(klass, id, item){
-    jQuery.each(callbacks[klass], function(){
+    jQuery.each(Bowline.bounds[klass], function(){
       this.items('add', item);
     });
+    return true;
   },
   
   updated: function(klass, id, item){
-    jQuery.each(callbacks[klass], function(){
-      this.items('update', findItem(this, id));
+    jQuery.each(Bowline.bounds[klass], function(){
+      this.items('update', Bowline.findItem(this, id));
     });
+    return true;
   },
   
   removed: function(klass, id){
-    jQuery.each(callbacks[klass], function(){
-      this.items('remove', findItem(this, id));
+    jQuery.each(Bowline.bounds[klass], function(){
+      this.items('remove', Bowline.findItem(this, id));
     });
+    return true;
   },
   
   trigger: function(klass, event, data){
-    jQuery.each(callbacks[klass], function(){
+    jQuery.each(Bowline.bounds[klass], function(){
       this.trigger(event, data);
     });
+    return true;
   },
   
   // System functions
-  
-  setup: function(){
-    for(var klass in bounds){
-      invoke(klass, 'setup')
-    };
-  },
   
   findItem: function(el, id){
     return jQuery.grep(el.items(true), function(n, i){
@@ -116,7 +124,7 @@ var Bowline = {
   }
 };
 
-function($){
+(function($){
   $.fn.invoke = function(){
     if($(this).chain('active')){
       var args = $.makeArray(arguments);
@@ -143,8 +151,4 @@ function($){
     args.unshift(this);
     Bowline.bind.apply(this, args);
   };
-}(jQuery);
-
-jQuery(function(){
-  Bowline.setup()
-});
+})(jQuery);
