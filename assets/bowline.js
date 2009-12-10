@@ -77,6 +77,7 @@ var Bowline = {
   },
   
   populate: function(klass, items){
+    if(!Bowline.bounds[klass]) return true;
     jQuery.each(Bowline.bounds[klass], function(){
       this.items('replace', items);
     });
@@ -84,6 +85,7 @@ var Bowline = {
   },
   
   created: function(klass, id, item){
+    if(!Bowline.bounds[klass]) return true;
     jQuery.each(Bowline.bounds[klass], function(){
       this.items('add', item);
     });
@@ -91,6 +93,7 @@ var Bowline = {
   },
   
   updated: function(klass, id, item){
+    if(!Bowline.bounds[klass]) return true;
     jQuery.each(Bowline.bounds[klass], function(){
       this.items('update', Bowline.findItem(this, id));
     });
@@ -98,6 +101,7 @@ var Bowline = {
   },
   
   removed: function(klass, id){
+    if(!Bowline.bounds[klass]) return true;
     jQuery.each(Bowline.bounds[klass], function(){
       this.items('remove', Bowline.findItem(this, id));
     });
@@ -105,6 +109,7 @@ var Bowline = {
   },
   
   trigger: function(klass, event, data){
+    if(!Bowline.bounds[klass]) return true;
     jQuery.each(Bowline.bounds[klass], function(){
       this.trigger(event, data);
     });
@@ -146,7 +151,7 @@ var Bowline = {
     }
   };
   
-  $.fn.bind = function(){
+  $.fn.bowline = function(){
     var args = $.makeArray(arguments);
     args.unshift(this);
     Bowline.bind.apply(this, args);
