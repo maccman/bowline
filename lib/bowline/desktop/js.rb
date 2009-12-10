@@ -11,6 +11,7 @@ module Bowline
       
         def call
           if Desktop.enabled?
+            debug "JS eval: #{str}"
             result = JSON.parse(run_js_script(str))
             Thread.new { prok.call(result) } if prok
             result
