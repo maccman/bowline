@@ -7,9 +7,7 @@ Bowline::Initializer.run do |config|
   config.version    = "0.0.1"
   config.publisher  = "Example"
   config.url        = "http://example.com"
-  
-  # config.titanium_version = "0.4.4"
-  
+    
   # config.gem "activerecord"
   # config.gem "net-mdns", :lib => 'net/dns/mdns'
   # config.gem "rack"
