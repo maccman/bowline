@@ -124,9 +124,10 @@ var Bowline = {
   // System functions
   
   findItem: function(el, id){
-    return jQuery.grep(el.items(true), function(n, i){
-      return n.item().id == id;
-    })[0];
+    var items = jQuery.grep(el.items(true), function(n, i){
+      return $(n).item().id == id;
+    });
+    return($(items[0]));
   },
   
   log: function(msg){
