@@ -418,14 +418,18 @@ module Bowline
      
      attr_accessor :initializer_glob
      
+     attr_accessor :index_path
+     
      attr_accessor :name
      attr_accessor :id
      attr_accessor :version
      attr_accessor :description
-     attr_accessor :publisher
      attr_accessor :url
      attr_accessor :icon
-     attr_accessor :sdk
+     attr_accessor :width
+     attr_accessor :height
+     attr_accessor :chrome
+     attr_accessor :publisher
      attr_accessor :copyright
           
      # Create a new Configuration instance, initialized with the default values.
@@ -448,7 +452,11 @@ module Bowline
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
+       self.index_path                   = default_index_path
        
+       self.width                        = default_width
+       self.height                       = default_height
+       self.chrome                       = default_chrome
        self.publisher                    = default_publisher
        self.copyright                    = default_copyright
        
@@ -583,7 +591,7 @@ module Bowline
      end
      
      def default_gem_path
-      File.join(root_path, *%w{ vendor gems })
+       File.join(root_path, *%w{ vendor gems })
      end
      
      def default_plugin_glob
@@ -597,13 +605,29 @@ module Bowline
      def default_initalizer_glob
        File.join(root_path, *%w{ config initializers **/*.rb })
      end
+     
+     def default_index_path
+       File.join(root_path, *%w{ public index.html })
+     end
+     
+     def default_width
+       800
+     end
+     
+     def default_height
+       600
+     end
+     
+     def default_chrome
+       true
+     end
           
      def default_publisher
-      "Bowline"
+       "Bowline"
      end
      
      def default_copyright
-      "Copyright #{Time.now.year}"
+       "Copyright #{Time.now.year}"
      end
   end
 end
