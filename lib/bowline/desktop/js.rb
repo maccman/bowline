@@ -27,6 +27,7 @@ module Bowline
             case str
             when "true"  then true
             when "false" then false
+            when nil     then nil
             else
               JSON.parse(str)
             end

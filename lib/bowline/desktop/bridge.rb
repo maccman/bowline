@@ -52,7 +52,9 @@ module Bowline
       module_function :setup
 
       def poll
-        result   = JSON.parse(run_js_script("Bowline.pollJS()"))
+        result   = run_js_script("Bowline.pollJS()")
+        return unless result
+        result   = JSON.parse(result)
         messages = Message.from_array(result)
         messages.each(&:invoke)
       end
