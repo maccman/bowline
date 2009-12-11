@@ -21,6 +21,14 @@ module Bowline
       def first
         @@records[0]
       end
+      
+      def last
+        @@records[-1]
+      end
+      
+      def count
+        @@records.length
+      end
     
       def all
         @@records
@@ -28,6 +36,14 @@ module Bowline
     
       def destroy(id)
         find(id).destroy
+      end
+      
+      def destroy_all
+        @@records.each {|r| r.destroy }
+      end
+      
+      def delete_all
+        @@records.clear
       end
     
       def create(atts = {})
