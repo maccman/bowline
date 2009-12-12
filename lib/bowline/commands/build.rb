@@ -1,3 +1,3 @@
 require 'rake'
 require 'bowline/tasks/bowline'
-Rake::Task['app'].invoke
+Rake::Task['app:build'].invoke

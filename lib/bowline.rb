@@ -1,6 +1,18 @@
 Thread.abort_on_exception = true
 
 module Bowline
+  def lib_path
+    File.expand_path(
+      File.join(File.dirname(__FILE__), *%w[..])
+    )
+  end
+  module_function :lib_path
+  
+  def assets_path
+    File.join(lib_path, "assets")
+  end
+  module_function :assets_path
+  
   def page
     Bowline::Desktop::Proxy.new
   end
@@ -29,6 +41,8 @@ require 'bowline/ext/string'
 require 'bowline/logging'
 require 'bowline/watcher'
 require 'bowline/local_model'
+
+require 'bowline/platform'
 
 require 'bowline/desktop'
 require 'bowline/desktop/js'

@@ -60,6 +60,22 @@ module Bowline
       @loaded_plugins = []
     end
     
+    def initialize_ruby
+      ruby_path = File.join(configuration.root_path, *%w{ vendor ruby })
+      return unless File.directory?(ruby_path)
+      version   = RUBY_VERSION
+      platform  = RUBY_PLATFORM
+      $: << File.join(ruby_path, version)                           # RUBY_LIB
+      $: << File.join(ruby_path, "site_path")                       # RUBY_SITE_LIB
+      $: << File.join(ruby_path, "site_path", version)              # RUBY_SITE_LIB2
+      $: << File.join(ruby_path, "site_ruby", version, platform)    # RUBY_SITE_ARCHLIB
+      $: << File.join(ruby_path, "vendor_ruby")                     # RUBY_VENDOR_LIB
+      $: << File.join(ruby_path, "vendor_ruby", version)            # RUBY_VENDOR_LIB2
+      $: << File.join(ruby_path, "vendor_ruby", version, platform)  # RUBY_VENDOR_ARCHLIB
+      $: << File.join(ruby_path, version, platform)                 # RUBY_ARCHLIB
+      $:.uniq!
+    end
+    
     def require_frameworks
       configuration.frameworks.each { |framework| require(framework.to_s) }
     end
@@ -269,6 +285,7 @@ module Bowline
     def process
       Bowline.configuration = configuration
       
+      initialize_ruby
       set_load_path
       initialize_gems
       load_gems
