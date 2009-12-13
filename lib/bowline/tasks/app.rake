@@ -40,9 +40,13 @@ namespace :app do
           
           # Make icon
           makeicns     = File.join(assets_path, "makeicns")
-          config.icon ||= File.join(assets_path, "bowline.png")
-          makeicns_in  = File.join(APP_ROOT, config.icon)
+          if config.icon
+            makeicns_in = File.join(APP_ROOT, config.icon)
+          else
+            makeicns_in = File.join(assets_path, "bowline.png")
+          end
           makeicns_out = File.expand_path(File.join("English.lproj", config_icon))
+          puts "#{makeicns} -in #{makeicns_in} -out #{makeicns_out}"
           `#{makeicns} -in #{makeicns_in} -out #{makeicns_out}`
         
           # Copy App
