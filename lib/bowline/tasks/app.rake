@@ -13,11 +13,7 @@ namespace :app do
           raise "Can't find Ruby 1.9.1 libs"
         end
       end
-      # Copy executable into MacOS
-      # Copy app into Resources
-      # Copy bowline to vendor/bowline (if doesn't exist)
-      # Permissions?
-      # Create a DMG of the app
+
       config = Bowline.configuration
       assets_path = File.join(Bowline.assets_path, "osx")
       build_path  = File.join(APP_ROOT, "build")
@@ -81,7 +77,7 @@ namespace :app do
       FileUtils.chmod_R(0755, app_path)
       FileUtils.chmod(0644, File.join(contents_path, "Info.plist"))
     end
-    
+
     task :linux => :environment do
       # Build debian package
       raise "Unimplemented"
@@ -96,5 +92,5 @@ namespace :app do
   desc "Build app"
   task :build do
     Rake::Task["app:build:#{Bowline::Platform.type}"].invoke
-  end
+  end  
 end
