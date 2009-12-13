@@ -59,12 +59,12 @@ namespace :app do
           FileUtils.cp_r(dirs, '.')
 
           # Copy Bowline
-          unless File.directory?(File.join("vendor", "bowline"))
-            FileUtils.cp_r(
-              File.dirname(Bowline.lib_path), 
-              File.join("vendor", "bowline")
-            )
-          end
+          bowline_dir = File.join("vendor", "bowline")
+          FileUtils.rm_rf(bowline_dir)
+          FileUtils.cp_r(
+            Bowline.lib_path, 
+            bowline_dir
+          )
           
           # Copy RB libs
           ruby_dir = File.join("vendor", "ruby")
