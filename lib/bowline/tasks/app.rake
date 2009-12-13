@@ -74,7 +74,9 @@ namespace :app do
         
         # Copy Binary
         FileUtils.mkdir("MacOS")
-        FileUtils.cp(File.expand_path("~/bowline-desktop/bowline-desktop"), File.join("MacOS", config.name))
+        binary_path = `which bowline-desktop`.chomp
+        raise "Can't find binary 'bowline-desktop'" if binary_path.empty?
+        FileUtils.cp(binary_path, File.join("MacOS", config.name))
       end
       FileUtils.chmod_R(0755, app_path)
       FileUtils.chmod(0644, File.join(contents_path, "Info.plist"))
