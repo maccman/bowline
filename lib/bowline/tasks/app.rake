@@ -2,12 +2,7 @@ require 'fileutils'
 require 'erb'
 require 'rbconfig'
 
-namespace :app do
-  desc "Build app"
-  task :build do
-    Rake::Task["build:#{Bowline::Platform.type}"].invoke
-  end
-  
+namespace :app do  
   namespace :build do
     task :osx => :environment do
       if RUBY_VERSION == "1.9.1"
@@ -26,11 +21,11 @@ namespace :app do
       config = Bowline.configuration
       assets_path = File.join(Bowline.assets_path, "osx")
       build_path  = File.join(APP_ROOT, "build")
-      app_path    = File.join(build_path, "#{config.name}.app", "Contents")
+      app_path    = File.join(build_path, "#{config.name}.app")
       FileUtils.rm_rf(app_path)
-      FileUtils.mkdir_p(app_path)
-      FileUtils.cd(app_path) do        
-        config_path = config.name + " ../Resources"
+      contents_path = File.join(app_path, "Contents")
+      FileUtils.mkdir_p(contents_path)
+      FileUtils.cd(contents_path) do        
         config_name = config.name
         config_id   = config.id
         config_icon = "#{config.name}.icns"
@@ -45,8 +40,9 @@ namespace :app do
           
           # Make icon
           makeicns     = File.join(assets_path, "makeicns")
+          config.icon ||= File.join(assets_path, "bowline.png")
           makeicns_in  = File.join(APP_ROOT, config.icon)
-          makeicns_out = File.join("English.lproj", config_icon)
+          makeicns_out = File.expand_path(File.join("English.lproj", config_icon))
           `#{makeicns} -in #{makeicns_in} -out #{makeicns_out}`
         
           # Copy App
@@ -67,7 +63,7 @@ namespace :app do
           end
           
           # Copy RB libs
-          ruby_dir = File.join("vendor", "ruby", RUBY_VERSION)
+          ruby_dir = File.join("vendor", "ruby")
           FileUtils.mkdir_p(ruby_dir)
           FileUtils.cp_r(ruby_lib_dir, ruby_dir)
         end
@@ -76,6 +72,8 @@ namespace :app do
         FileUtils.mkdir("MacOS")
         FileUtils.cp(File.expand_path("~/bowline-desktop/bowline-desktop"), File.join("MacOS", config.name))
       end
+      FileUtils.chmod_R(0755, app_path)
+      FileUtils.chmod(0644, File.join(contents_path, "Info.plist"))
     end
     
     task :linux => :environment do
@@ -87,5 +85,10 @@ namespace :app do
       # Use Inno Setup
       raise "Unimplemented"
     end
+  end
+  
+  desc "Build app"
+  task :build do
+    Rake::Task["app:build:#{Bowline::Platform.type}"].invoke
   end
 end
