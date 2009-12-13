@@ -60,6 +60,8 @@ module Bowline
     end
     module_function :win32?
     
+    # Return OS type:
+    #  Bowline::Platform.type # => :osx
     def type
       return :osx   if osx?
       return :linux if linux?

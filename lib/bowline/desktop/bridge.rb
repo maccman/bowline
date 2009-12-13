@@ -2,6 +2,25 @@ module Bowline
   module Desktop
     module Bridge
       module ClassMethods
+        # Extend you own classes with this
+        # module, and then call js_expose 
+        # to expose your classes' class
+        # variables to JavaScript.
+        #
+        # Ruby Class:
+        #   class FooClass
+        #     extend Bowline::Desktop::Bridge::ClassMethods
+        #     js_expose
+        #     
+        #     def self.foo
+        #       return :bar
+        #     end
+        #   end
+        #
+        # JavaScript:
+        #   Bowline.invoke("FooClass", "foo", function(res){
+        #     console.log(res);
+        #   })
         def js_expose(opts = {})
           # TODO - implement options, 
           # like :except and :only

@@ -2,3 +2,9 @@ Moving off Titanium:
   app.rake
 
 Use new packaging system
+
+Ideas: 
+  * bowline-notification gem (Growl)
+  
+Option to include themed css
+

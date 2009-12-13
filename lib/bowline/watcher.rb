@@ -1,24 +1,24 @@
-# Callbacks on steroids.
-# Add callbacks as class methods, or instance ones.
-# 
-# class MyClass
-#   include Bowline::Watcher::Base
-#   watch :update, :create
-# 
-#   def self.update
-#     watcher.call(:update)
-#   end
-# 
-#   def create
-#     watcher.call(:create)
-#   end
-# end
-# 
-# MyClass.on_update { puts 'update' }
-# MyClass.new.on_create { puts 'create' }
-
 module Bowline
   class Watcher
+    # Callbacks on steroids.
+    # Add callbacks as class methods, or instance ones.
+    # 
+    # class MyClass
+    #   include Bowline::Watcher::Base
+    #   watch :update, :create
+    # 
+    #   def self.update
+    #     watcher.call(:update)
+    #   end
+    # 
+    #   def create
+    #     watcher.call(:create)
+    #   end
+    # end
+    # 
+    # MyClass.on_update { puts 'update' }
+    # MyClass.new.on_create { puts 'create' }
+    
     module Base
       def self.extended(base)
       	base.send :include, InstanceMethods

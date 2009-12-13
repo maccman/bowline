@@ -66,13 +66,14 @@ module Bowline
       version   = RUBY_VERSION
       platform  = RUBY_PLATFORM
       $: << File.join(ruby_path, version)                           # RUBY_LIB
-      $: << File.join(ruby_path, "site_path")                       # RUBY_SITE_LIB
-      $: << File.join(ruby_path, "site_path", version)              # RUBY_SITE_LIB2
-      $: << File.join(ruby_path, "site_ruby", version, platform)    # RUBY_SITE_ARCHLIB
-      $: << File.join(ruby_path, "vendor_ruby")                     # RUBY_VENDOR_LIB
-      $: << File.join(ruby_path, "vendor_ruby", version)            # RUBY_VENDOR_LIB2
-      $: << File.join(ruby_path, "vendor_ruby", version, platform)  # RUBY_VENDOR_ARCHLIB
       $: << File.join(ruby_path, version, platform)                 # RUBY_ARCHLIB
+      # TODO - remove
+      # $: << File.join(ruby_path, "site_path")                       # RUBY_SITE_LIB
+      # $: << File.join(ruby_path, "site_path", version)              # RUBY_SITE_LIB2
+      # $: << File.join(ruby_path, "site_ruby", version, platform)    # RUBY_SITE_ARCHLIB
+      # $: << File.join(ruby_path, "vendor_ruby")                     # RUBY_VENDOR_LIB
+      # $: << File.join(ruby_path, "vendor_ruby", version)            # RUBY_VENDOR_LIB2
+      # $: << File.join(ruby_path, "vendor_ruby", version, platform)  # RUBY_VENDOR_ARCHLIB
       $:.uniq!
     end
     

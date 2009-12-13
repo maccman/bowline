@@ -6,6 +6,7 @@ module Bowline
       js_expose
       
       class << self
+        # Called by JS when first bound
         def setup
           self.items = all
           true
@@ -18,16 +19,16 @@ module Bowline
         def find(id)
           klass.find(id)
         end
-        
+
         def all
           klass.all
         end
         
-        def items=(items)
+        def items=(items) #:nodoc:
           bowline.populate(name, items.to_js).call
         end
         
-        def created(item)
+        def created(item) #:nodoc:
           bowline.created(
             name, 
             item.id, 
@@ -35,7 +36,7 @@ module Bowline
           ).call
         end
         
-        def updated(item)
+        def updated(item) #:nodoc:
           bowline.updated(
             name, 
             item.id, 
@@ -43,7 +44,7 @@ module Bowline
           ).call
         end
         
-        def removed(item)
+        def removed(item) #:nodoc:
           bowline.removed(
             name, 
             item.id
@@ -51,6 +52,16 @@ module Bowline
         end
         
         protected
+          # Associate the binder with a model 
+          # to setup callbacks so changes to the
+          # model are automatically reflected in
+          # the view. Usage:
+          #   expose Post
+          #
+          # When the exposed class is created/updated/deleted
+          # the binder's callbacks are executed and the view
+          # updated accordingly.
+          #  
           # klass needs to respond to:
           #  * all
           #  * find(id)
@@ -60,7 +71,9 @@ module Bowline
           #
           # klass instance needs to respond to:
           #   * id
-          #   * to_js
+          #
+          # You can override .to_js on the model instance
+          # in order to return specific attributes for the view
           def expose(klass)
             @klass = klass
             @klass.after_create(method(:created))
@@ -68,20 +81,25 @@ module Bowline
             @klass.after_destroy(method(:removed))
           end
           
+          # Returns class set by the 'expose' method
           def klass
             @klass || raise("klass not set - see expose method")
           end
           
-          # See Bowline::page
+          # JavaScript proxy to the page:
+          #   page.myFunc(1,2,3).call
           def page
             Bowline::page
           end
           
+          # JavaScript proxy to the Bowline object:
+          #   bowline.log("msg").call
           def bowline
             Bowline::bowline
           end
       
-          # Equivalent of the 'jQuery' function
+          # Javascript proxy to jQuery:
+          #   jquery.getJSON("http://example.com")
           def jquery
             JQuery.new
           end
@@ -90,7 +108,10 @@ module Bowline
           def logger
             Bowline::logger
           end
-        
+          
+          # Trigger events on all elements
+          # bound to this binder:
+          #   trigger(:reload, {:key => :value})
           def trigger(event, data = nil)
             bowline.trigger(
               name,
@@ -98,7 +119,12 @@ module Bowline
               data
             ).call
           end
-        
+          
+          # Helper method to trigger a loading 
+          # event either side of a block:
+          #  loading {
+          #   # Slow code, e.g. http call
+          #  }
           def loading(&block)
             trigger(:loading, true)
             yield
@@ -114,14 +140,19 @@ module Bowline
     
       attr_reader :element
       attr_reader :item
-    
+      
+      # Instance of an element on the view.
+      # 
+      # item.destroy
+      # element.highlight.call
       def initialize(id, *args) #:nodoc:
         @element = JQuery.for_id(id)
         @item    = self.class.find(id)
       end
       
       protected
-        # Trigger jQuery events on this element
+        # Trigger jQuery events on this element:
+        #   trigger(:highlight)
         def trigger(event, data = nil)
           element.trigger(
             self.class.format_event(event), 
@@ -129,6 +160,7 @@ module Bowline
           ).call
         end
         
+        # Remove element from the view
         def remove!
           self.class.removed(item)
         end

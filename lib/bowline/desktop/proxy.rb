@@ -3,20 +3,40 @@ module Bowline
     class Proxy
       attr_reader :crumps
       
-      # Fulfills two main objectives:
-      #  * JS needs to be called all at once
-      #  * We don't know if it's a method call, or a variable
+      # Use to call out to JavaScript.
+      #
+      # Use the method 'call' if you want 
+      # to call a function, or the method 'res' if you want 
+      # the result of a variable evaluation.
+      #
+      # You can pass a block as the last argument which will
+      # be called with the result of the evaluation.
+      # 
+      # All arguments are serialized by JSON, so you can only pass
+      # the following objects:
+      # * Hash
+      # * Array
+      # * String
+      # * Integer
       #
       # Usage:
-      #   proxy.Bowline.messages = [1,2,3] #=> "Bowline.messages = [1,2,3]"
-      #   proxy.Bowline.hi.call #=> "Bowline.hi()"
-      #   proxy.Bowline.hi(1,2,3).bye.call #=> "Bowline.hi(1,2,3).bye()"
-      #   proxy.Bowline.messages.res #=> "Bowline.messages"
+      #   proxy.FooObject.messages = [1,2,3] #=> "FooObject.messages = [1,2,3]"
+      #   proxy.FooObject.hi.call #=> "FooObject.hi()"
+      #   proxy.FooObject.hi(1,2,3).bye.call #=> "FooObject.hi(1,2,3).bye()"
+      #   proxy.FooObject.messages.res #=> "FooObject.messages"
+      #   proxy.FooObject.messages.res {|result|
+      #     puts "Messages are: #{result}"
+      #   }
       #
+      # Reasoning behind this class:
+      #  * JavaScript needs to be called all at once
+      #  * We don't know if it's a method call, or a variable
       def initialize
         @crumbs = []
       end
-
+      
+      # Call a JavaScript function:
+      #  proxy.myFunction('arg1').call
       def call(&block)
         if @crumbs.empty?
           raise "No method provided"
@@ -29,6 +49,8 @@ module Bowline
         )
       end
       
+      # Evaluate a JavaScript variable:
+      #  proxy.my_variable.res {|result| p result }
       def res(&block)
         if @crumbs.empty?
           raise "No attribute provided"
@@ -39,7 +61,7 @@ module Bowline
         )
       end
       
-      def method_missing(sym, *args)
+      def method_missing(sym, *args) #:nodoc:
         method_name = sym.to_s
         @crumbs << [method_name, args]
         if method_name.last == "="
@@ -48,6 +70,7 @@ module Bowline
         self
       end
       
+      # Return the JavaScript that is to be evaluated
       def to_s
         (@crumbs || []).inject([]) do |arr, (method, args)|
           str = method
