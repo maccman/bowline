@@ -39,7 +39,7 @@ module Bowline
       end
       
       def destroy_all
-        @@records.each {|r| r.destroy }
+        @@records.dup.each {|r| r.destroy }
       end
       
       def delete_all
@@ -47,7 +47,8 @@ module Bowline
       end
     
       def create(atts = {})
-        self.new(atts).save
+        rec = self.new(atts)
+        rec.save && rec
       end
     end
   
