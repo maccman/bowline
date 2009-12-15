@@ -50,6 +50,7 @@ module Bowline
         def invoke          
           # TODO - error support
           trace "JS invoking: #{@klass}.#{@method}(#{@args.join(',')})"
+          # TODO - security concerns with constantize
           klass = @klass.constantize
           if klass.respond_to?(:js_exposed?) && 
               klass.js_exposed?
@@ -66,12 +67,12 @@ module Bowline
       end
       
       def setup
-        Desktop.on_idle(method(:poll))
+        Desktop.on_tick(method(:poll))
       end
       module_function :setup
 
       def poll
-        result   = run_js_script("Bowline.pollJS()")
+        result   = run_js_script("try {Bowline.pollJS()} catch(e) {false}")
         return unless result
         result   = JSON.parse(result)
         messages = Message.from_array(result)

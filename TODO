@@ -1,10 +1,11 @@
-Moving off Titanium:
-  app.rake
-
 Use new packaging system
 
 Ideas: 
   * bowline-notification gem (Growl)
   
 Option to include themed css
+
+Investigate performance issue (happens when lots of js is executed without a break)
+Stop bowline symlink being copied
+Investigate thread safety
 

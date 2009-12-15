@@ -123,6 +123,10 @@ var Bowline = {
   
   // System functions
   
+  loaded: function(){
+    Bowline.invoke("Bowline::Desktop", "loaded");
+  },
+  
   findItem: function(el, id){
     var items = jQuery.grep(el.items(true), function(n, i){
       return $(n).item().id == id;
@@ -164,3 +168,7 @@ var Bowline = {
     Bowline.bind.apply(this, args);
   };
 })(jQuery);
+
+jQuery(function($){
+  Bowline.loaded();
+})

@@ -40,14 +40,15 @@ module Bowline
       module_function :poll
       
       def setup
-        Desktop.on_idle(method(:poll))
+        Desktop.on_tick(method(:poll))
       end
       module_function :setup
     
       def eval(str, method = nil, &block)
         script = Script.new(str, method||block)
-        if Thread.current == Thread.main || 
-            !Bowline::Desktop.enabled?
+        script.call unless Bowline::Desktop.enabled?
+        if Thread.current == Thread.main && 
+            Bowline::Desktop.loaded?
           script.call
         else
           scripts << script
@@ -57,6 +58,7 @@ module Bowline
     
       private
         def run_scripts
+          return unless Bowline::Desktop.loaded?
           while script = scripts.shift
             script.call
           end
