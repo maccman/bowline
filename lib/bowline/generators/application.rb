@@ -48,9 +48,11 @@ module Bowline::Generators
     empty_directory :app, "app"
     empty_directory :models, "app/models"
     empty_directory :binders, "app/binders"
-    empty_directory :binders, "app/helpers"
-    empty_directory :config, "config"
+    empty_directory :helpers, "app/helpers"
+    empty_directory :windows, "app/windows"
+    file :mainwindow, "../assets/main_window.rb", "app/windows"
     
+    empty_directory :config, "config"
     template :environment, "config/environment.rb", "config/environment.rb"
     ["application.yml", "database.yml", "boot.rb"].each {|action|
       action = File.join('config', action)

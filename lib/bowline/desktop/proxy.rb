@@ -1,8 +1,6 @@
 module Bowline
   module Desktop
-    class Proxy
-      attr_reader :crumps
-      
+    class Proxy      
       # Use to call out to JavaScript.
       #
       # Use the method 'call' if you want 
@@ -31,32 +29,38 @@ module Bowline
       # Reasoning behind this class:
       #  * JavaScript needs to be called all at once
       #  * We don't know if it's a method call, or a variable
-      def initialize
+      
+      def initialize(win)
+        @window = win
         @crumbs = []
       end
       
       # Call a JavaScript function:
       #  proxy.myFunction('arg1').call
-      def call(&block)
+      def call(method = nil, &block)
         if @crumbs.empty?
           raise "No method provided"
         end
         string = to_s
         string << "()" unless string.last == ")"
         Bowline::Desktop::JS.eval(
+          @window,
           "Bowline.invokeJS(#{string.inspect});", 
+          method,
           &block
         )
       end
       
       # Evaluate a JavaScript variable:
       #  proxy.my_variable.res {|result| p result }
-      def res(&block)
+      def res(method = nil, &block)
         if @crumbs.empty?
           raise "No attribute provided"
         end
         Bowline::Desktop::JS.eval(
+          @window,
           "Bowline.invokeJS(#{to_s.inspect});", 
+          method,
           &block
         )
       end
@@ -83,7 +87,7 @@ module Bowline
       alias :to_js :to_s
       
       def inspect
-        "<#{self.class.name} #{to_s}>"
+        "<#{self.class.name}:#{@window} #{to_s}>"
       end   
     end
   end

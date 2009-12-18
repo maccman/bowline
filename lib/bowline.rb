@@ -13,16 +13,6 @@ module Bowline
   end
   module_function :assets_path
   
-  def page
-    Bowline::Desktop::Proxy.new
-  end
-  module_function :page
-
-  def bowline
-    page.Bowline
-  end
-  module_function :bowline
-  
   module Base
   end
 end
@@ -45,14 +35,24 @@ require 'bowline/local_model'
 require 'bowline/platform'
 
 require 'bowline/desktop'
+require 'bowline/desktop/app'
+require 'bowline/desktop/bridge'
+require 'bowline/desktop/clipboard'
+require 'bowline/desktop/dialog'
+require 'bowline/desktop/dock'
+require 'bowline/desktop/host'
+require 'bowline/desktop/misc'
+require 'bowline/desktop/network'
+require 'bowline/desktop/sound'
+require 'bowline/desktop/window_methods'
+require 'bowline/desktop/window'
 require 'bowline/desktop/js'
 require 'bowline/desktop/proxy'
 require 'bowline/desktop/bridge'
+require 'bowline/desktop/window_manager.rb'
 
 require 'bowline/helpers'
 require 'bowline/dependencies/lib/dependencies'
 require 'bowline/initializer'
-
-require 'bowline/jquery'
 
 require 'bowline/binders'

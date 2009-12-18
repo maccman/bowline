@@ -28,6 +28,10 @@ module Bowline
             def js_exposed?
               true
             end
+            
+            def js_invoke(window, method, *args)
+              send(method, *args)
+            end
           RUBY
         end
       end
@@ -35,29 +39,35 @@ module Bowline
       class Message
         include Bowline::Logging
         
-        def self.from_array(arr)
-          arr.map {|i| self.new(i) }
+        def self.from_array(window, arr)
+          arr.map {|i| self.new(window, i) }
         end
         
-        def initialize(atts)
-          atts    = atts.with_indifferent_access
+        attr_reader :window, :id, :klass, :method, :args
+        
+        def initialize(window, atts)
+          @window = window
+          atts = atts.with_indifferent_access
           @id     = atts[:id]
           @klass  = atts[:klass]
-          @method = atts[:method]
+          @method = atts[:method].to_sym
           @args   = atts[:args] || []
         end
-        
-        def invoke          
-          # TODO - error support
-          trace "JS invoking: #{@klass}.#{@method}(#{@args.join(',')})"
-          # TODO - security concerns with constantize
-          klass = @klass.constantize
-          if klass.respond_to?(:js_exposed?) && 
-              klass.js_exposed?
-            result = klass.send(@method, *@args)
-            proxy  = Proxy.new
-            proxy.Bowline.invokeCallback(@id, result)
-            run_js_script(proxy.to_s)
+
+        def invoke
+          if klass == "_window"
+            object = window
+          else
+            # TODO - security concerns with constantize
+            object = klass.constantize
+          end
+          trace "JS invoking: #{klass}.#{method}(#{args.join(',')})"
+          if object.respond_to?(:js_exposed?) && object.js_exposed?
+            p object
+            result = object.js_invoke(window, method, *args)
+            proxy  = Proxy.new(window)
+            proxy.Bowline.invokeCallback(id, result)
+            window.run_script(proxy.to_s)
           else
             raise "Method not allowed"
           end
@@ -72,11 +82,15 @@ module Bowline
       module_function :setup
 
       def poll
-        result   = run_js_script("try {Bowline.pollJS()} catch(e) {false}")
-        return unless result
-        result   = JSON.parse(result)
-        messages = Message.from_array(result)
-        messages.each(&:invoke)
+        WindowManager.allocated_windows.each do |window|
+          result   = window.run_script("try {Bowline.pollJS()} catch(e) {false}")
+          next if result.blank? || result == "false"
+          result   = JSON.parse(result)
+          messages = Message.from_array(window, result)
+          messages.each(&:invoke)
+        end
+      rescue => e
+        Bowline::Logging.log_error(e)
       end
       module_function :poll
     end

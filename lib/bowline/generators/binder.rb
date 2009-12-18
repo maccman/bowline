@@ -1,7 +1,7 @@
 module Bowline::Generators
   class BinderGenerator < NamedGenerator
     desc <<-DESC
-      Generates a new binder, either a collection one, or a singleton one.
+      Generates a new binder.
     DESC
     
     alias :plain_class_name :class_name

@@ -28,6 +28,7 @@ var Bowline = {
       args:args, 
       id:id
     };
+
     Bowline.log("New message:")
     Bowline.log(msg);
     Bowline.msgs.push(msg);
@@ -38,6 +39,13 @@ var Bowline = {
     var args = $.makeArray(arguments);
     args.splice(1, 0, "instance_invoke");
     Bowline.invoke.apply(this, args);
+  },
+  
+  // Usage: windowInvoke(method, *args)
+  windowInvoke: function(){
+    var args = $.makeArray(arguments);
+    args.unshift("_window");
+    Bowline.invoke.apply(this, args);    
   },
   
   helper: function(){
@@ -121,10 +129,18 @@ var Bowline = {
     return true;
   },
   
+  element: function(klass, id){
+    // TODO - chain elements together,
+    // so we support multiple ones
+    jQuery.each(Bowline.bounds[klass], function(){
+      return findItem(this, id);
+    })
+  },
+  
   // System functions
   
-  loaded: function(){
-    Bowline.invoke("Bowline::Desktop", "loaded");
+  loaded: function(){    
+    Bowline.windowInvoke("loaded!");
   },
   
   findItem: function(el, id){
@@ -137,6 +153,10 @@ var Bowline = {
   log: function(msg){
     if(Bowline.trace)
       console.log(msg);
+  },
+  
+  warn: function(msg){
+    console.warn(msg);
   }
 };
 

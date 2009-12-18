@@ -9,3 +9,6 @@ Investigate performance issue (happens when lots of js is executed without a bre
 Stop bowline symlink being copied
 Investigate thread safety
 
+Connect Bowline::Logging to Bowline.logger
+
+wxMessageBox return types

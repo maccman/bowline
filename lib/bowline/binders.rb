@@ -6,12 +6,25 @@ module Bowline
       js_expose
       
       class << self
+        def windows
+          @windows ||= []
+        end
+        
         # Called by JS when first bound
-        def setup
+        def setup(window)
+          self.windows << window
           self.items = all
           true
         end
         
+        def js_invoke(window, method, *args)
+          if method == :setup
+            setup(window)
+          else
+            send(method, *args)
+          end
+        end
+                
         def instance_invoke(id, meth, *args) #:nodoc:
           self.new(id).send(meth, *args)
         end
@@ -89,19 +102,21 @@ module Bowline
           # JavaScript proxy to the page:
           #   page.myFunc(1,2,3).call
           def page
-            Bowline::page
+            Bowline::Desktop::Proxy.new(
+              windows.length == 1 ? windows.first : windows
+            )
           end
           
           # JavaScript proxy to the Bowline object:
           #   bowline.log("msg").call
           def bowline
-            Bowline::bowline
+            page.Bowline
           end
       
           # Javascript proxy to jQuery:
           #   jquery.getJSON("http://example.com")
           def jquery
-            JQuery.new
+            page.jQuery
           end
         
           # See Bowline::logger
@@ -146,7 +161,9 @@ module Bowline
       # item.destroy
       # element.highlight.call
       def initialize(id, *args) #:nodoc:
-        @element = JQuery.for_id(id)
+        @element = self.class.bowline.element(
+                      self.class.name, id
+                   )
         @item    = self.class.find(id)
       end
       

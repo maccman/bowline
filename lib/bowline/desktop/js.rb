@@ -4,19 +4,31 @@ module Bowline
       class Script
         include Bowline::Logging
         
-        attr_reader :str, :prok
-        def initialize(str, prok = nil)
-          @str, @prok = str, prok
+        attr_reader :window, :script, :prok
+        def initialize(window, script, prok = nil)
+          @window = window
+          @script = script
+          @prok   = prok
+        end
+        
+        def ready?
+          window.loaded?
         end
       
         def call
           if Desktop.enabled?
-            trace "JS eval: #{str}"
-            result = parse(run_js_script(str))
-            Thread.new { prok.call(result) } if prok
+            trace "JS eval on #{window}: #{script}"
+            if window.is_a?(Array)
+              window.each {|w| w.run_script(script) }
+              raise "Can't return from multiple windows" if prok
+            else
+              result = parse(window.run_script(script))
+              Thread.new { prok.call(result) } if prok
+            end
             result
           else
-            trace "Pseudo JS eval: #{str}"
+            trace "Pseudo JS eval on #{window}: #{script}"
+            prok.call(nil)
           end
         end
         
@@ -44,11 +56,9 @@ module Bowline
       end
       module_function :setup
     
-      def eval(str, method = nil, &block)
-        script = Script.new(str, method||block)
-        script.call unless Bowline::Desktop.enabled?
-        if Thread.current == Thread.main && 
-            Bowline::Desktop.loaded?
+      def eval(win, str, method = nil, &block)
+        script = Script.new(win, str, method||block)
+        if Thread.current == Thread.main && script.ready?
           script.call
         else
           scripts << script
@@ -58,13 +68,14 @@ module Bowline
     
       private
         def run_scripts
-          return unless Bowline::Desktop.loaded?
-          while script = scripts.shift
+          ready_scripts = scripts.select(&:ready?)
+          while script  = ready_scripts.shift
             script.call
           end
         end
         module_function :run_scripts
-      
+        
+        # TODO - thread safety, needs mutex
         def scripts
           Thread.main[:scripts] ||= []
         end

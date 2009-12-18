@@ -55,6 +55,7 @@ end
 
 require "bowline/generators/application"
 require "bowline/generators/binder"
-require "bowline/generators/model"
 require "bowline/generators/helper"
 require "bowline/generators/migration"
+require "bowline/generators/model"
+require "bowline/generators/window"

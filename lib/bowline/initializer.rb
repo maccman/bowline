@@ -444,9 +444,7 @@ module Bowline
      attr_accessor :description
      attr_accessor :url
      attr_accessor :icon
-     attr_accessor :width
-     attr_accessor :height
-     attr_accessor :chrome
+
      attr_accessor :publisher
      attr_accessor :copyright
           
@@ -470,11 +468,7 @@ module Bowline
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
-       self.index_path                   = default_index_path
-       
-       self.width                        = default_width
-       self.height                       = default_height
-       self.chrome                       = default_chrome
+       self.index_path                   = default_index_path       
        self.publisher                    = default_publisher
        self.copyright                    = default_copyright
        
@@ -548,6 +542,7 @@ module Bowline
          app/models
          app/remote
          app/helpers
+         app/windows
          lib
          vendor
        ).map { |dir| "#{root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
@@ -566,6 +561,7 @@ module Bowline
          app/models
          app/remote
          app/helpers
+         app/windows
        ).map { |dir| "#{root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
      end
      
@@ -626,18 +622,6 @@ module Bowline
      
      def default_index_path
        File.join(root_path, *%w{ public index.html })
-     end
-     
-     def default_width
-       800
-     end
-     
-     def default_height
-       600
-     end
-     
-     def default_chrome
-       true
      end
           
      def default_publisher
