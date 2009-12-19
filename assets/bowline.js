@@ -130,11 +130,11 @@ var Bowline = {
   },
   
   element: function(klass, id){
-    // TODO - chain elements together,
-    // so we support multiple ones
+    var el = jQuery();
     jQuery.each(Bowline.bounds[klass], function(){
-      return findItem(this, id);
-    })
+      el = el.add(findItem(this, id));
+    });
+    return el;
   },
   
   // System functions
