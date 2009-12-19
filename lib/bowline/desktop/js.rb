@@ -10,16 +10,19 @@ module Bowline
           @script = script
           @prok   = prok
         end
+        alias :windows :window
         
         def ready?
-          window.loaded?
+          multiple_windows? ? 
+            windows.all?(&:loaded?) : 
+              window.loaded?
         end
       
         def call
           if Desktop.enabled?
             trace "JS eval on #{window}: #{script}"
-            if window.is_a?(Array)
-              window.each {|w| w.run_script(script) }
+            if multiple_windows?
+              windows.each {|w| w.run_script(script) }
               raise "Can't return from multiple windows" if prok
             else
               result = parse(window.run_script(script))
@@ -33,6 +36,10 @@ module Bowline
         end
         
         private
+          def multiple_windows?
+            windows.is_a?(Array)
+          end
+        
           def parse(str)
             # This is crazy! The JSON 
             # lib can't parse booleans

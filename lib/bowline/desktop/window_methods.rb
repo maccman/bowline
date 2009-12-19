@@ -15,7 +15,9 @@ module Bowline
       end
       
       def file=(path)
-        path = path.to_s
+        if path.is_a?(Symbol)
+          path = File.join(APP_ROOT, "public", path.to_s)
+        end
         if File.extname(path).blank?
           path += ".html"
         end

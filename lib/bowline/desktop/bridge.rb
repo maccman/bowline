@@ -63,7 +63,6 @@ module Bowline
           end
           trace "JS invoking: #{klass}.#{method}(#{args.join(',')})"
           if object.respond_to?(:js_exposed?) && object.js_exposed?
-            p object
             result = object.js_invoke(window, method, *args)
             proxy  = Proxy.new(window)
             proxy.Bowline.invokeCallback(id, result)

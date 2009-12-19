@@ -5,13 +5,9 @@ module Bowline
       js_expose
       
       extend Bowline::Watcher::Base
-      watch :load
+      watch :on_load
       
-      class << self        
-        def inherited(klass)
-          klass.setup!
-        end
-        
+      class << self
         def windows
           subclasses.map(&:constantize)
         end
@@ -34,8 +30,9 @@ module Bowline
           !!@window
         end
         
-        def setup!
+        def setup
           return unless Desktop.enabled?
+          return if @window && !@window.dealocated?
           if self.name == "MainWindow"
             @window = MainWindow.get
           else
@@ -57,7 +54,8 @@ module Bowline
         
         def loaded! # :nodoc:
           @loaded = true
-          watcher.call(:load)
+          watcher.call(:on_load)
+          true
         end
         
         # Delegate most methods to Window

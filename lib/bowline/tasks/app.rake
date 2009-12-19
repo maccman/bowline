@@ -5,15 +5,6 @@ require 'rbconfig'
 namespace :app do  
   namespace :build do
     task :osx => :environment do
-      if RUBY_VERSION == "1.9.1"
-        ruby_lib_dir = Config::CONFIG["rubylibdir"]
-      else
-        ruby_lib_dir = "/usr/local/lib/ruby/1.9.1"
-        unless File.directory?(ruby_lib_dir)
-          raise "Can't find Ruby 1.9.1 libs"
-        end
-      end
-
       config = Bowline.configuration
       assets_path = File.join(Bowline.assets_path, "osx")
       build_path  = File.join(APP_ROOT, "build")
@@ -58,11 +49,11 @@ namespace :app do
           bowline_dir = File.join("vendor", "bowline")
           FileUtils.rm_rf(bowline_dir)
           FileUtils.cp_r(
-            Bowline.lib_path, 
+            Pathname.new(Bowline.lib_path).realpath, 
             bowline_dir
           )
           
-          # Copy RB libs
+          # Copy RB libs - TODO
           ruby_dir = File.join("vendor", "ruby")
           FileUtils.mkdir_p(ruby_dir)
           FileUtils.cp_r(ruby_lib_dir, ruby_dir)

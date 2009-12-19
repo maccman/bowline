@@ -21,6 +21,7 @@ module Bowline
       #  set_position(x, y)
       #  select_dir(
       #  )
+      #  shown?
     end
     
     class MainWindow
