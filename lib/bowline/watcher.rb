@@ -4,7 +4,7 @@ module Bowline
     # Add callbacks as class methods, or instance ones.
     # 
     # class MyClass
-    #   include Bowline::Watcher::Base
+    #   extend Bowline::Watcher::Base
     #   watch :update, :create
     # 
     #   def self.update
@@ -19,17 +19,13 @@ module Bowline
     # MyClass.on_update { puts 'update' }
     # MyClass.new.on_create { puts 'create' }
     
-    module Base
-      def self.extended(base)
-      	base.send :include, InstanceMethods
-      end
-    
+    module Base    
       def watch(*names)
       	names.each do |name|
           # Because define_method only takes a block,
           # which doesn't accept multiple arguments
           script = <<-RUBY
-            def on_#{name}(*args, &block)
+            def #{name}(*args, &block)
               watcher.append(:#{name}, *args, &block)
             end
           RUBY
@@ -39,13 +35,7 @@ module Bowline
       end
       
       def watcher
-        @@watcher ||= Watcher.new
-      end
-    
-      module InstanceMethods
-        def watcher
-        	@watcher ||= Watcher.new
-        end
+        @watcher ||= Watcher.new
       end
     end
   
