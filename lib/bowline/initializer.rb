@@ -1,5 +1,3 @@
-require 'logger'
-require 'set'
 require 'pathname'
 
 module Bowline
@@ -67,13 +65,14 @@ module Bowline
       platform  = RUBY_PLATFORM
       $: << File.join(ruby_path, version)                           # RUBY_LIB
       $: << File.join(ruby_path, version, platform)                 # RUBY_ARCHLIB
-      # TODO - remove
-      # $: << File.join(ruby_path, "site_path")                       # RUBY_SITE_LIB
-      # $: << File.join(ruby_path, "site_path", version)              # RUBY_SITE_LIB2
-      # $: << File.join(ruby_path, "site_ruby", version, platform)    # RUBY_SITE_ARCHLIB
-      # $: << File.join(ruby_path, "vendor_ruby")                     # RUBY_VENDOR_LIB
-      # $: << File.join(ruby_path, "vendor_ruby", version)            # RUBY_VENDOR_LIB2
-      # $: << File.join(ruby_path, "vendor_ruby", version, platform)  # RUBY_VENDOR_ARCHLIB
+      $: << File.join(ruby_path, "site_path")                       # RUBY_SITE_LIB
+      $: << File.join(ruby_path, "site_path", version)              # RUBY_SITE_LIB2
+      $: << File.join(ruby_path, "site_ruby", version, platform)    # RUBY_SITE_ARCHLIB
+      $: << File.join(ruby_path, "vendor_ruby")                     # RUBY_VENDOR_LIB
+      $: << File.join(ruby_path, "vendor_ruby", version)            # RUBY_VENDOR_LIB2
+      $: << File.join(ruby_path, "vendor_ruby", version, platform)  # RUBY_VENDOR_ARCHLIB
+      require File.join(*%w[enc encdb])
+      require File.join(*%w[enc trans transdb])
       $:.uniq!
     end
     
@@ -283,6 +282,13 @@ module Bowline
       Bowline::Desktop::Bridge.setup
     end
     
+    def initialize_windows
+      return unless Bowline::Desktop.enabled?
+      MainWindow.setup
+      MainWindow.name = configuration.name
+      MainWindow.file = configuration.index_path
+    end
+    
     def process
       Bowline.configuration = configuration
       
@@ -320,6 +326,7 @@ module Bowline
       load_application_helpers
       
       initialize_js
+      initialize_windows
       
       Bowline.initialized = true
     end
@@ -595,9 +602,6 @@ module Bowline
      
      def default_gems
        gems = []
-       gems << Dependencies::Dependency.new(
-         "bowline", Bowline::Version::STRING, :lib => false
-       )
        gems << Dependencies::Dependency.new(
          "activesupport", :lib => "active_support"
        )
