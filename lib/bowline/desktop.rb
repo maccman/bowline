@@ -2,7 +2,7 @@ module Bowline
   module Desktop
     include Bowline::Logging
     extend Bowline::Watcher::Base
-    watch :tick, :idle
+    watch :on_tick, :on_idle
     
     def enabled?
       $0 == "bowline"
@@ -10,14 +10,14 @@ module Bowline
     module_function :enabled?
     
     def idle
-      watcher.call(:idle)
+      watcher.call(:on_idle)
     rescue => e
       log_error e
     end
     module_function :idle
 
     def tick
-      watcher.call(:tick)
+      watcher.call(:on_tick)
     rescue => e
       log_error e
     end
