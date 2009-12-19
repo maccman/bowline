@@ -12,7 +12,15 @@ module Bowline
         style |= QUESTION    if options[:question]
         style |= INFORMATION if options[:information]
         caption = options[:caption] || "Message"
-        _message(msg, caption, style)
+        
+        result = _message(msg, caption, style)
+        
+        case result
+        when YES then :yes
+        when NO  then :no
+        when OK  then :ok
+        when CANCEL then :cancel
+        end
       end
       module_function :message
     end
