@@ -17,9 +17,8 @@ module Bowline
   end
 end
 
-require 'active_support'
-
 $LOAD_PATH << File.dirname(__FILE__)
+$LOAD_PATH << File.join(Bowline.lib_path, "vendor")
 
 require 'bowline/version'
 
