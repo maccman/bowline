@@ -1,10 +1,11 @@
 module Bowline
   class LocalModel
-    include ActiveSupport::Callbacks
-    define_callbacks :before_save,    :after_save,
-                     :before_create,  :after_create,
-                     :before_update,  :after_update,
-                     :before_destroy, :after_destroy
+    extend Watcher::Base
+    
+    watch :before_save,    :after_save,
+          :before_create,  :after_create,
+          :before_update,  :after_update,
+          :before_destroy, :after_destroy
   
     @@records = []
   
@@ -106,5 +107,10 @@ module Bowline
           attributes.has_key?(method_name) ? attributes[method_name] : super
       end
     end
+    
+    private
+      def run_callbacks(callback)
+        self.class.watcher.call(callback)
+      end
   end
 end
