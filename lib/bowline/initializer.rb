@@ -59,10 +59,13 @@ module Bowline
     end
     
     def initialize_ruby
-      ruby_path = File.join(configuration.root_path, *%w{ vendor rubylib })
-      return unless File.directory?(ruby_path)
-      version   = RUBY_VERSION
-      platform  = RUBY_PLATFORM
+      ruby_path = File.join(configuration.rubylib_path)
+      unless File.directory?(ruby_path)
+        ruby_path = Bowline::Library.rubylib_path
+        return unless File.directory?(ruby_path)
+      end
+      version   = "1.9.1"
+      platform  = "i386-darwin9.7.0"
       $: << File.join(ruby_path, version)                           # RUBY_LIB
       $: << File.join(ruby_path, version, platform)                 # RUBY_ARCHLIB
       $: << File.join(ruby_path, "site_path")                       # RUBY_SITE_LIB
