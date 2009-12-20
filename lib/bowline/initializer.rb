@@ -59,7 +59,7 @@ module Bowline
     end
     
     def initialize_ruby
-      ruby_path = File.join(configuration.root_path, *%w{ vendor ruby })
+      ruby_path = File.join(configuration.root_path, *%w{ vendor rubylib })
       return unless File.directory?(ruby_path)
       version   = RUBY_VERSION
       platform  = RUBY_PLATFORM
@@ -432,6 +432,8 @@ module Bowline
      
      attr_accessor :gem_path
      
+     attr_accessor :rubylib_path
+     
      # Sets the default +time_zone+.  Setting this will enable +time_zone+
      # awareness for Active Record models and set the Active Record default
      # timezone to <tt>:utc</tt>.
@@ -472,6 +474,7 @@ module Bowline
        self.app_config_file              = default_app_config_file
        self.gems                         = default_gems
        self.gem_path                     = default_gem_path
+       self.rubylib_path                 = default_rubylib_path
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
@@ -606,6 +609,10 @@ module Bowline
          "activesupport", :lib => "active_support"
        )
        gems
+     end
+     
+     def default_rubylib_path
+       File.join(root_path, *%w{ vendor rubylib })
      end
      
      def default_gem_path

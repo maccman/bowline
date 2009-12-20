@@ -4,7 +4,7 @@ require 'rbconfig'
 
 namespace :app do  
   namespace :build do
-    task :osx => :environment do
+    task :osx => [:environment, "libs:download"] do
       config = Bowline.configuration
       assets_path = File.join(Bowline.assets_path, "osx")
       build_path  = File.join(APP_ROOT, "build")
@@ -54,16 +54,16 @@ namespace :app do
           )
           
           # Copy RB libs - TODO
-          ruby_dir = File.join("vendor", "ruby")
-          FileUtils.mkdir_p(ruby_dir)
-          FileUtils.cp_r(ruby_lib_dir, ruby_dir)
+          FileUtils.mkdir_p(config.rubylib_path)
+          FileUtils.cp_r(Bowline::Library.rubylib_path, config.rubylib_path)
         end
         
         # Copy Binary
         FileUtils.mkdir("MacOS")
-        binary_path = `which bowline-desktop`.chomp
-        raise "Can't find binary 'bowline-desktop'" if binary_path.empty?
-        FileUtils.cp(binary_path, File.join("MacOS", config.name))
+        FileUtils.cp(
+          Bowline::Library.desktop_path, 
+          File.join("MacOS", config.name)
+        )
       end
       FileUtils.chmod_R(0755, app_path)
       FileUtils.chmod(0644, File.join(contents_path, "Info.plist"))

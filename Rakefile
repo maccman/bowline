@@ -9,6 +9,7 @@ begin
     gemspec.authors = ["Alex MacCaw"]
     gemspec.add_dependency('templater',     '>= 0.3.2')
     gemspec.add_dependency('activesupport', '>= 2.3.2')
+    gemspec.add_dependency('rubyzip',       '>= 0.9.1')
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"

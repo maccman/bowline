@@ -32,6 +32,7 @@ require 'bowline/watcher'
 require 'bowline/local_model'
 
 require 'bowline/platform'
+require 'bowline/library'
 
 require 'bowline/desktop'
 require 'bowline/desktop/app'
