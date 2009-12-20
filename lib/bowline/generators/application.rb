@@ -50,7 +50,7 @@ module Bowline::Generators
     empty_directory :binders, "app/binders"
     empty_directory :helpers, "app/helpers"
     empty_directory :windows, "app/windows"
-    file :mainwindow, "main_window.rb", "app/windows"
+    file :mainwindow, "main_window.rb", "app/windows/main_window.rb"
     
     empty_directory :config, "config"
     template :environment, "config/environment.rb", "config/environment.rb"
