@@ -1,7 +1,6 @@
-unless Bowline::Library.downloaded?
-  require 'rake'
+unless Bowline::Library.ready?
   require 'bowline/tasks/bowline'
-  Rake::Task['libs:download'].invoke
+  Rake::Task['libs:setup'].invoke
 end
 
 exec("#{Bowline::Library.desktop_path} #{APP_ROOT}")

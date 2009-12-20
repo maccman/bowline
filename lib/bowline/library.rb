@@ -23,11 +23,17 @@ module Bowline
     end
     module_function :rubylib_path
     
-    def downloaded?
-      File.exist?(desktop_path) && 
-        File.directory?(rubylib_path)
+    def bowline_path
+      File.join(APP_ROOT, "vendor", "bowline")
     end
-    module_function :downloaded?
+    module_function :bowline_path
+    
+    def ready?
+      File.exist?(desktop_path) && 
+        File.directory?(rubylib_path) && 
+          File.directory?(bowline_path)
+    end
+    module_function :ready?
     
     private
       # Borrowed from Rubygems

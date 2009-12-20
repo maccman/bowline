@@ -5,8 +5,8 @@ require 'rbconfig'
 namespace :app do  
   namespace :build do
     task :osx => :environment do
-      unless Bowline::Library.downloaded?
-        Rake::Task["libs:download"].invoke
+      unless Bowline::Library.ready?
+        Rake::Task["libs:setup"].invoke
       end
       
       config = Bowline.configuration

@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'rake'
+
 $VERBOSE = nil
 
 # Load Rails rakefile extensions
