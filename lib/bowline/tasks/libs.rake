@@ -24,7 +24,30 @@ def download(url)
 end
 
 namespace :libs do
-  task :download => :environment do
+  # Lots of people are using Ruby 1.8 with Bowline.
+  # When bowline-desktop loads, it doesn't know where the
+  # Bowline gem is if it's an 1.8 gem dir. So, we just symlink
+  # it to vendor/bowline. One caveat though, is that you have to
+  # re-run this task when you update the gem.
+  task :symlink_bowline => :environment do
+    local_path = File.join(APP_ROOT, "vendor", "bowline")
+    unless File.directory?(local_path)
+      begin
+        FileUtils.ln_s(
+          Bowline.lib_path, 
+          bowline_path
+        )
+      rescue NotImplemented
+        FileUtils.cp_r(
+          Bowline.lib_path,
+          bowline_path
+        )
+      end
+    end
+  end
+  
+  desc "Download Bowline's binary and pre-compiled libs"
+  task :download => [:environment, :symlink_bowline] do
     puts "Downloading libraries. This may take a while..."
     FileUtils.mkdir_p(Bowline::Library.path)
     
@@ -51,9 +74,9 @@ namespace :libs do
     puts "Finished downloading"
   end
   
+  desc "Update Bowline's binary and pre-compiled libs"
   task :update => :environment do
-    FileUtils.rm_rf(Bowline::Library.desktop_path)
-    FileUtils.rm_rf(Bowline::Library.rubylib_path)
+    FileUtils.rm_rf(Bowline::Library.path)
     Rake::Task["libs:download"].invoke
   end
 end

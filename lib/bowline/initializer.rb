@@ -59,6 +59,7 @@ module Bowline
     end
     
     def initialize_ruby
+      return unless Bowline::Desktop.enabled?
       ruby_path = File.join(configuration.rubylib_path)
       unless File.directory?(ruby_path)
         ruby_path = Bowline::Library.rubylib_path
@@ -78,7 +79,7 @@ module Bowline
       require File.join(*%w[enc trans transdb])
       $:.uniq!
     end
-    
+        
     def require_frameworks
       configuration.frameworks.each { |framework| require(framework.to_s) }
     end
@@ -192,7 +193,6 @@ module Bowline
     end
     
     def initialize_gems
-      require 'rubygems'
       Gem.clear_paths
       Gem.path.unshift(configuration.gem_path)
     end

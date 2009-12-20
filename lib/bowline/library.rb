@@ -8,7 +8,7 @@ module Bowline
     
     def path
       File.expand_path(
-        File.join(Gem.user_home, ".bowline")
+        File.join(home_path, ".bowline")
       )
     end
     module_function :path
@@ -24,8 +24,26 @@ module Bowline
     module_function :rubylib_path
     
     def downloaded?
-      File.exist?(desktop_path) && File.directory?(rubylib_path)
+      File.exist?(desktop_path) && 
+        File.directory?(rubylib_path)
     end
     module_function :downloaded?
+    
+    private
+      # Borrowed from Rubygems
+      def home_path
+        ['HOME', 'USERPROFILE'].each do |homekey|
+          return ENV[homekey] if ENV[homekey]
+        end
+        if ENV['HOMEDRIVE'] && ENV['HOMEPATH'] then
+          return "#{ENV['HOMEDRIVE']}#{ENV['HOMEPATH']}"
+        end
+        begin
+          File.expand_path("~")
+        rescue
+          File::ALT_SEPARATOR ? "C:/" : "/"
+        end
+      end
+      module_function :home_path
   end
 end
