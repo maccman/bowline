@@ -48,26 +48,30 @@ namespace :app do
           dirs.delete(File.join(APP_ROOT, 'db', 'migrate'))
           dirs.delete_if {|i| i =~ /\.svn|\.DS_Store/ }
           FileUtils.cp_r(dirs, '.')
-
-          # Copy Bowline
-          bowline_dir = File.join("vendor", "bowline")
-          FileUtils.rm_rf(bowline_dir)
-          FileUtils.cp_r(
-            Pathname.new(Bowline.lib_path).realpath, 
-            bowline_dir
-          )
-          %w{ assets pkg examples bin templates .git }.each do |unused|
-            FileUtils.rm_rf(File.join(bowline_dir, unused))
-          end
           
-          FileUtils.mkdir_p(config.rubylib_path)
-          FileUtils.cp_r(
-            Bowline::Library.rubylib_path, 
-            config.rubylib_path
-          )
+          FileUtils.mkdir_p("vendor")
+          FileUtils.cd("vendor") do
+            # Copy Bowline lib
+            bowline_path = "bowline"
+            FileUtils.rm_rf(bowline_path)
+            FileUtils.cp_r(
+              Pathname.new(Bowline.lib_path).realpath, 
+              bowline_path
+            )
+            %w{assets pkg examples bin templates .git}.each do |unused|
+              FileUtils.rm_rf(File.join(bowline_path, unused))
+            end
+            
+            rubylib_path = "rubylib"
+            FileUtils.rm_rf(rubylib_path)
+            FileUtils.cp_r(
+              Bowline::Library.rubylib_path, 
+              rubylib_path
+            )
+          end
         end
         
-        # Copy Binary
+        # Copy Bowline binary
         FileUtils.mkdir("MacOS")
         FileUtils.cp(
           Bowline::Library.desktop_path, 

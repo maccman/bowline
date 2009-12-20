@@ -23,10 +23,15 @@ module Bowline
     end
     module_function :rubylib_path
     
-    def bowline_path
+    def local_bowline_path
       File.join(APP_ROOT, "vendor", "bowline")
     end
-    module_function :bowline_path
+    module_function :local_bowline_path
+    
+    def local_rubylib_path
+      File.join(APP_ROOT, "vendor", "rubylib")
+    end
+    module_function :local_rubylib_path
     
     def ready?
       File.exist?(desktop_path) && 

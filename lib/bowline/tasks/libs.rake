@@ -40,7 +40,7 @@ namespace :libs do
   # it to vendor/bowline. One caveat though, is that you have to
   # re-run this task when you update the gem.
   task :unpack => :environment do
-    local_path = Bowline::Library.bowline_path
+    local_path = Bowline::Library.local_bowline_path
     unless File.directory?(local_path)
       begin
         FileUtils.ln_s(
@@ -82,7 +82,8 @@ namespace :libs do
   desc "Update Bowline's binary and pre-compiled libs"
   task :update => :environment do
     FileUtils.rm_rf(Bowline::Library.path)
-    FileUtils.rm_rf(Bowline::Library.bowline_path)
+    FileUtils.rm_rf(Bowline::Library.local_bowline_path)
+    FileUtils.rm_rf(Bowline::Library.local_rubylib_path)
     Rake::Task["libs:setup"].invoke
   end
 end
