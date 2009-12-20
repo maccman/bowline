@@ -35,12 +35,12 @@ namespace :libs do
       begin
         FileUtils.ln_s(
           Bowline.lib_path, 
-          bowline_path
+          local_path
         )
       rescue NotImplementedError
         FileUtils.cp_r(
           Bowline.lib_path,
-          bowline_path
+          local_path
         )
       end
     end
