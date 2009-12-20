@@ -36,7 +36,7 @@ module Bowline
     def ready?
       File.exist?(desktop_path) && 
         File.directory?(rubylib_path) && 
-          File.directory?(bowline_path)
+          File.directory?(local_bowline_path)
     end
     module_function :ready?
     
