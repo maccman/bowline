@@ -1,6 +1,6 @@
 module Bowline
   module Library
-    PROJECT_URL  = "http://github.com/maccman/bowline-desktop/blob/master/deploy/#{Platform.type}"
+    PROJECT_URL  = "http://github.com/maccman/bowline-desktop/raw/master/deploy/#{Platform.type}"
     DESKTOP_URL  = "#{PROJECT_URL}/bowline-desktop"
     RUBYLIB_URL  = "#{PROJECT_URL}/rubylib.zip"
     
@@ -23,8 +23,8 @@ module Bowline
     module_function :rubylib_path
     
     def downloaded?
-      File.exist?(desktop_path) &&
-        File.directory?(rubylib_path)
+      File.exist?(desktop_path) && File.directory?(rubylib_path)
     end
+    module_function :downloaded?
   end
 end

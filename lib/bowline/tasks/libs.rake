@@ -16,6 +16,7 @@ def download(url)
         pbar.inc(seg.length)
         file.write(seg)
       }
+      pbar.finish
     }
   }
   file.rewind
@@ -24,6 +25,7 @@ end
 
 namespace :libs do
   task :download => :environment do
+    puts "Downloading libraries. This may take a while..."
     FileUtils.mkdir_p(Bowline::Library.path)
     
     desktop_path = Bowline::Library.desktop_path
@@ -37,6 +39,7 @@ namespace :libs do
     rubylib_path = Bowline::Library.rubylib_path
     unless File.directory?(rubylib_path)
       rubylib_tmp = download(Bowline::Library::RUBYLIB_URL)
+      FileUtils.cp(rubylib_tmp.path, File.join(APP_ROOT, "rubylibs.zip"))
       rubylib_tmp.close
       Zip::ZipFile.open(rubylib_tmp.path) { |zfile|
         zfile.each {|file|
@@ -46,5 +49,12 @@ namespace :libs do
         }
       }
     end
+    puts "Finished downloading"
+  end
+  
+  task :update => :environment do
+    FileUtils.rm(Bowline::Library.desktop_path)
+    FileUtils.rm_rf(Bowline::Library.rubylib_path)
+    Rake::Task["libs:download"].invoke
   end
 end
