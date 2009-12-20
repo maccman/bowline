@@ -56,10 +56,15 @@ namespace :app do
             Pathname.new(Bowline.lib_path).realpath, 
             bowline_dir
           )
+          %w{ assets pkg examples bin templates .git }.each do |unused|
+            FileUtils.rm_rf(File.join(bowline_dir, unused))
+          end
           
-          # Copy RB libs - TODO
           FileUtils.mkdir_p(config.rubylib_path)
-          FileUtils.cp_r(Bowline::Library.rubylib_path, config.rubylib_path)
+          FileUtils.cp_r(
+            Bowline::Library.rubylib_path, 
+            config.rubylib_path
+          )
         end
         
         # Copy Binary
