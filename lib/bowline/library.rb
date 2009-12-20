@@ -5,9 +5,8 @@ module Bowline
     RUBYLIB_URL  = "#{PROJECT_URL}/rubylib.zip"
     
     def path
-      # TODO - tilda won't work on win32
       File.expand_path(
-        File.join(*%w{~ .bowline})
+        File.join(Gem.user_home, ".bowline")
       )
     end
     module_function :path
