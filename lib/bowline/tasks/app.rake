@@ -4,7 +4,11 @@ require 'rbconfig'
 
 namespace :app do  
   namespace :build do
-    task :osx => [:environment, "libs:download"] do
+    task :osx => :environment do
+      unless Bowline::Library.downloaded?
+        Rake::Task["libs:download"].invoke
+      end
+      
       config = Bowline.configuration
       assets_path = File.join(Bowline.assets_path, "osx")
       build_path  = File.join(APP_ROOT, "build")
