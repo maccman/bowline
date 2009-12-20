@@ -77,7 +77,7 @@ namespace :libs do
     end
   end
     
-  task :setup => [:environment, "gems:sync", "libs:unpack", "lib:download"]
+  task :setup => [:environment, "gems:sync", "libs:unpack", "libs:download"]
   
   desc "Update Bowline's binary and pre-compiled libs"
   task :update => :environment do
