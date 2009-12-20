@@ -37,7 +37,7 @@ namespace :libs do
           Bowline.lib_path, 
           bowline_path
         )
-      rescue NotImplemented
+      rescue NotImplementedError
         FileUtils.cp_r(
           Bowline.lib_path,
           bowline_path
