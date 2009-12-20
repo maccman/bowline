@@ -64,8 +64,8 @@ module Bowline
         ruby_path = Bowline::Library.rubylib_path
         return unless File.directory?(ruby_path)
       end
-      version   = "1.9.1"
-      platform  = "i386-darwin9.8.0"
+      version   = Library::RUBY_LIB_VERSION
+      platform  = Library::RUBY_ARCHLIB_PLATFORM
       $: << File.join(ruby_path, version)                           # RUBY_LIB
       $: << File.join(ruby_path, version, platform)                 # RUBY_ARCHLIB
       $: << File.join(ruby_path, "site_path")                       # RUBY_SITE_LIB
