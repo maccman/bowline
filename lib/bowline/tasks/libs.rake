@@ -11,7 +11,7 @@ def download(url)
   req  = Net::HTTP::Get.new(url.path)
   res  = Net::HTTP.start(url.host, url.port) {|http|
     http.request(req) {|resp|
-      pbar = ProgressBar.new("Downloading: #{name}", resp.content_length)
+      pbar = ProgressBar.new(name, resp.content_length)
       resp.read_body {|seg|
         pbar.inc(seg.length)
         file.write(seg)
@@ -36,14 +36,13 @@ namespace :libs do
       FileUtils.chmod(0755, desktop_path)
     end
     
-    rubylib_path = Bowline::Library.rubylib_path
-    unless File.directory?(rubylib_path)
+    unless File.directory?(Bowline::Library.rubylib_path)
       rubylib_tmp = download(Bowline::Library::RUBYLIB_URL)
-      FileUtils.cp(rubylib_tmp.path, File.join(APP_ROOT, "rubylibs.zip"))
       rubylib_tmp.close
+      puts "Extracting..."
       Zip::ZipFile.open(rubylib_tmp.path) { |zfile|
         zfile.each {|file|
-          file_path = File.join(rubylib_path, file.name)
+          file_path = File.join(Bowline::Library.path, file.name)
           FileUtils.mkdir_p(File.dirname(file_path))
           zfile.extract(file, file_path)
         }
@@ -53,7 +52,7 @@ namespace :libs do
   end
   
   task :update => :environment do
-    FileUtils.rm(Bowline::Library.desktop_path)
+    FileUtils.rm_rf(Bowline::Library.desktop_path)
     FileUtils.rm_rf(Bowline::Library.rubylib_path)
     Rake::Task["libs:download"].invoke
   end

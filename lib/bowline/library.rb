@@ -1,6 +1,6 @@
 module Bowline
   module Library
-    PROJECT_URL  = "http://github.com/maccman/bowline-desktop/raw/master/deploy/#{Platform.type}"
+    PROJECT_URL  = "http://bowline.s3.amazonaws.com/#{Platform.type}"
     DESKTOP_URL  = "#{PROJECT_URL}/bowline-desktop"
     RUBYLIB_URL  = "#{PROJECT_URL}/rubylib.zip"
     
