@@ -30,9 +30,9 @@ namespace :app do
           FileUtils.mkdir("English.lproj")
           
           # Make icon
-          makeicns     = File.join(assets_path, "makeicns")
+          makeicns = File.join(assets_path, "makeicns")
           if config.icon
-            makeicns_in = File.join(APP_ROOT, config.icon)
+            makeicns_in = File.expand_path(config.icon, APP_ROOT)
           else
             makeicns_in = File.join(assets_path, "bowline.png")
           end
@@ -96,5 +96,6 @@ namespace :app do
   desc "Build app"
   task :build do
     Rake::Task["app:build:#{Bowline::Platform.type}"].invoke
+    puts "Application successfully built inside the 'build' folder."
   end  
 end
