@@ -9,7 +9,7 @@ module Bowline::Generators
       super + "Binder < Bowline::Binders::Base"
     end
     
-    def expose_name
+    def bind_name
       plain_class_name.singularize
     end
     

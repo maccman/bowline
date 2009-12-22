@@ -4,7 +4,7 @@ http://github.com/maccman/bowline
   
 = DESCRIPTION
 
-Ruby desktop application framework
+Ruby, HTML and JS desktop application framework.
 
 = FEATURES
 
@@ -12,7 +12,7 @@ Ruby desktop application framework
 * Uses Webkit
 * View in HTML/JavaScript
 * Binding between HTML & Ruby
-* Cross platform (only osx atm)
+* Cross platform (only osx atm ;)
 
 = INTRODUCTION
 
@@ -39,13 +39,18 @@ info@eribium.org
 http://eribium.org
 http://twitter.com/maccman
 
+= REQUIREMENTS
+
+- Mac OSX (both Leopard & Snow Leopard)
+- Ruby 1.9 (Ruby 1.8.6 is supported, but we recommend you use 1.9 since that's the version your application will be using when it's run).
+- Bowline gem
+
+The other required libraries, such as bowline-desktop, are downloaded later by Bowline - you don't need to worry about these.
+
 = INSTALLATION
 
-Install the Titanium SDK:
-  http://www.appcelerator.com/products/download-titanium/download/
-
 Install the gem:
->> sudo gem install maccman-bowline --source http://gems.github.com
+>> sudo gem install bowline
 
 = USAGE
 
@@ -56,11 +61,12 @@ or browse the completed version here:
 = GENERATING
 
 Using the bowline-gen binary (installed with Bowline) you can generate the following things:
-  app                              Generates a new application.
-  binder                           Generates a new binder, either a collection one, or a singleton one.
-  helper                           Generates a new helper.
-  migration                        Generates a new database migration.
-  model                            Generates a new model.
+  app       
+  binder    
+  helper    
+  migration 
+  model     
+  window
   
 Run 'bowline-gen --help' for more information.
 
@@ -72,30 +78,24 @@ App console:
 Run application:
 >> script/run
 
+Build package for distribution:
+>> script/build
+
 = BINDERS
 
-Binders are the core of Bowline, they're classes that you can bind HTML to.
-Binders contain data. If you modify the binder's data the HTML automatically updates.
-It's a one way relationship though.
+Binders are the core of Bowline. They're a model abstraction for the view which you can bind HTML to.
+Binders in turn are associated with a Model. When the model gets changed, the binder makes sure that the HTML stays in sync.
 
-You can think of binders as similar to controllers in Rails.
-
-There are two types of binders, singleton and collection.
-Singleton binders are for a single data entity, such as the current logged in user.
-And it goes without saying that collection binders are for an array of data.
-
-You can create a collection binder like this:
->> bowline-gen binder users --type collection
+You can create a binder like this:
+>> bowline-gen binder users
 
 Which will generate code a bit like this:
-  module Binders
-    class Users < Bowline::Collection
-    end
+  class UsersBinder < Bowline::Binders::Base
   end
 
 Now, in the view you can bind HTML to this collection, by
 using the following javascript:
-  $('#users').bowline('users');
+  $('#users').bindto('users');
   
 You should probably become familiar with Chain.js (which bowline uses for binding): http://wiki.github.com/raid-ox/chain.js/
 
@@ -111,7 +111,7 @@ Suffice to say, the HTML looks a bit like this:
 Now, were you to have a user object, you could do something like
 this to update the HTML.
 
-Binders::Users.items = [User.first]
+# TODO
 
 = METHODS IN BINDERS
 
@@ -124,7 +124,7 @@ $('#users').invoke('admins')
 It's the same syntax for invoking instance methods, just called
 on one of the individual users:
 
-$('#users div:first').invoke('instance_method', 'arg1')
+$('#users div:first').invoke('instance_meth', 'arg1')
 
 = HELPERS
 
@@ -136,55 +136,53 @@ $.bowline.helper('name', 'arg1', ['arg2'])
 
 = MODELS
 
-Bowline supports ActiveRecord and the Sqlite3 database.
-The packaging for databases is still in development though.
+Bowline supports ActiveRecord and the Sqlite3 database. 
+The packaging for distributing databases is still in development though.
+Bowline also has a LocalModel class for models held in memory.
+
+= WINDOWS
+
+Bowline lets you control your application's windows. The API is under Bowline::Desktop::Window. 
+There's a generator for creating new windows; they live under app/windows. 
+Every window lives under the MainWindow class. If the MainWindow is closed, the app exits.
+  
+= BOWLINE-DESKTOP
+
+Bowline-desktop is an abstraction upon wxWidgets for Bowline. It gives your app access to numerous APIs & system features, such as the Clipboard, Dock, Speakers and Windows.
+
+The binary is built in C++, and statically linked with Ruby 1.9 and wxWidgets so it has no local dependencies. Compiling it isn't a requirement to use Bowline, but if you want to extend or contribute to Bowline-desktop, you can find it here:
+http://github.com/maccman/bowline-desktop
+
+= DISTRIBUTING
+
+Once your app is ready for a release, you should run the following command to make sure all the gems required have been vendorised:
+  rake gems:sync
+
+Then, run:
+  ./script/build
+
+You can only build distributions for your local platform at the moment, but we're planning to extend this.
 
 = THEMES
 
 The Cappuccino Aristo theme has been specially customized for Bowline, you can see
 examples of it in the Twitter client, and find it here:
   http://github.com/maccman/aristo
-  
-= TITANIUM
-
-Bowline is built on top of Titanium, an open source cross platform framework for desktop apps.
-You can use any of the Titanium api methods in Ruby and JavaScript, like this:
-  Titanium.UI.currentWindow.close
-
-Site: http://www.appcelerator.com/products/titanium-desktop/
-API Docs: http://www.codestrong.com/titanium/api/
-
-= BUILDING
-
-Once your app is complete, you should run the following command
-to make sure all the gems required (including Bowline) have been vendorised:
-  rake gems:sync
-
-Then, run:
-  rake app
-
-You can only build distributions for your local platform, but
-using the Titanium Developer app you can build on all three platforms.
 
 = EXAMPLES
 
 Usage for a collection (of users):
 
-  module Binders
-    class Users < Bowline::Collection
+    class Users < Bowline::Binders::Base
+      bind User
       # These are class methods
       # i.e. methods that appear on
       # users, rather an user
       class << self
-        def index
-          # self.items is a magic variable - 
-          # it'll update the html binders
-          self.items = User.all
-        end
-    
         def admins
           # This just replaces all the listed
           # users with just admins
+          # TODO
           self.items = User.admins.all
         end
       end
@@ -201,7 +199,7 @@ Usage for a collection (of users):
       # an ActiveRecord instance
       # 
       # self.page gives you access to the dom, e.g:
-      #  self.page.alert('hello world')
+      #  self.page.alert('hello world').call
   
       def destroy
         self.item.destroy
@@ -220,7 +218,7 @@ Usage for a collection (of users):
   		jQuery(function($){
   		  $.bowline.ready(function(){
           // Bind the element users to UserBinder
-      	  var users = $('#users').bowline('users', function(){
+      	  var users = $('#users').bindto('users', function(){
       	    var self = $(this);
       	    self.find('.destroy').click(function(){
       	      self.invoke('destroy');
@@ -257,19 +255,17 @@ Usage for a collection (of users):
 
 = Building a basic Twitter client
 
-  Install the Titanium SDK:
-  http://www.appcelerator.com/products/download-titanium/download/
-
   Install the gem:
-  >> sudo gem install maccman-bowline --source http://gems.github.com
+  >> sudo gem install bowline
 
   Run the app/binder generators:
   >> bowline-gen app bowline_twitter
   >> cd bowline_twitter
   >> bowline-gen binder tweets
 
-  Copy tweets.rb from examples to app/binders/tweets.rb
-  Add your Twitter credentials to tweets.rb - in this simple example they're not dynamic.
+  Copy tweets_binder.rb from examples to app/binders/tweets_binder.rb
+  Copy tweet.rb from examples to app/models/tweet.rb
+  Add your Twitter credentials to config/application.yml - in this simple example they're not dynamic.
 
   Copy twitter.html from examples to public/index.html
 

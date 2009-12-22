@@ -2,7 +2,7 @@ gem 'templater', '>= 0.3.2'
 require 'templater'
 
 module Bowline
-  module Generators
+  module Generators #:nodoc:
     extend Templater::Manifold
     
     desc <<-DESC

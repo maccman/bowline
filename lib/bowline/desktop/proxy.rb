@@ -1,35 +1,33 @@
 module Bowline
   module Desktop
-    class Proxy      
-      # Use to call out to JavaScript.
-      #
-      # Use the method 'call' if you want 
-      # to call a function, or the method 'res' if you want 
-      # the result of a variable evaluation.
-      #
-      # You can pass a block as the last argument which will
-      # be called with the result of the evaluation.
-      # 
-      # All arguments are serialized by JSON, so you can only pass
-      # the following objects:
-      # * Hash
-      # * Array
-      # * String
-      # * Integer
-      #
-      # Usage:
-      #   proxy.FooObject.messages = [1,2,3] #=> "FooObject.messages = [1,2,3]"
-      #   proxy.FooObject.hi.call #=> "FooObject.hi()"
-      #   proxy.FooObject.hi(1,2,3).bye.call #=> "FooObject.hi(1,2,3).bye()"
-      #   proxy.FooObject.messages.res #=> "FooObject.messages"
-      #   proxy.FooObject.messages.res {|result|
-      #     puts "Messages are: #{result}"
-      #   }
-      #
-      # Reasoning behind this class:
-      #  * JavaScript needs to be called all at once
-      #  * We don't know if it's a method call, or a variable
-      
+    # Use to call out to JavaScript.
+    #
+    # Use the method 'call' if you want  to call a function, 
+    # or the method 'res' if you want  the result of a variable evaluation.
+    #
+    # You can pass a block as the last argument which will
+    # be called with the result of the evaluation.
+    # 
+    # All arguments are serialized by JSON, so you can only pass
+    # the following objects:
+    # * Hash
+    # * Array
+    # * String
+    # * Integer
+    #
+    # Examples:
+    #   proxy.FooObject.messages = [1,2,3] #=> "FooObject.messages = [1,2,3]"
+    #   proxy.FooObject.hi.call #=> "FooObject.hi()"
+    #   proxy.FooObject.hi(1,2,3).bye.call #=> "FooObject.hi(1,2,3).bye()"
+    #   proxy.FooObject.messages.res #=> "FooObject.messages"
+    #   proxy.FooObject.messages.res {|result|
+    #     puts "Messages are: #{result}"
+    #   }
+    #
+    # Reasoning behind this class's call/res API:
+    #  * JavaScript needs to be called all at once
+    #  * We don't know if it's a method call, or a variable
+    class Proxy
       def initialize(win)
         @window = win
         @crumbs = []

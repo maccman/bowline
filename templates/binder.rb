@@ -1,3 +1,3 @@
 class <%= class_name %>
-  # expose <%= expose_name %>
+  # bind <%= bind_name %>
 end

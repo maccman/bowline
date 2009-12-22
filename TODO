@@ -9,3 +9,5 @@ Investigate thread safety
 Load all required JS through Bowline (so you only have to require one JS file)
 
 Add --version to bowline-gen
+
+Update bowline-twitter

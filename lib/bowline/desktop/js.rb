@@ -1,6 +1,6 @@
 module Bowline
   module Desktop
-    module JS    
+    module JS #:nodoc:
       class Script
         include Bowline::Logging
         

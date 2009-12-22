@@ -1,4 +1,5 @@
 module Bowline
+  # Provides paths to Bowline's required libraries.
   module Library
     RUBY_LIB_VERSION      = "1.9.1"
     RUBY_ARCHLIB_PLATFORM = "i386-darwin9.8.0"
@@ -6,6 +7,8 @@ module Bowline
     DESKTOP_URL  = "#{PROJECT_URL}/bowline-desktop"
     RUBYLIB_URL  = "#{PROJECT_URL}/rubylib.zip"
     
+    # Path to a folder stored under the users
+    # home directory containing the downloaded libraries.
     def path
       File.expand_path(
         File.join(home_path, ".bowline")
@@ -13,11 +16,13 @@ module Bowline
     end
     module_function :path
     
+    # Path to the bowline-desktop binary
     def desktop_path
       File.join(path, "bowline-desktop")
     end
     module_function :desktop_path
     
+    # Path to Ruby's stdlib
     def rubylib_path
       File.join(path, "rubylib")
     end
@@ -33,6 +38,7 @@ module Bowline
     end
     module_function :local_rubylib_path
     
+    # Returns true if all required libraries exist.
     def ready?
       File.exist?(desktop_path) && 
         File.directory?(rubylib_path) && 

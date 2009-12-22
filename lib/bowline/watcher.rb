@@ -18,8 +18,11 @@ module Bowline
     # 
     # MyClass.on_update { puts 'update' }
     # MyClass.new.on_create { puts 'create' }
-    
-    module Base    
+    module Base
+      # Create a helper method to easily add new callbacks.
+      # Example:
+      #   watch :on_load
+      #   on_load { puts "Loaded!" }
       def watch(*names)
       	names.each do |name|
           # Because define_method only takes a block,
@@ -45,11 +48,13 @@ module Bowline
       def initialize(watcher, event, prok)
       	@watcher, @event, @prok = watcher, event, prok
       end
-    
+      
+      # Execute callback
       def call(*args)
       	@prok.call(*args)
       end
-    
+      
+      # Remove callback from watcher
       def remove
       	@watcher.remove(@event, @prok)
       end
@@ -58,20 +63,24 @@ module Bowline
     def initialize
       @listeners = {}
     end
-  
+    
+    # Add new method/proc to a specific event.
     def append(event, method = nil, &block)
       callback = Callback.new(self, event, method||block)
       (@listeners[event] ||= []) << callback
       callback
     end
-  
+    
+    # Call an event's callbacks with provided arguments.
     def call(event, *args)
       return unless @listeners[event]
       @listeners[event].each do |callback|
         callback.call(*args)
       end
     end
-  
+    
+    # Remove an specific callback on an event,
+    # or all an event's callbacks.
     def remove(event, value=nil)
       return unless @listeners[event]
       if value
@@ -83,7 +92,8 @@ module Bowline
         @listeners.delete(event)
       end
     end
-  
+    
+    # Clear all events and callbacks.
     def clear
       @listeners = {}
     end

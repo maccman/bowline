@@ -1,5 +1,5 @@
 class Object
-  # Aim is to convert the object in:
+  # Aim is to convert the object into:
   #  * A hash or
   #  * An array of hashes
   def to_js

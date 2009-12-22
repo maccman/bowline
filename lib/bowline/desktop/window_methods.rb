@@ -1,6 +1,6 @@
 module Bowline
   module Desktop
-    module WindowMethods
+    module WindowMethods #:nodoc:
       def center(direction = nil)
         direction = 
         case direction

@@ -1,4 +1,4 @@
 module Bowline
-  module Helpers
+  module Helpers #:nodoc:
   end
 end

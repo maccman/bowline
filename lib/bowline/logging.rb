@@ -1,5 +1,5 @@
 module Bowline
-  # To be included in classes to allow some basic logging
+  # To be included in classes to allow some basic logging.
   module Logging
     def trace(msg=nil)
       Bowline.logger.info(msg)

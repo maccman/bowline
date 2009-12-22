@@ -1,4 +1,5 @@
-module Dependencies; end
+module Dependencies #:nodoc:
+end
 
 Dir[File.join(File.dirname(__FILE__), 'dependencies', '*.rb')].each do |file|
   require file

@@ -1,8 +1,9 @@
 module Bowline
   module Desktop
     module Sound
-      # Methods:
-      #   play(wav_file_path)
+      ##
+      # :singleton-method: play(path)
+      # Play a wav file
     end
   end
 end

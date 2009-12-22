@@ -7,7 +7,7 @@ module Bowline
       @@configuration
     end
 
-    def configuration=(configuration)
+    def configuration=(configuration) #:nodoc:
       @@configuration = configuration
     end
     
@@ -15,10 +15,12 @@ module Bowline
       @initialized || false
     end
 
-    def initialized=(initialized)
+    def initialized=(initialized) #:nodoc:
       @initialized ||= initialized
     end
 
+    # The default Bowline logger. 
+    # Also see the Bowline::Logging class.
     def logger
       if defined?(BOWLINE_LOGGER)
         BOWLINE_LOGGER
@@ -27,12 +29,13 @@ module Bowline
       end
     end
     
+    # The application's root
     def root
       Pathname.new(APP_ROOT) if defined?(APP_ROOT)
     end
   end
   
-  class Initializer
+  class Initializer #:nodoc:
     # The Configuration instance used by this Initializer instance.
     attr_reader :configuration
     
@@ -58,6 +61,7 @@ module Bowline
       @loaded_plugins = []
     end
     
+    # Add all of Ruby's stdlib to the load path
     def initialize_ruby
       return unless Bowline::Desktop.enabled?
       ruby_path = Bowline::Library.local_rubylib_path
@@ -119,6 +123,7 @@ module Bowline
       $LOAD_PATH.uniq!
     end
     
+    # Initializes ActiveRecord databases
     def initialize_database
       if defined?(ActiveRecord)
         ActiveRecord::Base.establish_connection(configuration.database_configuration)
@@ -268,6 +273,8 @@ module Bowline
       silence_warnings { Object.const_set "APP_NAME", configuration.name }
     end
     
+    # Creates a class called AppConfig from configuration
+    # variables found in config/application.yml
     def load_app_config
       app_config = configuration.app_config
       return unless app_config
@@ -446,13 +453,34 @@ module Bowline
      
      attr_accessor :initializer_glob
      
+     # Set the path that MainWindow will load
+     # when the application starts.
      attr_accessor :index_path
      
+     # Set the application's name.
+     # This is required.
      attr_accessor :name
+     
+     # Set the application's globally unique id.
+     # This is required.
+     # Example:
+     #    config.id = "com.maccman.bowline"
      attr_accessor :id
+     
+     # Set the application's version.
+     # Example:
+     #    config.version = "0.1.2"
      attr_accessor :version
+     
      attr_accessor :description
      attr_accessor :url
+     
+     # Set the application's icon. 
+     # Point this variable to the icons path.
+     #
+     # If this isn't specified, Bowline's default one will be used.
+     # 
+     # Supported icon files are PNGs and JPGs, preferably 512px x 512px.
      attr_accessor :icon
 
      attr_accessor :publisher

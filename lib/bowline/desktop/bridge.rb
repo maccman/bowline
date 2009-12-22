@@ -2,12 +2,11 @@ module Bowline
   module Desktop
     module Bridge
       module ClassMethods
-        # Extend you own classes with this
-        # module, and then call js_expose 
-        # to expose your classes' class
-        # variables to JavaScript.
+        ##
+        # Extend you own classes with this module, and then call js_expose 
+        # to expose your classes' class variables to JavaScript.
         #
-        # Ruby Class:
+        # Example:
         #   class FooClass
         #     extend Bowline::Desktop::Bridge::ClassMethods
         #     js_expose
@@ -17,7 +16,7 @@ module Bowline
         #     end
         #   end
         #
-        # JavaScript:
+        # JavaScript Example:
         #   Bowline.invoke("FooClass", "foo", function(res){
         #     console.log(res);
         #   })
@@ -36,7 +35,7 @@ module Bowline
         end
       end
       
-      class Message
+      class Message #:nodoc:
         include Bowline::Logging
         
         def self.from_array(window, arr)
@@ -75,12 +74,12 @@ module Bowline
         end
       end
       
-      def setup
+      def setup #:nodoc:
         Desktop.on_tick(method(:poll))
       end
       module_function :setup
 
-      def poll
+      def poll #:nodoc:
         WindowManager.allocated_windows.each do |window|
           result   = window.run_script("try {Bowline.pollJS()} catch(e) {false}")
           next if result.blank? || result == "false"

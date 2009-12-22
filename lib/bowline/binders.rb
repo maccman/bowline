@@ -1,11 +1,13 @@
 module Bowline
   module Binders
+    # TODO
     class Base
       extend Bowline::Watcher::Base
       extend Bowline::Desktop::Bridge::ClassMethods
       js_expose
       
       class << self
+        # An array of window currently bound
         def windows
           @windows ||= []
         end
@@ -17,7 +19,7 @@ module Bowline
           true
         end
         
-        def js_invoke(window, method, *args)
+        def js_invoke(window, method, *args) #:nodoc:
           if method == :setup
             setup(window)
           else
@@ -69,9 +71,9 @@ module Bowline
           # to setup callbacks so changes to the
           # model are automatically reflected in
           # the view. Usage:
-          #   expose Post
+          #   bind Post
           #
-          # When the exposed class is created/updated/deleted
+          # When the bound class is created/updated/deleted
           # the binder's callbacks are executed and the view
           # updated accordingly.
           #  
@@ -87,16 +89,16 @@ module Bowline
           #
           # You can override .to_js on the model instance
           # in order to return specific attributes for the view
-          def expose(klass)
+          def bind(klass)
             @klass = klass
             @klass.after_create(method(:created))
             @klass.after_update(method(:updated))
             @klass.after_destroy(method(:removed))
           end
           
-          # Returns class set by the 'expose' method
+          # Returns class set by the 'bind' method
           def klass
-            @klass || raise("klass not set - see expose method")
+            @klass || raise("klass not set - see bind method")
           end
           
           # JavaScript proxy to the page:
@@ -114,7 +116,7 @@ module Bowline
           end
       
           # Javascript proxy to jQuery:
-          #   jquery.getJSON("http://example.com")
+          #   jquery.getJSON("http://example.com").call
           def jquery
             page.jQuery
           end
@@ -155,11 +157,7 @@ module Bowline
     
       attr_reader :element
       attr_reader :item
-      
-      # Instance of an element on the view.
-      # 
-      # item.destroy
-      # element.highlight.call
+
       def initialize(id, *args) #:nodoc:
         @element = self.class.bowline.element(
                       self.class.name, id
@@ -168,7 +166,8 @@ module Bowline
       end
       
       protected
-        # Trigger jQuery events on this element:
+        # Trigger jQuery events on this element.
+        # Example:
         #   trigger(:highlight)
         def trigger(event, data = nil)
           element.trigger(
@@ -184,7 +183,7 @@ module Bowline
     
         # Shortcut methods
     
-        # See self.class.js
+        # See self.class.page
         def page
           self.class.page
         end

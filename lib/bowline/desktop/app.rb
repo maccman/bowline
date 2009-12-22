@@ -1,9 +1,13 @@
 module Bowline
   module Desktop
     module App
-      # Methods:
-      #   busy()
-      #   exit()
+      ##
+      # :singleton-method: busy
+      # Shows a busy cursor (hourglass) on all windows.
+      
+      ##
+      # :singleton-method: exit
+      # Exits the application.
     end
   end
 end

@@ -1,8 +1,8 @@
-# naive platform detection for Ruby
-# Based on code by Matt Mower <self@mattmower.com>
-# http://matt.blogs.it/gems/ruby/platform.rb
-
 module Bowline
+  # Naive platform detection for Ruby
+  #
+  # Based on code by Matt Mower <self@mattmower.com>
+  # http://matt.blogs.it/gems/ruby/platform.rb
   module Platform
     if RUBY_PLATFORM =~ /darwin/i
        OS = :unix
@@ -60,8 +60,10 @@ module Bowline
     end
     module_function :win32?
     
-    # Return OS type:
-    #  Bowline::Platform.type # => :osx
+    # Return OS type. An error is raised
+    # on platforms unsupported by Bowline.
+    # Example:
+    #   Bowline::Platform.type # => :osx
     def type
       return :osx   if osx?
       return :linux if linux?
