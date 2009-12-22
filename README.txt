@@ -39,6 +39,10 @@ info@eribium.org
 http://eribium.org
 http://twitter.com/maccman
 
+= COMMUNITY
+
+http://groups.google.com/group/bowline-dev
+
 = REQUIREMENTS
 
 - Mac OSX (both Leopard & Snow Leopard)
