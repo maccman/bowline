@@ -1084,10 +1084,6 @@ class Pathname    # * mixed *
   end
 end
 
-class Pathname
-  undef =~
-end
-
 module Kernel
   # create a pathname object.
   #

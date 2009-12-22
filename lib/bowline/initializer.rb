@@ -83,6 +83,8 @@ module Bowline
       $: << File.join(ruby_path, "vendor_ruby")                     # RUBY_VENDOR_LIB
       $: << File.join(ruby_path, "vendor_ruby", version)            # RUBY_VENDOR_LIB2
       $: << File.join(ruby_path, "vendor_ruby", version, platform)  # RUBY_VENDOR_ARCHLIB
+      
+      # These two need to be required to fully setup internationalization 
       require File.join(*%w[enc encdb])
       require File.join(*%w[enc trans transdb])
     end
