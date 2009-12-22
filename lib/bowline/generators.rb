@@ -2,13 +2,13 @@ gem 'templater', '>= 0.3.2'
 require 'templater'
 
 module Bowline
-  module Generators #:nodoc:
+  module Generators #:nodoc: all
     extend Templater::Manifold
     
     desc <<-DESC
       Generate components for your application or entirely new applications.
     DESC
-    class Generator < Templater::Generator #:nodoc:
+    class Generator < Templater::Generator
       def with_modules(modules, options={}, &block)
         indent = options[:indent] || 0
         text = capture(&block)

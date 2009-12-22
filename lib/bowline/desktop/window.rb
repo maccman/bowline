@@ -20,6 +20,10 @@ module Bowline
       #   :horizontal - horizontal to the app
       #   :vertical   - vertical to the app
       #   :center     - center of the screen
+      #
+      # :call-seq:
+      #   my_method(Range)
+      #   my_method(offset, length)
       
       ##
       # :singleton-method: close
