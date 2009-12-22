@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.5.3"
+  s.version = "0.5.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2009-12-20}
+  s.date = %q{2009-12-22}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -35,9 +35,9 @@ Gem::Specification.new do |s|
      "assets/osx/makeicns",
      "bin/bowline-gen",
      "bowline.gemspec",
-     "examples/account.rb",
      "examples/example.js",
-     "examples/tweets.rb",
+     "examples/tweet.rb",
+     "examples/tweets_binder.rb",
      "examples/twitter.html",
      "examples/users.rb",
      "lib/bowline.rb",
@@ -125,8 +125,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Bowline GUI framework}
   s.test_files = [
-    "examples/account.rb",
-     "examples/tweets.rb",
+    "examples/tweet.rb",
+     "examples/tweets_binder.rb",
      "examples/users.rb"
   ]
 
