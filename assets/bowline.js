@@ -2,9 +2,10 @@
   Bowline JavaScript API
   
   This library lets you call Ruby methods, and bind up elements.
-  It requires jQuery and Chain.js:
+  It requires jQuery, Chain.js and json2:
     http://jquery.com
     http://github.com/raid-ox/chain.js
+    http://www.JSON.org/json2.js
   
   = Functions
   
@@ -97,6 +98,11 @@
     If called on a item inside a bound element, an instance method will be called.
     Example:
       $("#users").items(10).invoke("my_instance_method");
+      
+  = Debugging
+  
+  Turn on Bowline.trace to show debugging information:
+    Bowline.trace = true
   
   = Using other libraries (e.g. Prototype)
   
