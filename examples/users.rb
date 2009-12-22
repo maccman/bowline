@@ -1,12 +1,7 @@
 module Binders
-  class Users < Bowline::Binders::Collection    
-    class << self
-      # self.items is a special method
-      # Basically it'll update users on the client side
-      def index
-        self.items = User.all
-      end
- 
+  class Users < Bowline::Binders::Base
+    bind User    
+    class << self 
       def admins
         self.items = User.admins.all
       end
@@ -14,23 +9,22 @@ module Binders
   
     def update(attrs)
       if @item.update_attributes(attrs)
-        flash[:notice] = "Successfully updated"
+        page.flash("Successfully updated").call
       else
-        flash[:notice] = "Errors updating users"
+        page.flash_error("Errors updating users").call
       end
     end
  
     def highlight
       # Calls $('user_1').highlight()
-      self.element.highlight
+      self.element.highlight.call
     end
   
-    # Overrides charge on user
     def charge!
-      # calls charge! on model (i.e. do sql commit )
+      # calls charge! on model (i.e. do SQL commit )
       self.item.charge!
       # Now gui stuff
-      flash[:notice] = "Successfully charged"
+      page.flash("Charged!")
       highlight
     end
   end
