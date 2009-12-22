@@ -69,6 +69,10 @@ module Bowline
         ruby_path = Bowline::Library.rubylib_path
         return unless File.directory?(ruby_path)
       end
+      # Remove old stdlib load paths
+      $:.delete_if {|path| path =~ /^\/usr\// }
+      
+      # Add new stdlib load paths
       version   = Library::RUBY_LIB_VERSION
       platform  = Library::RUBY_ARCHLIB_PLATFORM
       $: << File.join(ruby_path, version)                           # RUBY_LIB
@@ -81,7 +85,6 @@ module Bowline
       $: << File.join(ruby_path, "vendor_ruby", version, platform)  # RUBY_VENDOR_ARCHLIB
       require File.join(*%w[enc encdb])
       require File.join(*%w[enc trans transdb])
-      $:.uniq!
     end
         
     def require_frameworks
