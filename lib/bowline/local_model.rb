@@ -134,7 +134,7 @@ module Bowline
     
     private
       def run_callbacks(callback)
-        self.class.watcher.call(callback)
+        self.class.watcher.call(callback, self)
       end
   end
 end
