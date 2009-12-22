@@ -94,7 +94,8 @@ module Bowline
       # :singleton-method: close
       # Close this window. Once a window is closed, either by a user or 
       # by calling this method, it has been deallocated and may not be opened again. 
-      # You'll need to create a new instance of this class for a new window. 
+      #
+      # You'll need to create a new instance of this class for a new window.
       # Calling any methods on a dealocated window won't have any effect.
       
       ##

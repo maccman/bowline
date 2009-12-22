@@ -22,7 +22,7 @@ Gem.pre_install_hooks.push(proc do |installer|
   end
 end)
 
-class ::Gem::Uninstaller
+class ::Gem::Uninstaller #:nodoc:
   def self._with_silent_ui
 
     ui = Gem::DefaultUserInteraction.ui
@@ -64,7 +64,7 @@ Gem.post_install_hooks.push(proc do |installer|
   )
 end)
 
-class ::Gem::DependencyInstaller
+class ::Gem::DependencyInstaller #:nodoc:
   alias old_fg find_gems_with_sources
 
   def find_gems_with_sources(dep)
@@ -78,7 +78,7 @@ class ::Gem::DependencyInstaller
   end
 end
 
-class ::Gem::SpecFetcher
+class ::Gem::SpecFetcher #:nodoc:
   alias old_fetch fetch
   def fetch(*args) # in rubygems 1.3.2 fetch takes 4 parameters
     dependency, all, matching_platform, prerelease = *args
@@ -102,7 +102,7 @@ class ::Gem::SpecFetcher
   end
 end
 
-class ::Gem::Specification
+class ::Gem::Specification #:nodoc:
   def recursive_dependencies(from, index = Gem.source_index)
     specs = self.runtime_dependencies.map do |dep|
       spec = index.search(dep).last

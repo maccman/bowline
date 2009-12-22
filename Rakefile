@@ -19,3 +19,13 @@ task :write_version do
   require File.join(File.dirname(__FILE__), *%w[lib bowline])
   File.open('VERSION', 'w') {|f| f.write Bowline::Version::STRING }
 end
+
+require 'rake/rdoctask'
+desc "Generate documentation for Bowline."
+Rake::RDocTask.new(:rdoc) do |rdoc|
+  rdoc.rdoc_dir = "rdoc"
+  rdoc.title    = "Bowline"
+  rdoc.options << "--line-numbers" << "--inline-source"
+  rdoc.rdoc_files.include("README.txt")
+  rdoc.rdoc_files.include("lib/**/*.rb")
+end

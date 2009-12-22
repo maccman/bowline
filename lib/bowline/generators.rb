@@ -8,7 +8,7 @@ module Bowline
     desc <<-DESC
       Generate components for your application or entirely new applications.
     DESC
-    class Generator < Templater::Generator
+    class Generator < Templater::Generator #:nodoc:
       def with_modules(modules, options={}, &block)
         indent = options[:indent] || 0
         text = capture(&block)
