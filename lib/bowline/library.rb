@@ -38,6 +38,11 @@ module Bowline
     end
     module_function :local_rubylib_path
     
+    def local_build_path
+      File.join(APP_ROOT, "build")
+    end
+    module_function :local_build_path
+    
     # Returns true if all required libraries exist.
     def ready?
       File.exist?(desktop_path) && 

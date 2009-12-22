@@ -11,7 +11,7 @@ namespace :app do
       
       config = Bowline.configuration
       assets_path = File.join(Bowline.assets_path, "osx")
-      build_path  = File.join(APP_ROOT, "build")
+      build_path  = Bowline::Library.local_build_path
       app_path    = File.join(build_path, "#{config.name}.app")
       FileUtils.rm_rf(app_path)
       contents_path = File.join(app_path, "Contents")
@@ -96,6 +96,6 @@ namespace :app do
   desc "Build app"
   task :build do
     Rake::Task["app:build:#{Bowline::Platform.type}"].invoke
-    puts "Application successfully built inside the 'build' folder."
+    puts "Successfully built application: #{Bowline::Library.local_build_path}"
   end  
 end
