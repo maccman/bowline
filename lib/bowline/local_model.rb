@@ -15,9 +15,11 @@ module Bowline
           :before_update,  :after_update,
           :before_destroy, :after_destroy
     
-    @@records = []
-  
     class << self
+      def records
+        @records ||= []
+      end
+      
       # Populate the model with the array argument.
       # This doesn't replace the model's existing records.
       # Create callbacks are still executed.
@@ -27,24 +29,24 @@ module Bowline
       
       # Find record by ID, or raise.
       def find(id)
-        @@records.find {|r| r.id == id } || raise('Unknown Record')
+        records.find {|r| r.id == id } || raise('Unknown Record')
       end
       alias :[] :find
     
       def first
-        @@records[0]
+        records[0]
       end
       
       def last
-        @@records[-1]
+        records[-1]
       end
       
       def count
-        @@records.length
+        records.length
       end
     
       def all
-        @@records
+        records
       end
       
       def destroy(id)
@@ -54,13 +56,13 @@ module Bowline
       # Removes all records and executes 
       # destory callbacks.
       def destroy_all
-        @@records.dup.each {|r| r.destroy }
+        records.dup.each {|r| r.destroy }
       end
       
       # Removes all records without executing
       # destroy callbacks.
       def delete_all
-        @@records.clear
+        records.clear
       end
       
       # Create a new record.
@@ -104,7 +106,7 @@ module Bowline
       run_callbacks(:before_save)
       if @new_record
         run_callbacks(:before_create)
-        @@records << self
+        self.class.records << self
         run_callbacks(:after_create)
         @new_record = false
       end
@@ -114,7 +116,7 @@ module Bowline
   
     def destroy
       run_callbacks(:before_destroy)
-      @@records.delete(self)
+      self.class.records.delete(self)
       run_callbacks(:after_destroy)
       true
     end
