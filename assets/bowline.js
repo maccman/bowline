@@ -1,3 +1,112 @@
+/*
+  Bowline JavaScript API
+  
+  This library lets you call Ruby methods, and bind up elements.
+  It requires jQuery and Chain.js:
+    http://jquery.com
+    http://github.com/raid-ox/chain.js
+  
+  = Functions
+  
+  invoke(klass, method, *args)
+    Invoke a class method on a particular class. Usually
+    used to invoke methods on a binder. The class needs to
+    be exposed to JS (using the Bowline::Desktop::Bridge#js_expose).
+    Usage: 
+      Bowline.invoke('MyClass', 'my_method');
+  
+  instanceInvoke(klass, id, method, *args)
+    Invoke an instance method an a binder.
+    Usually called via the jQuery helper functions.
+    Usage: 
+      Bowline.instanceInvoke('UsersBinder', 1, 'charge!');
+    
+  windowInvoke(method, *args)
+    Invoke class method on this window's class.
+    Usage:
+      Bowline.windowInvoke('close');
+    
+  helper(method, *args)
+    Invoke a method defined in any helper.
+    
+  bindto(element, klass, options = {})
+    Bind a element to a Bowline binder. 
+    Usually called via the jQuery helper functions.
+    Usage:
+      Bowline.bindto('#users', 'UsersBinder');
+    
+    The options can either be a template hash:
+        {
+      		'.name .first': {
+      			style: 'color: blue;',
+      			content: 'First Name: {first}'
+      		},
+      		'.name .last': 'Family Name: {last}',
+      		'.address': function(data, el){
+      			if(!data.address)
+      				el.hide();
+      			return data.address;
+      		},
+      		builder: function(){
+      			var data = this.item();
+      			this.find('.name').click(function(){alert(data.name)});
+      		}
+      	}
+      	
+    Or the options can be a builder function:    	
+      	(function(){
+          this.bind('click', function(){
+        	var data = this.item();
+        	alert(data);
+        })
+        
+    For more documentation, look at the Chain.js library:
+      http://wiki.github.com/raid-ox/chain.js/elementchain
+      
+  = Filtering items
+  
+    $('#users').items('filter', 'value');
+  
+  = Sorting items
+    
+    $('#users').items('sort', 'first_name');
+  
+  = Update events
+  
+    $('#users').update(function(){
+      //...
+    });
+  
+  = JQuery functions
+  
+  These are how you usually bind elements, or invoke a binders class/instance methods.
+  
+  $.fn.bindto(klass, options)
+    Associate an an element with a Bowline binder.
+    Example:
+      $("#users").bindto('UsersBinder');
+  
+  $.fn.invoke(method, *args)
+    Invoke a class/instance method on a Bowline binder. 
+    
+    If called on the bound element, in this example the #users div, then a class method 
+    will be called on the binder.
+    Example:
+      $("#users").invoke("my_class_method", "arg1");
+            
+    If called on a item inside a bound element, an instance method will be called.
+    Example:
+      $("#users").items(10).invoke("my_instance_method");
+  
+  = Using other libraries (e.g. Prototype)
+  
+  Although this library requires jQuery, its API is not jQuery
+  specific. It's perfectly feasible to rewrite to use Prototype instead.
+  Additionally, jQuery plays nicely with other libraries using it's noConflict() method. 
+  So you're still free to use other JavaScript libraries without fear of conflicts.
+
+*/
+
 var Bowline = {
   msgs: [],
   callbacks: {},
@@ -54,7 +163,7 @@ var Bowline = {
     Bowline.invoke(args);
   },
   
-  bind: function(el, klass, options){
+  bindto: function(el, klass, options){
     el = jQuery(el);
     el.chain(options);
     el.data('bowline', klass);
@@ -182,10 +291,10 @@ var Bowline = {
     }
   };
   
-  $.fn.bowline = function(){
+  $.fn.bindto = function(){
     var args = $.makeArray(arguments);
     args.unshift(this);
-    Bowline.bind.apply(this, args);
+    Bowline.bindto.apply(this, args);
   };
 })(jQuery);
 

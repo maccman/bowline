@@ -1,21 +1,83 @@
 module Bowline
   module Binders
-    # TODO
+    # Binders are a central part of Bowline. They perform two main functions:
+    #   1) Bind a model to the view, so any changes to the model get automatically
+    #      reflected in the view.
+    #   2) View abstraction of the model. You can define view specific class & instance
+    #      methods, and easily call them from bound JavaScript objects.
+    # 
+    # To use a binder, you first need to bind it to a model using the bind method.
+    # Example:
+    #   class UsersBinder < Bowline::Binders::Base
+    #     bind User
+    #   end
+    # 
+    # Once a class is bound, any updates to the model automatically update any bound HTML.
+    # The class names in the HTML are tied to the model's attribute names.
+    # You can bind HTML using the bowline.js bindup function.
+    # Example:
+    #   <div id="users">
+    #     <div class="item">
+    #       <span class="name"></span>
+    #     </div>
+    #   </div>
+    #   <script>
+    #     $("#users").bindup('UsersBinder');
+    #   </script>
+    # 
+    # =Class methods
+    # 
+    # You can define class methods on your binder, and call them using JavaScript
+    # using the invoke function on the bound HTML element.
+    # Example:
+    #   <script>
+    #     var users = $("#users").bindup('UsersBinder');
+    #     users.invoke("method_name", "arg1", "arg2")
+    #   </script>
+    # 
+    # =Instance methods
+    # 
+    # You can call your binders instance method from JavaScript by calling the invoke
+    # function on the generated HTML elements. Your binder's instance methods have access
+    # to an 'element' variable, which is the jQuery element, and a 'item' variable, which 
+    # is the bound model's instance record.
+    # 
+    # Example:
+    #   class UsersBinder < Bowline::Binders::Base
+    #     bind User
+    #     def charge!
+    #       #...
+    #     end
+    #   end
+    # 
+    #   <script>
+    #     $('#users').items(10).invoke('charge!');
+    #   </script>
+    #
+    # For more documentation on Bowline's JavaScript API, see bowline.js
     class Base
       extend Bowline::Watcher::Base
       extend Bowline::Desktop::Bridge::ClassMethods
       js_expose
       
       class << self
-        # An array of window currently bound
+        # An array of window currently bound.
         def windows
           @windows ||= []
         end
         
-        # Called by JS when first bound
-        def setup(window)
+        # Called by a window's JavaScript whenever that window is bound to this Binder.
+        # This method populates the window's HTML with all bound class' records.
+        # Override this if you don't want to send all the class' records to the window.
+        # Example:
+        #   def setup(window)
+        #     super(window, last_10_tweets)
+        #   end  
+        def setup(window, items = all)
           self.windows << window
-          self.items = all
+          window.bowline.populate(
+            name, items.to_js
+          ).call
           true
         end
         
@@ -31,19 +93,28 @@ module Bowline
           self.new(id).send(meth, *args)
         end
         
+        # Calls .find on the klass sent to the bind method.
+        # This is used internally, to find records when the page
+        # invoke instance methods.
         def find(id)
           klass.find(id)
         end
-
+        
+        # Calls .all on the klass sent to the bind method.
+        # This method is called internally by the setup method.
         def all
           klass.all
         end
         
-        def items=(items) #:nodoc:
+        # Set the binder's items. This will replace all items, and update the HTML.
+        def items=(items)
           bowline.populate(name, items.to_js).call
         end
         
-        def created(item) #:nodoc:
+        # Add a new item to the binder, updating the HTML.
+        # This method is normally only called internally by 
+        # the bound class's after_create callback.
+        def created(item)
           bowline.created(
             name, 
             item.id, 
@@ -51,7 +122,10 @@ module Bowline
           ).call
         end
         
-        def updated(item) #:nodoc:
+        # Update an item on the binder, updating the HTML.
+        # This method is normally only called internally by 
+        # the bound class's after_update callback.
+        def updated(item)
           bowline.updated(
             name, 
             item.id, 
@@ -59,7 +133,10 @@ module Bowline
           ).call
         end
         
-        def removed(item) #:nodoc:
+        # Remove an item from the binder, updating the HTML.
+        # This method is normally only called internally by 
+        # the bound class's after_destroy callback.
+        def removed(item)
           bowline.removed(
             name, 
             item.id
@@ -67,28 +144,30 @@ module Bowline
         end
         
         protected
-          # Associate the binder with a model 
-          # to setup callbacks so changes to the
-          # model are automatically reflected in
-          # the view. Usage:
+          # Associate the binder with a model to setup callbacks so 
+          # changes to the model are automatically reflected in the view.
+          # Example:
           #   bind Post
           #
           # When the bound class is created/updated/deleted
           # the binder's callbacks are executed and the view
           # updated accordingly.
-          #  
-          # klass needs to respond to:
-          #  * all
-          #  * find(id)
-          #  * after_create(method)
-          #  * after_update(method)
-          #  * after_destroy(method)
+          # 
+          # Classes inheriting fromActiveRecord and Bowline::LocalModel are 
+          # automatically compatable, but if you're using your own custom model
+          # you need to make sure it responds to the following methods:
+          #  * all                    - return all records
+          #  * find(id)               - find record by id
+          #  * after_create(method)   - after_create callback
+          #  * after_update(method)   - after_update callback
+          #  * after_destroy(method)  - after_destroy callback
           #
-          # klass instance needs to respond to:
-          #   * id
+          # The klass' instance needs to respond to:
+          #   * id      - returns record id
+          #   * to_js   - return record's attribute hash
           #
-          # You can override .to_js on the model instance
-          # in order to return specific attributes for the view
+          # You can override the to_js method on the model instance
+          # in order to return specific attributes for the view.
           def bind(klass)
             @klass = klass
             @klass.after_create(method(:created))
@@ -101,7 +180,9 @@ module Bowline
             @klass || raise("klass not set - see bind method")
           end
           
-          # JavaScript proxy to the page:
+          # JavaScript proxy to the page. 
+          # See Bowline::Desktop::Proxy for more information.
+          # Example:
           #   page.myFunc(1,2,3).call
           def page
             Bowline::Desktop::Proxy.new(
@@ -109,13 +190,17 @@ module Bowline
             )
           end
           
-          # JavaScript proxy to the Bowline object:
+          # JavaScript proxy to the Bowline object.
+          # See Bowline::Desktop::Proxy for more information.
+          # Example:
           #   bowline.log("msg").call
           def bowline
             page.Bowline
           end
       
-          # Javascript proxy to jQuery:
+          # Javascript proxy to jQuery.
+          # See Bowline::Desktop::Proxy for more information.
+          # Example:
           #   jquery.getJSON("http://example.com").call
           def jquery
             page.jQuery
@@ -127,7 +212,8 @@ module Bowline
           end
           
           # Trigger events on all elements
-          # bound to this binder:
+          # bound to this binder.
+          # Example:
           #   trigger(:reload, {:key => :value})
           def trigger(event, data = nil)
             bowline.trigger(
@@ -154,8 +240,11 @@ module Bowline
                 name.to_s
           end
       end
-    
+      
+      # jQuery element object
       attr_reader :element
+      
+      # Instance of the bound class' record
       attr_reader :item
 
       def initialize(id, *args) #:nodoc:

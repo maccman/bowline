@@ -83,6 +83,10 @@ module Bowline
           Proxy.new(window)
         end
         
+        def bowline
+          page.Bowline
+        end
+        
         # Returns true if the both the HTML and JavaScript in
         # this window have loaded. Use the on_load event to know
         # when this window has loaded.
