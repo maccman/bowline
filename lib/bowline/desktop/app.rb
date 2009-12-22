@@ -2,7 +2,7 @@ module Bowline
   module Desktop
     module App
       ##
-      # :singleton-method: busy
+      # :singleton-method: busy(bool = true)
       # Shows a busy cursor (hourglass) on all windows.
       
       ##

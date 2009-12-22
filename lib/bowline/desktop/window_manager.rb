@@ -80,7 +80,7 @@ module Bowline
         # 
         # See Bowline::Desktop::Proxy for full usage.
         def page
-          Proxy.new(window)
+          Proxy.new(self)
         end
         
         def bowline

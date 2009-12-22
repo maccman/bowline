@@ -63,7 +63,7 @@ module Bowline
       # The methods won't exist on window
       # if Bowline::Desktop isn't enabled
       def method_missing(sym, *args)
-        Bowline::Desktop.enabled? ? raise : nil
+        Bowline::Desktop.enabled? ? super : nil
       end
     end
   end

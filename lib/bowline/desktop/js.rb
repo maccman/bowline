@@ -31,7 +31,7 @@ module Bowline
             result
           else
             trace "Pseudo JS eval on #{window}: #{script}"
-            prok.call(nil)
+            prok.call(nil) if prok
           end
         end
         
