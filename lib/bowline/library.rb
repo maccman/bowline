@@ -1,8 +1,6 @@
 module Bowline
   # Provides paths to Bowline's required libraries.
   module Library
-    RUBY_LIB_VERSION      = "1.9.1"
-    RUBY_ARCHLIB_PLATFORM = "i386-darwin9.8.0"
     PROJECT_URL  = "http://bowline.s3.amazonaws.com/#{Platform.type}"
     DESKTOP_URL  = "#{PROJECT_URL}/bowline-desktop"
     RUBYLIB_URL  = "#{PROJECT_URL}/rubylib.zip"
