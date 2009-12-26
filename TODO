@@ -3,11 +3,19 @@ Use new Rails gem packaging system
 Ideas: 
   * bowline-notification gem (Growl)
 
-Investigate performance issue (happens when lots of js is executed without a break)
 Investigate thread safety
 
 Load all required JS through Bowline (so you only have to require one JS file)
 
 Add --version to bowline-gen
 
-Update bowline-twitter
+Developer tools:
+  F5 to reload page
+  Show inspector
+  Reload ruby
+
+Tutorials:
+  Drag and drop
+  CSS gradients
+  CSS webkit-box (layouts)
+  CSS search box & placeholder
