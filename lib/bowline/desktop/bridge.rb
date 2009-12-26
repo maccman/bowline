@@ -38,10 +38,6 @@ module Bowline
       class Message #:nodoc:
         include Bowline::Logging
         
-        def self.from_array(window, arr)
-          arr.map {|i| self.new(window, i) }
-        end
-        
         attr_reader :window, :id, :klass, :method, :args
         
         def initialize(window, atts)
@@ -74,23 +70,13 @@ module Bowline
         end
       end
       
-      def setup #:nodoc:
-        Desktop.on_tick(method(:poll))
-      end
-      module_function :setup
-
-      def poll #:nodoc:
-        WindowManager.allocated_windows.each do |window|
-          result   = window.run_script("try {Bowline.pollJS()} catch(e) {false}")
-          next if result.blank? || result == "false"
-          result   = JSON.parse(result)
-          messages = Message.from_array(window, result)
-          messages.each(&:invoke)
-        end
+      def call(window, str) #:nodoc:
+        result = JSON.parse(str)
+        Message.new(window, result).invoke
       rescue => e
         Bowline::Logging.log_error(e)
       end
-      module_function :poll
+      module_function :call
     end
   end
 end

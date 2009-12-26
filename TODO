@@ -19,3 +19,5 @@ Tutorials:
   CSS gradients
   CSS webkit-box (layouts)
   CSS search box & placeholder
+  
+Don't run initializers during rake tasks

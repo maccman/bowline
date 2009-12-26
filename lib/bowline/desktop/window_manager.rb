@@ -63,6 +63,9 @@ module Bowline
           else
             @window = Window.new
           end
+          @window.script_callback = Proc.new {|str|
+            Bowline::Desktop::Bridge.call(self, str)
+          }
         end
         
         # Evaluate JavaScript in this window. Pass

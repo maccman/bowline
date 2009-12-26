@@ -114,7 +114,6 @@
 */
 
 var Bowline = {
-  msgs: [],
   callbacks: {},
   uuid: 0,
   bounds: {},
@@ -146,7 +145,10 @@ var Bowline = {
 
     Bowline.log("New message:")
     Bowline.log(msg);
-    Bowline.msgs.push(msg);
+    
+    // wx is a function defined in Objective C
+    if(typeof(wx) != undefined)
+      wx.call(JSON.stringify(msg));
   },
   
   // Usage: instanceInvoke(klass, id, method, *args)
@@ -182,12 +184,6 @@ var Bowline = {
   },
   
   // Bowline functions
-  
-  pollJS: function(){
-    var res = JSON.stringify(Bowline.msgs);
-    Bowline.msgs = [];
-    return res;
-  },
   
   invokeJS: function(str){
     Bowline.log("Invoking: " + str);

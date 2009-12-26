@@ -267,7 +267,6 @@ module Bowline
     def initialize_js
       return unless Bowline::Desktop.enabled?
       Bowline::Desktop::JS.setup
-      Bowline::Desktop::Bridge.setup
     end
     
     def initialize_windows
