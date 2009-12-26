@@ -65,20 +65,24 @@ module Bowline
         def windows
           @windows ||= []
         end
+         
+        def setup(window) #:nodoc:
+          self.windows << window
+          window.bowline.populate(
+            name, initial.to_js
+          ).call
+          true
+        end
         
         # Called by a window's JavaScript whenever that window is bound to this Binder.
         # This method populates the window's HTML with all bound class' records.
         # Override this if you don't want to send all the class' records to the window.
         # Example:
-        #   def setup(window)
-        #     super(window, last_10_tweets)
-        #   end  
-        def setup(window, items = all)
-          self.windows << window
-          window.bowline.populate(
-            name, items.to_js
-          ).call
-          true
+        #   def initial
+        #     klass.all(:limit => 10)
+        #   end
+        def initial
+          klass.all
         end
         
         def js_invoke(window, method, *args) #:nodoc:
@@ -98,12 +102,6 @@ module Bowline
         # invoke instance methods.
         def find(id)
           klass.find(id)
-        end
-        
-        # Calls .all on the klass sent to the bind method.
-        # This method is called internally by the setup method.
-        def all
-          klass.all
         end
         
         # Set the binder's items. This will replace all items, and update the HTML.
