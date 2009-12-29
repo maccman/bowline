@@ -30,11 +30,11 @@
   helper(method, *args)
     Invoke a method defined in any helper.
     
-  bindto(element, klass, options = {})
+  bind(element, klass, options = {})
     Bind a element to a Bowline binder. 
     Usually called via the jQuery helper functions.
     Usage:
-      Bowline.bindto('#users', 'UsersBinder');
+      Bowline.bind('#users', 'UsersBinder');
     
     The options can either be a template hash:
         {
@@ -82,11 +82,16 @@
   
   These are how you usually bind elements, or invoke a binders class/instance methods.
   
-  $.fn.bindto(klass, options)
+  $.fn.bowlineBind(klass, options)
     Associate an an element with a Bowline binder.
     Example:
-      $("#users").bindto('UsersBinder');
-  
+      $("#users").bowlineBind('UsersBinder');
+
+  $.fn.bowlineUnbind(klass)
+    Opposite of bowlineBind.
+    Example:
+      $("#users").bowlineUnbind('UsersBinder');
+          
   $.fn.invoke(method, *args)
     Invoke a class/instance method on a Bowline binder. 
     
@@ -136,6 +141,7 @@ var Bowline = {
     } else if(callback) {
       args.push(callback);
     }
+    
     var msg = {
       klass:klass, 
       method:method, 
@@ -143,12 +149,14 @@ var Bowline = {
       id:id
     };
 
-    Bowline.log("New message:")
-    Bowline.log(msg);
+    Bowline.log("New message:", msg)
     
     // wx is a function defined in Objective C
-    if(typeof(wx) != undefined)
-      wx.call(JSON.stringify(msg));
+    if(typeof(wx) != undefined){
+      try {
+        wx.call(JSON.stringify(msg));
+      } catch(e) {} // Quash ReferenceErrors
+    }
   },
   
   // Usage: instanceInvoke(klass, id, method, *args)
@@ -168,10 +176,10 @@ var Bowline = {
   helper: function(){
     var args = $.makeArray(arguments);
     args.unshift("Helper");
-    Bowline.invoke(args);
+    Bowline.invoke.apply(this, args);
   },
   
-  bindto: function(el, klass, options){
+  bind: function(el, klass, options){
     el = jQuery(el);
     el.chain(options);
     el.data('bowline', klass);
@@ -179,22 +187,37 @@ var Bowline = {
       Bowline.bounds[klass] = [];
     Bowline.bounds[klass].push(el);
     jQuery(function(){
-      Bowline.invoke(klass, "setup");
+      Bowline.invoke(klass, "setup", function(res){
+        Bowline.populate(klass, res);
+      });
     });
+  },
+  
+  unbind: function(el, klass){
+    var array = Bowline.bounds[klass]
+    if(!array) return;
+    array = jQuery.grep(array, 
+      function(n){ return n != el }
+    );
+    Bowline.bounds[klass] = array;
   },
   
   // Bowline functions
   
   invokeJS: function(str){
-    Bowline.log("Invoking: " + str);
+    Bowline.log("Invoking:", str);
     return JSON.stringify(eval(str));
   },
   
   invokeCallback: function(id, res){
-    Bowline.log("Callback: " + id);
+    Bowline.log("Callback:", id, res);
     if(!Bowline.callbacks[id]) return true;
-    Bowline.callbacks[id](JSON.parse(res));
-    delete Bowline.callbacks[id];
+    try {
+      Bowline.callbacks[id](JSON.parse(res));
+      delete Bowline.callbacks[id];
+    } catch(e) { 
+      Bowline.log(e) 
+    }
     return true;
   },
   
@@ -261,13 +284,17 @@ var Bowline = {
     return($(items[0]));
   },
   
-  log: function(msg){
+  log: function(){
+    var args = $.makeArray(arguments);
+    args.unshift("(Bowline)");
     if(Bowline.trace)
-      console.log(msg);
+      console.log.apply(console, args);
   },
   
-  warn: function(msg){
-    console.warn(msg);
+  warn: function(){
+    var args = $.makeArray(arguments);
+    args.unshift("(Bowline)");
+    console.warn.apply(console, args);
   }
 };
 
@@ -279,25 +306,31 @@ var Bowline = {
         // Class method
         var klass = $(this).data('bowline');
         args.unshift(klass);
-        Bowline.invoke.apply(this, args);
+        Bowline.invoke.apply(Bowline, args);
       } else {
         // Instance method
         var klass = $(this).item('root').data('bowline');
         var id = $(this).item().id;
         args.unshift(id);
         args.unshift(klass);
-        Bowline.instanceInvoke.apply(this, args);
+        Bowline.instanceInvoke.apply(Bowline, args);
       }
     } else {
       throw 'Chain not active';
     }
   };
-  
-  $.fn.bindto = function(){
+    
+  $.fn.bowlineBind = function(){
     var args = $.makeArray(arguments);
     args.unshift(this);
-    Bowline.bindto.apply(this, args);
+    Bowline.bind.apply(Bowline, args);
   };
+  
+  $.fn.bowlineUnbind = function(){
+    var args = $.makeArray(arguments);
+    args.unshift(this);
+    Bowline.unbind.apply(Bowline, args);
+  }  
 })(jQuery);
 
 jQuery(function($){
