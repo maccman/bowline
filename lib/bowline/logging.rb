@@ -15,7 +15,7 @@ module Bowline
     
     # Log an error backtrace if debugging is activated
     def log_error(e=$!)
-      debug "#{e}\n\t" + e.backtrace.join("\n\t")
+      Bowline.logger.error "#{e}\n\t" + e.backtrace.join("\n\t")
     end
     module_function :log_error
     public :log_error
