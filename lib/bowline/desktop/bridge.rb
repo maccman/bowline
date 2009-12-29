@@ -58,9 +58,9 @@ module Bowline
           end
           trace "JS invoking: #{klass}.#{method}(#{args.join(',')})"
           if object.respond_to?(:js_exposed?) && object.js_exposed?
-            result = object.js_invoke(window, method, *args)
+            result = object.js_invoke(window, method, *args).to_js
             proxy  = Proxy.new(window)
-            proxy.Bowline.invokeCallback(id, result)
+            proxy.Bowline.invokeCallback(id, result.to_json)
             window.run_script(proxy.to_s)
           else
             raise "Method not allowed"
