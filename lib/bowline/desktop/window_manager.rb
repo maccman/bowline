@@ -63,9 +63,12 @@ module Bowline
           else
             @window = Window.new
           end
-          @window.script_callback = Proc.new {|str|
+          # Has to be an instance variable since
+          # it is getting GCed (even if I mark it).
+          @script_callback = Proc.new {|str|
             Bowline::Desktop::Bridge.call(self, str)
           }
+          @window.script_callback = @script_callback;
         end
         
         # Evaluate JavaScript in this window. Pass
