@@ -148,6 +148,10 @@ module Bowline
       ##
       # :singleton-method: shown?
       # Is this window currently shown?
+      
+      ##
+      # :singleton-method: show_inspector(console = false)
+      # Show WebInspector
     end
     
     class MainWindow #:nodoc:
