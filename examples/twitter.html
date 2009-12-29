@@ -11,7 +11,7 @@
   <script src="javascripts/application.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" charset="utf-8">
     jQuery(function($){
-      var tweets = $('#tweets').bindto('tweets');
+      var tweets = $('#tweets').bowlineBind('TweetsBinder');
 
       $('#updateSubmit').click(function(){
         tweets.invoke('update', $('#updateText').val());

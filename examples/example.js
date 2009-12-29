@@ -1,4 +1,4 @@
-$('#users').bindto('UsersBinder');
+$('#users').bowlineBind('UsersBinder');
 
 // invoke collection method
 // This will invoke UserBinder.admins and fill #users with admins

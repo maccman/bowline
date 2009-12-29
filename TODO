@@ -21,3 +21,6 @@ Tutorials:
   CSS search box & placeholder
   
 Don't run initializers during rake tasks
+Find out why build is taking so long
+
+Sort out load errors (Disable automatic loading)

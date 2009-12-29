@@ -68,10 +68,8 @@ module Bowline
          
         def setup(window) #:nodoc:
           self.windows << window
-          window.bowline.populate(
-            name, initial.to_js
-          ).call
-          true
+          items = initial
+          items.try(:to_js) || []
         end
         
         # Called by a window's JavaScript whenever that window is bound to this Binder.
