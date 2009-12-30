@@ -100,6 +100,16 @@ module Bowline
       $LOAD_PATH.uniq!
     end
     
+    def disable_dependency_loading
+      if configuration.cache_classes && !configuration.dependency_loading
+        ActiveSupport::Dependencies.unhook!
+      end
+    end
+    
+    def initialize_dependency_mechanism
+      ActiveSupport::Dependencies.mechanism = configuration.cache_classes ? :require : :load
+    end
+    
     # Initializes ActiveRecord databases
     def initialize_database
       if defined?(ActiveRecord)
@@ -286,6 +296,8 @@ module Bowline
       require_frameworks
       set_autoload_paths
       add_plugin_load_paths
+      initialize_dependency_mechanism
+      disable_dependency_loading
       
       initialize_encoding
       initialize_database
@@ -303,14 +315,13 @@ module Bowline
       load_app_config
       
       load_plugins
+      load_application_classes
+      load_application_helpers
             
       load_application_initializers
       
       after_initialize
-      
-      load_application_classes
-      load_application_helpers
-      
+            
       initialize_js
       initialize_windows
       
@@ -401,6 +412,13 @@ module Bowline
      # You can add gems with the #gem method.
      attr_accessor :gems
      
+     attr_accessor :dependency_loading
+     
+     def threadsafe!
+        self.cache_classes = true
+        self.dependency_loading = false
+     end
+     
      # Adds a single Gem dependency to the Bowline application. By default, it will require
      # the library with the same name as the gem. Use :lib to specify a different name.
      #
@@ -469,6 +487,7 @@ module Bowline
        self.frameworks                   = default_frameworks
        self.load_paths                   = default_load_paths
        self.load_once_paths              = default_load_once_paths
+       self.dependency_loading           = default_dependency_loading
        self.eager_load_paths             = default_eager_load_paths
        self.log_path                     = default_log_path
        self.log_level                    = default_log_level
@@ -568,14 +587,18 @@ module Bowline
      def default_load_once_paths
        []
      end
+     
+     def default_dependency_loading
+       true
+     end
 
      def default_eager_load_paths
        %w(
-         app/binders
          app/models
          app/remote
-         app/helpers
          app/windows
+         app/binders
+         app/helpers
        ).map { |dir| "#{root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
      end
      
