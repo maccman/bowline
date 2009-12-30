@@ -41,12 +41,16 @@ module Bowline
         attr_reader :window, :id, :klass, :method, :args
         
         def initialize(window, atts)
-          @window = window
-          atts = atts.with_indifferent_access
-          @id     = atts[:id]
-          @klass  = atts[:klass]
-          @method = atts[:method].to_sym
-          @args   = atts[:args] || []
+          @window   = window
+          atts      = atts.with_indifferent_access
+          @id       = atts[:id]
+          @klass    = atts[:klass]
+          @method   = atts[:method].to_sym
+          @args     = atts[:args] || []
+        end
+        
+        def callback?
+          @id != -1
         end
 
         def invoke
@@ -58,10 +62,12 @@ module Bowline
           end
           trace "JS invoking: #{klass}.#{method}(#{args.join(',')})"
           if object.respond_to?(:js_exposed?) && object.js_exposed?
-            result = object.js_invoke(window, method, *args).to_js
-            proxy  = Proxy.new(window)
-            proxy.Bowline.invokeCallback(id, result.to_json)
-            window.run_script(proxy.to_s)
+            result = object.js_invoke(window, method, *args)
+            if callback?
+              proxy  = Proxy.new(window)
+              proxy.Bowline.invokeCallback(id, result.to_js.to_json)
+              window.run_script(proxy.to_s)
+            end
           else
             raise "Method not allowed"
           end
