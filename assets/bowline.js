@@ -130,23 +130,24 @@ var Bowline = {
   
   // Usage: invoke(klass, method, *args)
   invoke: function(){
-    var args    = $.makeArray(arguments);
+    var args    = jQuery.makeArray(arguments);
     var klass   = args.shift();
     var method  = args.shift();
-    var id      = Bowline.id();
+    var id      = -1;
     
     var callback  = args.pop();
     if(typeof(callback) == "function"){
+      id = Bowline.id();
       Bowline.callbacks[id] = callback;
     } else if(callback) {
       args.push(callback);
     }
     
     var msg = {
-      klass:klass, 
-      method:method, 
-      args:args, 
-      id:id
+      klass:  klass, 
+      method: method, 
+      args:   args, 
+      id:     id,
     };
 
     Bowline.log("New message:", msg)
@@ -161,20 +162,20 @@ var Bowline = {
   
   // Usage: instanceInvoke(klass, id, method, *args)
   instanceInvoke: function(){
-    var args = $.makeArray(arguments);
+    var args = jQuery.makeArray(arguments);
     args.splice(1, 0, "instance_invoke");
     Bowline.invoke.apply(this, args);
   },
   
   // Usage: windowInvoke(method, *args)
   windowInvoke: function(){
-    var args = $.makeArray(arguments);
+    var args = jQuery.makeArray(arguments);
     args.unshift("_window");
     Bowline.invoke.apply(this, args);    
   },
   
   helper: function(){
-    var args = $.makeArray(arguments);
+    var args = jQuery.makeArray(arguments);
     args.unshift("Helper");
     Bowline.invoke.apply(this, args);
   },
@@ -279,20 +280,20 @@ var Bowline = {
   
   findItem: function(el, id){
     var items = jQuery.grep(el.items(true), function(n, i){
-      return $(n).item().id == id;
+      return jQuery(n).item().id == id;
     });
-    return($(items[0]));
+    return(jQuery(items[0]));
   },
   
   log: function(){
-    var args = $.makeArray(arguments);
+    if( !Bowline.trace ) return;
+    var args = jQuery.makeArray(arguments);
     args.unshift("(Bowline)");
-    if(Bowline.trace)
-      console.log.apply(console, args);
+    console.log.apply(console, args);
   },
   
   warn: function(){
-    var args = $.makeArray(arguments);
+    var args = jQuery.makeArray(arguments);
     args.unshift("(Bowline)");
     console.warn.apply(console, args);
   }
