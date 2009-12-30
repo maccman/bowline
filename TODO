@@ -3,7 +3,7 @@ Use new Rails gem packaging system
 Ideas: 
   * bowline-notification gem (Growl)
 
-Investigate thread safety
+Investigate thread safety (for Bowline::Desktop::JS)
 
 Load all required JS through Bowline (so you only have to require one JS file)
 
@@ -20,7 +20,8 @@ Tutorials:
   CSS webkit-box (layouts)
   CSS search box & placeholder
   
-Don't run initializers during rake tasks
-Find out why build is taking so long
-
-Sort out load errors (Disable automatic loading)
+- Don't run initializers during rake tasks
+- Find out why build is taking so long
+- Add first-run initializers
+- Add reload keyboard shortcut
+- Add some sort of production mode
