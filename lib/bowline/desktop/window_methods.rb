@@ -60,7 +60,7 @@ module Bowline
       end
       
       def height=(h)
-        set_size(h, -1)
+        set_size(-1, h)
       end
       
       # Window was shut; setup!
