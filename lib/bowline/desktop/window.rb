@@ -49,7 +49,11 @@ module Bowline
       #   window.file = :about
       # Passing a symbol will load the corrosponding HTML file
       # in the public directory. In this case, it'll load about.html
-      
+
+      ##
+      # :singleton-method: url=(address)
+      # Navigate to a HTTP address.
+            
       ##
       # :singleton-method: id
       # Internal ID for the window. 

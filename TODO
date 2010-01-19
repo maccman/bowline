@@ -25,3 +25,6 @@ Tutorials:
 - Add first-run initializers
 - Add reload keyboard shortcut
 - Add some sort of production mode
+
+- strip exe (to make smaller)
+- remove framework headers

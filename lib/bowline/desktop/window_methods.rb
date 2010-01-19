@@ -1,3 +1,5 @@
+require "net/http"
+
 module Bowline
   module Desktop
     module WindowMethods #:nodoc:
@@ -25,6 +27,13 @@ module Bowline
         self._file = path
       end
       alias :load_file :file=
+      
+      def url=(address)
+        unless address.is_a?(URI)
+          address = URI.parse(path)
+        end
+        self._url = address.to_s
+      end
       
       def select_dir(options = {})
         flags = 0

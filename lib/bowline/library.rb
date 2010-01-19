@@ -2,8 +2,8 @@ module Bowline
   # Provides paths to Bowline's required libraries.
   module Library
     PROJECT_URL  = "http://bowline.s3.amazonaws.com/#{Platform.type}"
-    DESKTOP_URL  = "#{PROJECT_URL}/bowline-desktop"
-    RUBYLIB_URL  = "#{PROJECT_URL}/rubylib.zip"
+    DESKTOP_URL  = "#{PROJECT_URL}/bowline-desktop.zip"
+    LIBS_URL     = "#{PROJECT_URL}/libs.zip"
     
     # Path to a folder stored under the users
     # home directory containing the downloaded libraries.
@@ -20,21 +20,15 @@ module Bowline
     end
     module_function :desktop_path
     
-    # Path to Ruby's stdlib
-    def rubylib_path
-      File.join(path, "rubylib")
+    def libs_path
+      File.join(path, "libs")
     end
-    module_function :rubylib_path
+    module_function :libs_path
     
     def local_bowline_path
       File.join(APP_ROOT, "vendor", "bowline")
     end
     module_function :local_bowline_path
-    
-    def local_rubylib_path
-      File.join(APP_ROOT, "vendor", "rubylib")
-    end
-    module_function :local_rubylib_path
     
     def local_build_path
       File.join(APP_ROOT, "build")
@@ -44,7 +38,7 @@ module Bowline
     # Returns true if all required libraries exist.
     def ready?
       File.exist?(desktop_path) && 
-        File.directory?(rubylib_path) && 
+        File.directory?(libs_path) && 
           File.directory?(local_bowline_path)
     end
     module_function :ready?

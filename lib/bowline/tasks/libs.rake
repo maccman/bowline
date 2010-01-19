@@ -41,7 +41,7 @@ def sym_or_copy(from, to)
   end
 end
 
-namespace :libs do
+namespace :libs do  
   task :unpack => :environment do
     # Lots of people are using Ruby 1.8 with Bowline.
     # When bowline-desktop loads, it doesn't know where the
@@ -53,33 +53,27 @@ namespace :libs do
       Bowline.lib_path, 
       local_bowline_path
     ) unless File.directory?(local_bowline_path)
-        
-    local_rubylib_path = Bowline::Library.local_rubylib_path
-    raise "Run libs:download task first" unless File.directory?(Bowline::Library.rubylib_path)
-    sym_or_copy(
-      Bowline::Library.rubylib_path, 
-      local_rubylib_path
-    ) unless File.directory?(local_rubylib_path)
   end
   
   desc "Download Bowline's binary and pre-compiled libs"
   task :download => :environment do
     FileUtils.mkdir_p(Bowline::Library.path)
     desktop_path = Bowline::Library.desktop_path
-    rubylib_path = Bowline::Library.rubylib_path
+    libs_path    = Bowline::Library.libs_path
     
     unless File.exist?(desktop_path)
       desktop_tmp = download(Bowline::Library::DESKTOP_URL)
       desktop_tmp.close
-      FileUtils.mv(desktop_tmp.path, desktop_path)
+      puts "Extracting..."
+      unzip(desktop_tmp.path, Bowline::Library.path)
       FileUtils.chmod(0755, desktop_path)
     end
     
-    unless File.directory?(rubylib_path)
-      rubylib_tmp = download(Bowline::Library::RUBYLIB_URL)
-      rubylib_tmp.close
+    unless File.directory?(libs_path)
+      libs_tmp = download(Bowline::Library::LIBS_URL)
+      libs_tmp.close
       puts "Extracting..."
-      unzip(rubylib_tmp.path, Bowline::Library.path)
+      unzip(libs_tmp.path, Bowline::Library.path)
     end
   end
     
@@ -88,8 +82,6 @@ namespace :libs do
   desc "Update Bowline's binary and pre-compiled libs"
   task :update => :environment do
     FileUtils.rm_rf(Bowline::Library.path)
-    FileUtils.rm_rf(Bowline::Library.local_bowline_path)
-    FileUtils.rm_rf(Bowline::Library.local_rubylib_path)
     Rake::Task["libs:setup"].invoke
   end
 end
