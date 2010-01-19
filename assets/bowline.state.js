@@ -30,7 +30,7 @@ BowlineState.fn.newState = function(name, callbacks){
 BowlineState.fn.change = function(){
   var args = $.makeArray(arguments);  
   var name = args.shift();
-  
+    
   var event = this.events[name]
   if(!event) throw "Unknown event: " + name;
   // TODO support arrays in event.from
@@ -56,7 +56,7 @@ BowlineState.fn.change = function(){
   
   this.log("changing:", oldState, newState);
   
-  if(oldStateCB && oldStateCB.beforeExit) oldStateCB.beforeExit();
+  if(oldStateCB && oldStateCB.beforeExit) oldStateCB.beforeExit();  
   if(newStateCB.beforeEnter) newStateCB.beforeEnter.apply(this, args);
     
   this.current = newState;

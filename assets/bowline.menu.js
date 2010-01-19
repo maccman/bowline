@@ -55,11 +55,9 @@ BowlineMenu.fn.items = function(){
   });
 };
 
-BowlineMenu.fn.change = function(name){
-  if(jQuery.inArray(name, this.items()) == -1) return false;
-  
-  if(name == this.currentName()) return;
-    
+BowlineMenu.fn.change = function(name){  
+  if(name != false && jQuery.inArray(name, this.items()) == -1) return false;
+
   var fromView      = this.current;
   var fromViewName  = this.viewName(fromView);
   
@@ -69,8 +67,10 @@ BowlineMenu.fn.change = function(name){
   this.log("changing:", fromViewName, toViewName);
   
   this.elements().removeClass("current");
-  this.current = toView;
-  toView.addClass("current");
+  if(toView) {
+    this.current = toView;
+    toView.addClass("current");
+  }
   
   this.triggerChange({
     toView:       toView, 

@@ -95,12 +95,12 @@ BowlineView.fn.change = function(name){
       toViewName:   toViewName
     });
   }
-  
+    
   if(jQuery.support.WebKitAnimationEvent && animation){
     toView.one("webkitAnimationEnd", callback);
     this.log("using animation:", animation, toViewName);
     toView.addClass(animation + " in current");
-    if(fromView) fromView.addClass(animation + " out");
+    if(fromView) fromView.addClass(animation + " out");    
   } else {
     toView.addClass("current");
     callback();

@@ -123,6 +123,8 @@ var Bowline = {
   uuid: 0,
   bounds: {},
   trace: false,
+  // _app is a function defined in Objective C
+  enabled: typeof(_app) != "undefined",
   
   id: function(){
     return ++Bowline.uuid;
@@ -150,14 +152,10 @@ var Bowline = {
       id:     id,
     };
 
-    Bowline.log("New message:", msg)
+    Bowline.log("New message:", msg);
     
-    // wx is a function defined in Objective C
-    if(typeof(wx) != undefined){
-      try {
-        wx.call(JSON.stringify(msg));
-      } catch(e) {} // Quash ReferenceErrors
-    }
+    if(Bowline.enabled)
+      _app.call(JSON.stringify(msg));
   },
   
   // Usage: instanceInvoke(klass, id, method, *args)
