@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.5.6"
+  s.version = "0.5.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2009-12-27}
+  s.date = %q{2010-01-19}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -26,8 +26,13 @@ Gem::Specification.new do |s|
      "Rakefile",
      "TODO",
      "VERSION",
+     "assets/animations.css",
      "assets/bowline.js",
+     "assets/bowline.menu.js",
+     "assets/bowline.state.js",
+     "assets/bowline.view.js",
      "assets/jquery.chain.js",
+     "assets/jquery.dataset.js",
      "assets/jquery.js",
      "assets/json2.js",
      "assets/osx/Info.plist.erb",
