@@ -56,3 +56,5 @@ require 'bowline/dependencies/lib/dependencies'
 require 'bowline/initializer'
 
 require 'bowline/binders'
+require 'bowline/binders/collection'
+require 'bowline/binders/singleton'

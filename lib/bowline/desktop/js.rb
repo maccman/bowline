@@ -59,7 +59,7 @@ module Bowline
       module_function :poll
       
       def setup
-        Desktop.on_tick(method(:poll))
+        Desktop.on_idle(method(:poll))
       end
       module_function :setup
     

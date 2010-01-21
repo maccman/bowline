@@ -118,6 +118,79 @@
 
 */
 
+var BowlineBound = function(klass){
+  this.klass = klass;
+  this.options  = {};
+  this.elements = jQuery();
+};
+
+BowlineBound.fn = BowlineBound.prototype;
+
+BowlineBound.fn.updateOptions = function(opts){
+  this.options = jQuery.extend({}, this.options, opts);
+}
+
+BowlineBound.fn.isSingleton = function(bool){
+  return this.options.singleton == true;
+}
+
+BowlineBound.fn.push = function(element){
+  this.elements = this.elements.add(element);
+}
+
+BowlineBound.fn.replace = function(items){
+  if(this.isSingleton()) {
+    this.elements.item(items);
+  } else {
+    this.elements.items("replace", items);
+  }
+}
+
+BowlineBound.fn.create = function(id, item){
+  if(this.isSingleton()) {
+    this.elements.item(item);
+  } else {
+    this.elements.items("add", item);
+  }
+}
+
+BowlineBound.fn.update = function(id, item){
+  if(this.isSingleton()){
+    this.elements.item(item);
+  } else {
+    this.findElement(id).item(item);
+  }
+}
+
+BowlineBound.fn.remove = function(id){
+  if(this.isSingleton()) {
+    this.elements.item("replace", {});
+  } else {
+    this.findElement(id).item("remove");
+  }
+}
+
+BowlineBound.fn.findElement = function(id){
+  // TODO - increase efficiency
+  var element = jQuery();
+  jQuery.each(this.elements.items(true), function(){
+    var sameElement = $(this).item().id == id;
+    if(sameItem) element = element.add(this);
+  });
+  return element;
+}
+
+BowlineBound.fn.setup = function(){
+  if (this.hasSetup) return;
+  this.hasSetup = true;
+  var self = this;
+  jQuery(function(){
+    Bowline.invoke(self.klass, "setup", function(opts){
+      self.updateOptions(opts);
+    });
+  });
+}
+
 var Bowline = {
   callbacks: {},
   uuid: 0,
@@ -180,32 +253,35 @@ var Bowline = {
   
   bind: function(el, klass, options){
     el = jQuery(el);
+    
+    el.data("bowline", klass);
     el.chain(options);
-    el.data('bowline', klass);
+    
     if(!Bowline.bounds[klass]) 
-      Bowline.bounds[klass] = [];
-    Bowline.bounds[klass].push(el);
-    jQuery(function(){
-      Bowline.invoke(klass, "setup", function(res){
-        Bowline.populate(klass, res);
-      });
-    });
+      Bowline.bounds[klass] = new BowlineBound(klass);
+
+     Bowline.bounds[klass].push(el);
+     Bowline.bounds[klass].setup();
   },
   
   unbind: function(el, klass){
-    var array = Bowline.bounds[klass]
-    if(!array) return;
-    array = jQuery.grep(array, 
-      function(n){ return n != el }
-    );
-    Bowline.bounds[klass] = array;
+    // var array = Bowline.bounds[klass];
+    // if(!array) return;
+    // array = jQuery.grep(array, 
+    //   function(n){ return n.el != el }
+    // );
+    // Bowline.bounds[klass] = array;
   },
   
   // Bowline functions
   
   invokeJS: function(str){
     Bowline.log("Invoking:", str);
-    return JSON.stringify(eval(str));
+    try {
+      return JSON.stringify(eval(str));
+    } catch(e) {
+      Bowline.warn(e);
+    }
   },
   
   invokeCallback: function(id, res){
@@ -215,72 +291,47 @@ var Bowline = {
       Bowline.callbacks[id](JSON.parse(res));
       delete Bowline.callbacks[id];
     } catch(e) { 
-      Bowline.log(e) 
+      Bowline.warn(e) 
     }
     return true;
   },
   
-  populate: function(klass, items){
-    if(!Bowline.bounds[klass]) return true;
-    jQuery.each(Bowline.bounds[klass], function(){
-      this.items('replace', items);
-    });
+  replace: function(klass, items){
+    Bowline.log(Bowline.bounds[klass])
+    if(!Bowline.bounds[klass]) return false;
+    Bowline.bounds[klass].replace(items);
     return true;
   },
   
   created: function(klass, id, item){
-    if(!Bowline.bounds[klass]) return true;
-    if(!item.id) item.id = id;
-    jQuery.each(Bowline.bounds[klass], function(){
-      this.items('add', item);
-    });
+    if(!Bowline.bounds[klass]) return false;
+    Bowline.bounds[klass].create(id, item);
     return true;
   },
   
   updated: function(klass, id, item){
-    if(!Bowline.bounds[klass]) return true;
+    if(!Bowline.bounds[klass]) return false;
     if(!item.id) item.id = id;
-    jQuery.each(Bowline.bounds[klass], function(){
-      Bowline.findItem(this, id).item('replace', item);
-    });
+    Bowline.bounds[klass].update(id, item);
     return true;
   },
   
   removed: function(klass, id){
-    if(!Bowline.bounds[klass]) return true;
-    jQuery.each(Bowline.bounds[klass], function(){
-      Bowline.findItem(this, id).item('remove');
-    });
+    if(!Bowline.bounds[klass]) return false;
+    Bowline.bounds[klass].remove(id);
     return true;
   },
   
   trigger: function(klass, event, data){
-    if(!Bowline.bounds[klass]) return true;
-    jQuery.each(Bowline.bounds[klass], function(){
-      this.trigger(event, data);
-    });
+    if(!Bowline.bounds[klass]) return false;
+    Bowline.bounds[klass].elements.trigger(event, data);
     return true;
-  },
-  
-  element: function(klass, id){
-    var el = jQuery();
-    jQuery.each(Bowline.bounds[klass], function(){
-      el = el.add(findItem(this, id));
-    });
-    return el;
   },
   
   // System functions
   
   loaded: function(){    
     Bowline.windowInvoke("loaded!");
-  },
-  
-  findItem: function(el, id){
-    var items = jQuery.grep(el.items(true), function(n, i){
-      return jQuery(n).item().id == id;
-    });
-    return(jQuery(items[0]));
   },
   
   log: function(){
