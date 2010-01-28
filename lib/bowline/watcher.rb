@@ -19,26 +19,48 @@ module Bowline
     # MyClass.on_update { puts 'update' }
     # MyClass.new.on_create { puts 'create' }
     module Base
-      # Create a helper method to easily add new callbacks.
-      # Example:
-      #   watch :on_load
-      #   on_load { puts "Loaded!" }
-      def watch(*names)
-      	names.each do |name|
-          # Because define_method only takes a block,
-          # which doesn't accept multiple arguments
-          script = <<-RUBY
-            def #{name}(*args, &block)
-              watcher.append(:#{name}, *args, &block)
-            end
-          RUBY
-          instance_eval script
-          class_eval    script
-  			end
+      def self.extended(base)
+      	base.send :extend, ClassMethods
+      end
+      
+      def self.included(base)
+        base.send :extend, InstanceMethods
       end
       
       def watcher
         @watcher ||= Watcher.new
+      end
+      
+      module ClassMethods
+        # Create a helper method to easily add new callbacks.
+        # Example:
+        #   watch :on_load
+        #   on_load { puts "Loaded!" }
+        def watch(*names)
+        	names.each do |name|
+            # Because define_method only takes a block,
+            # which doesn't accept multiple arguments
+            script = <<-RUBY
+              def #{name}(*args, &block)
+                watcher.append(:#{name}, *args, &block)
+              end
+            RUBY
+            instance_eval script
+    			end
+        end
+      end
+      
+      module InstanceMethods #:nodoc:
+        def watch(*names)
+        	names.each do |name|
+            script = <<-RUBY
+              def #{name}(*args, &block)
+                watcher.append(:#{name}, *args, &block)
+              end
+            RUBY
+            class_eval script
+    			end
+        end
       end
     end
   
