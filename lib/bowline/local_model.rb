@@ -120,6 +120,10 @@ module Bowline
       run_callbacks(:after_destroy)
       true
     end
+    
+    def to_json(opts = {})
+      @attributes.to_json
+    end
   
     def method_missing(method_symbol, *arguments) #:nodoc:
       method_name = method_symbol.to_s
