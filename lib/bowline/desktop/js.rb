@@ -41,15 +41,18 @@ module Bowline
           end
         
           def parse(str)
+            return if str.blank?
             # This is crazy! The JSON 
             # lib can't parse booleans
             case str
             when "true"  then true
             when "false" then false
-            when nil     then nil
             else
               JSON.parse(str)
             end
+          rescue => e
+            trace "Parsing: #{str}"
+            raise e
           end
       end
 
@@ -76,8 +79,9 @@ module Bowline
       private
         def run_scripts
           ready_scripts = scripts.select(&:ready?)
-          while script  = ready_scripts.shift
+          ready_scripts.each do |script|
             script.call
+            scripts.delete(script)
           end
         end
         module_function :run_scripts
