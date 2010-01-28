@@ -5,14 +5,14 @@ require 'progressbar'
 require 'zip/zip'
 
 def download(url)
-  puts "Retrieving: #{url}"
+  puts "Retrieving #{url}"
   name = url.split("/").last
   file = Tempfile.new("download_#{name}")
   url  = URI.parse(url)
   req  = Net::HTTP::Get.new(url.path)
   res  = Net::HTTP.start(url.host, url.port) {|http|
     http.request(req) {|resp|
-      pbar = ProgressBar.new("Downloading", resp.content_length || 0)
+      pbar = ProgressBar.new("", resp.content_length || 0)
       resp.read_body {|seg|
         pbar.inc(seg.length)
         file.write(seg)
@@ -73,7 +73,7 @@ namespace :libs do
     unless File.directory?(libs_path)
       libs_tmp = download(Bowline::Library::LIBS_URL)
       libs_tmp.close
-      puts "Extracting libs.zip (this could take some time)"
+      puts "Extracting libs.zip"
       unzip(libs_tmp.path, Bowline::Library.path)
     end
   end
