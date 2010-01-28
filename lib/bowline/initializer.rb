@@ -286,6 +286,13 @@ module Bowline
       MainWindow.file = configuration.index_path
     end
     
+    def initialize_trap
+      return unless Bowline::Desktop.enabled?
+      trap("INT") {
+        Bowline::Desktop::App.exit
+      }
+    end
+    
     def process
       Bowline.configuration = configuration
       
@@ -324,6 +331,7 @@ module Bowline
             
       initialize_js
       initialize_windows
+      initialize_trap
       
       Bowline.initialized = true
     end
