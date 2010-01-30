@@ -160,7 +160,7 @@ http://github.com/maccman/bowline-desktop
 = DISTRIBUTING
 
 Once your app is ready for a release, you should run the following command to make sure all the gems required have been vendorised:
-  rake gems:sync
+  gem bundle
 
 Then, run:
   ./script/build

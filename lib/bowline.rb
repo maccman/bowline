@@ -52,7 +52,6 @@ require 'bowline/desktop/bridge'
 require 'bowline/desktop/window_manager.rb'
 
 require 'bowline/helpers'
-require 'bowline/dependencies/lib/dependencies'
 require 'bowline/initializer'
 
 require 'bowline/binders'

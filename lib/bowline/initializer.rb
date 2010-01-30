@@ -71,6 +71,10 @@ module Bowline
       $LOAD_PATH.uniq!
     end
     
+    def load_gems
+      Bundler.require_env if defined?(Bundler)
+    end
+    
     # Set the paths from which Bowline will automatically load source files, and
     # the load_once paths.
     def set_autoload_paths
@@ -183,30 +187,7 @@ module Bowline
         ActiveSupport.send("#{setting}=", value)
       end
     end
-    
-    def initialize_gems
-      require "rubygems"
-      Gem.clear_paths
-      Gem.path.unshift(configuration.gem_path)
-    end
-    
-    def load_gems
-      configuration.gems.each do |dep| 
-        options = {
-          :lib => dep.name
-        }.merge(dep.options)
         
-        next unless options[:lib]
-        begin
-          gem(dep.name, *dep.versions)
-          require(options[:lib])
-        rescue LoadError => e
-          puts "was unable to require #{dep.name} as '#{options[:lib]}'
-          Reason: #{e.class.name} error raised with message: #{e.message}"
-        end
-      end
-    end
-    
     def load_plugins
       Dir.glob(File.join(configuration.plugin_glob, 'init.rb')).sort.each do |path|
         config = configuration # Need local config variable
@@ -297,7 +278,6 @@ module Bowline
       Bowline.configuration = configuration
       
       set_load_path
-      initialize_gems
       load_gems
       
       require_frameworks
@@ -411,14 +391,6 @@ module Bowline
      def reload_plugins?
        !!@reload_plugins
      end
-
-     # An array of gems that this Bowline application depends on.  Bowline will automatically load
-     # these gems during installation, and allow you to install any missing gems with:
-     #
-     #   rake gems:sync
-     #
-     # You can add gems with the #gem method.
-     attr_accessor :gems
      
      attr_accessor :dependency_loading
      
@@ -426,23 +398,6 @@ module Bowline
         self.cache_classes = true
         self.dependency_loading = false
      end
-     
-     # Adds a single Gem dependency to the Bowline application. By default, it will require
-     # the library with the same name as the gem. Use :lib to specify a different name.
-     #
-     #   # gem 'aws-s3', '>= 0.4.0'
-     #   # require 'aws/s3'
-     #   config.gem 'aws-s3', :lib => 'aws/s3', :version => '>= 0.4.0', \
-     #     :source => "http://code.whytheluckystiff.net"
-     #
-     # To require a library be installed, but not attempt to load it, pass :lib => false
-     #
-     #   config.gem 'qrp', :version => '0.4.1', :lib => false
-     def gem(*args)
-       @gems << Dependencies::Dependency.new(*args)
-     end
-     
-     attr_accessor :gem_path
           
      # Sets the default +time_zone+.  Setting this will enable +time_zone+
      # awareness for Active Record models and set the Active Record default
@@ -504,8 +459,6 @@ module Bowline
        self.whiny_nils                   = default_whiny_nils
        self.database_configuration_file  = default_database_configuration_file
        self.app_config_file              = default_app_config_file
-       self.gems                         = default_gems
-       self.gem_path                     = default_gem_path
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
@@ -636,18 +589,6 @@ module Bowline
 
      def default_whiny_nils
        false
-     end
-     
-     def default_gems
-       gems = []
-       gems << Dependencies::Dependency.new(
-         "activesupport", :lib => "active_support"
-       )
-       gems
-     end
-          
-     def default_gem_path
-       File.join(root_path, *%w{ vendor gems })
      end
      
      def default_plugin_glob

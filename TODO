@@ -25,8 +25,8 @@ Tutorials:
 - Add first-run initializers
 - Add reload keyboard shortcut
 - Add some sort of production mode
-- Use Bunder instead of gems:sync
 - Generate correct shebang on script files
+- Use App.root rather than APP_ROOT
 
 - strip exe (to make smaller)
 - remove framework headers

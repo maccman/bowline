@@ -1,12 +1,18 @@
-# Don't change this file!
-# Configure your app in config/environment.rb
+APP_ROOT = File.expand_path("../../", __FILE__) unless defined?(APP_ROOT)
 
-APP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), "..")) unless defined?(APP_ROOT)
-local_path = File.join(APP_ROOT, *%w{vendor bowline lib bowline.rb})
+# Use Bundler (preferred)
+environment = File.expand_path('../../vendor/gems/environment', __FILE__)
+if File.exist?("#{environment}.rb")
+  require environment
 
-if File.exist?(local_path)
-  require local_path
+# Use vendor/bowline and RubyGems
 else
-  require "rubygems"
-  require "bowline"
+  vendor_rails = File.expand_path('../../vendor/bowline', __FILE__)
+  if File.exist?(vendor_rails)
+    Dir["#{vendor_rails}/*/lib"].each { |path| $:.unshift(path) }
+  end
+
+  require 'rubygems'
 end
+
+require "bowline"

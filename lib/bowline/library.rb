@@ -25,11 +25,6 @@ module Bowline
     end
     module_function :libs_path
     
-    def local_bowline_path
-      File.join(APP_ROOT, "vendor", "bowline")
-    end
-    module_function :local_bowline_path
-    
     def local_build_path
       File.join(APP_ROOT, "build")
     end
@@ -38,8 +33,7 @@ module Bowline
     # Returns true if all required libraries exist.
     def ready?
       File.exist?(desktop_path) && 
-        File.directory?(libs_path) && 
-          File.directory?(local_bowline_path)
+        File.directory?(libs_path)
     end
     module_function :ready?
     

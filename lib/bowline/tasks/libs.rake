@@ -43,19 +43,6 @@ def sym_or_copy(from, to)
 end
 
 namespace :libs do  
-  task :unpack => :environment do
-    # Lots of people are using Ruby 1.8 with Bowline.
-    # When bowline-desktop loads, it doesn't know where the
-    # Bowline gem is if it's an 1.8 gem dir. So, we just symlink
-    # it to vendor/bowline. One caveat though, is that you have to
-    # re-run this task when you update the gem.
-    local_bowline_path = Bowline::Library.local_bowline_path    
-    sym_or_copy(
-      Bowline.lib_path, 
-      local_bowline_path
-    ) unless File.directory?(local_bowline_path)
-  end
-  
   desc "Download Bowline's binary and pre-compiled libs"
   task :download => :environment do
     FileUtils.mkdir_p(Bowline::Library.path)
@@ -78,7 +65,7 @@ namespace :libs do
     end
   end
     
-  task :setup => [:environment, "gems:sync", "libs:download", "libs:unpack"]
+  task :setup => [:environment, "libs:download", "libs:unpack"]
   
   desc "Update Bowline's binary and pre-compiled libs"
   task :update => :environment do

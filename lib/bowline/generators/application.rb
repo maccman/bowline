@@ -27,6 +27,7 @@ module Bowline::Generators
     empty_directory :log,     "log"
     
     template :rakefile, "Rakefile", "Rakefile"
+    template :gemfile, "Gemfile", "Gemfile"
     
     file :gitignore, "gitignore", ".gitignore"
     

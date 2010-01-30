@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2010-01-19}
+  s.date = %q{2010-01-30}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -47,18 +47,12 @@ Gem::Specification.new do |s|
      "examples/users.rb",
      "lib/bowline.rb",
      "lib/bowline/binders.rb",
+     "lib/bowline/binders/collection.rb",
+     "lib/bowline/binders/singleton.rb",
      "lib/bowline/commands/build.rb",
      "lib/bowline/commands/console.rb",
      "lib/bowline/commands/generate.rb",
      "lib/bowline/commands/run.rb",
-     "lib/bowline/dependencies/FAQ.markdown",
-     "lib/bowline/dependencies/MIT-LICENSE",
-     "lib/bowline/dependencies/README.markdown",
-     "lib/bowline/dependencies/TODO.markdown",
-     "lib/bowline/dependencies/lib/dependencies.rb",
-     "lib/bowline/dependencies/lib/dependencies/dependency.rb",
-     "lib/bowline/dependencies/lib/dependencies/repository.rb",
-     "lib/bowline/dependencies/lib/ext/rubygems.rb",
      "lib/bowline/desktop.rb",
      "lib/bowline/desktop/app.rb",
      "lib/bowline/desktop/bridge.rb",
@@ -70,6 +64,7 @@ Gem::Specification.new do |s|
      "lib/bowline/desktop/misc.rb",
      "lib/bowline/desktop/network.rb",
      "lib/bowline/desktop/proxy.rb",
+     "lib/bowline/desktop/runtime.rb",
      "lib/bowline/desktop/sound.rb",
      "lib/bowline/desktop/window.rb",
      "lib/bowline/desktop/window_manager.rb",
@@ -94,7 +89,6 @@ Gem::Specification.new do |s|
      "lib/bowline/tasks/app.rake",
      "lib/bowline/tasks/bowline.rb",
      "lib/bowline/tasks/database.rake",
-     "lib/bowline/tasks/gems.rake",
      "lib/bowline/tasks/libs.rake",
      "lib/bowline/tasks/log.rake",
      "lib/bowline/tasks/misc.rake",
@@ -142,15 +136,18 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<templater>, [">= 0.3.2"])
       s.add_runtime_dependency(%q<activesupport>, [">= 2.3.2"])
       s.add_runtime_dependency(%q<rubyzip2>, [">= 2.0.1"])
+      s.add_runtime_dependency(%q<bundler>, [">= 0.8.1"])
     else
       s.add_dependency(%q<templater>, [">= 0.3.2"])
       s.add_dependency(%q<activesupport>, [">= 2.3.2"])
       s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
+      s.add_dependency(%q<bundler>, [">= 0.8.1"])
     end
   else
     s.add_dependency(%q<templater>, [">= 0.3.2"])
     s.add_dependency(%q<activesupport>, [">= 2.3.2"])
     s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
+    s.add_dependency(%q<bundler>, [">= 0.8.1"])
   end
 end
 
