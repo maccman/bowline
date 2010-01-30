@@ -86,20 +86,6 @@ namespace :app do
           dirs.delete(File.join(APP_ROOT, 'db', 'migrate'))
           dirs.delete_if {|i| i =~ /\.svn|\.DS_Store/ }
           FileUtils.cp_r(dirs, '.')
-          
-          FileUtils.mkdir_p("vendor")
-          FileUtils.cd("vendor") do
-            # Copy Bowline lib
-            bowline_path = "bowline"
-            FileUtils.rm_rf(bowline_path)
-            FileUtils.cp_r(
-              Pathname.new(Bowline.lib_path).realpath, 
-              bowline_path
-            )
-            %w{assets pkg examples bin templates .git}.each do |unused|
-              FileUtils.rm_rf(File.join(bowline_path, unused))
-            end
-          end
         end
         
         # Copy Bowline binary & libs
