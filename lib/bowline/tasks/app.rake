@@ -3,45 +3,7 @@ require 'erb'
 require 'rbconfig'
 
 namespace :app do  
-  namespace :build do
-    namespace :osx do
-      desc "Copy WebKit into app's Frameworks"
-      task :webkit_framework => :environment do
-        config = Bowline.configuration
-        build_path  = Bowline::Library.local_build_path
-        app_path    = File.join(build_path, "#{config.name}.app")
-        contents_path = File.join(app_path, "Contents")
-        
-        webkit_path = ENV["WEBKIT_PATH"] || "/Applications/WebKit.app/Contents/Frameworks/10.5"
-        unless File.directory?(webkit_path)
-          raise "Install the WebKit nightly: http://nightly.webkit.org/"
-        end
-        frameworks = ["WebKit", "JavaScriptGlue", "WebCore", "JavaScriptCore"]
-        
-        FileUtils.cd(contents_path) do
-          FileUtils.mkdir("Frameworks")
-          
-          frameworks.each {|name|
-            name = "#{name}.framework"
-            FileUtils.cp_r(
-              File.join(webkit_path, name), 
-              "Frameworks"
-            )
-          }
-        
-          `install_name_tool -change \
-           /Volumes/Data/WebKit/52531/10.5/WebKit.framework/Versions/A/WebKit \
-           @executable_path/../Frameworks/WebKit.framework/Versions/A/WebKit \
-           MacOS/#{config.name}`
-           
-          `install_name_tool -change \
-           /Volumes/Data/WebKit/52531/10.5/WebCore.framework/Versions/A/WebCore \
-           @executable_path/../Frameworks/WebCore.framework/Versions/A/WebCore \
-           MacOS/#{config.name}`
-         end
-      end
-    end
-    
+  namespace :build do    
     task :osx => :environment do
       unless Bowline::Library.ready?
         Rake::Task["libs:setup"].invoke
