@@ -94,6 +94,7 @@ Gem::Specification.new do |s|
      "lib/bowline/tasks/misc.rake",
      "lib/bowline/version.rb",
      "lib/bowline/watcher.rb",
+     "templates/Gemfile",
      "templates/Rakefile",
      "templates/binder.rb",
      "templates/config/application.yml",
@@ -136,18 +137,15 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<templater>, [">= 0.3.2"])
       s.add_runtime_dependency(%q<activesupport>, [">= 2.3.2"])
       s.add_runtime_dependency(%q<rubyzip2>, [">= 2.0.1"])
-      s.add_runtime_dependency(%q<bundler>, [">= 0.8.1"])
     else
       s.add_dependency(%q<templater>, [">= 0.3.2"])
       s.add_dependency(%q<activesupport>, [">= 2.3.2"])
       s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
-      s.add_dependency(%q<bundler>, [">= 0.8.1"])
     end
   else
     s.add_dependency(%q<templater>, [">= 0.3.2"])
     s.add_dependency(%q<activesupport>, [">= 2.3.2"])
     s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
-    s.add_dependency(%q<bundler>, [">= 0.8.1"])
   end
 end
 
