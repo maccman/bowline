@@ -128,26 +128,24 @@ BowlineBound.fn = BowlineBound.prototype;
 
 BowlineBound.fn.updateOptions = function(opts){
   this.options = jQuery.extend({}, this.options, opts);
-}
-
-BowlineBound.fn.isSingleton = function(bool){
-  return this.options.singleton == true;
+  this.singleton = this.options.singleton;
 }
 
 BowlineBound.fn.push = function(element){
   this.elements = this.elements.add(element);
+  this.setup();
 }
 
 BowlineBound.fn.replace = function(items){
-  if(this.isSingleton()) {
-    this.elements.item(items);
+  if(this.singleton) {
+    this.elements.item("replace", items);
   } else {
     this.elements.items("replace", items);
   }
 }
 
 BowlineBound.fn.create = function(id, item){
-  if(this.isSingleton()) {
+  if(this.singleton) {
     this.elements.item(item);
   } else {
     this.elements.items("add", item);
@@ -155,7 +153,7 @@ BowlineBound.fn.create = function(id, item){
 }
 
 BowlineBound.fn.update = function(id, item){
-  if(this.isSingleton()){
+  if(this.singleton){
     this.elements.item(item);
   } else {
     this.findElement(id).item(item);
@@ -163,18 +161,24 @@ BowlineBound.fn.update = function(id, item){
 }
 
 BowlineBound.fn.remove = function(id){
-  if(this.isSingleton()) {
+  if(this.singleton) {
     this.elements.item("replace", {});
   } else {
     this.findElement(id).item("remove");
   }
 }
 
+BowlineBound.fn.invoke = function(){
+  var args = $.makeArray(arguments);
+  args.unshift(this.klass);
+  Bowline.invoke.apply(Bowline, args);
+}
+
 BowlineBound.fn.findElement = function(id){
   // TODO - increase efficiency
   var element = jQuery();
   jQuery.each(this.elements.items(true), function(){
-    var sameElement = $(this).item().id == id;
+    var sameItem = $(this).item().id == id;
     if(sameItem) element = element.add(this);
   });
   return element;
@@ -227,6 +231,8 @@ var Bowline = {
 
     Bowline.log("New message:", msg);
     
+    Bowline.log(JSON.stringify(msg))
+    
     if(Bowline.enabled)
       _app.call(JSON.stringify(msg));
   },
@@ -247,7 +253,7 @@ var Bowline = {
   
   helper: function(){
     var args = jQuery.makeArray(arguments);
-    args.unshift("Helper");
+    args.unshift("Bowline::Helpers");
     Bowline.invoke.apply(this, args);
   },
   
@@ -260,17 +266,25 @@ var Bowline = {
     if(!Bowline.bounds[klass]) 
       Bowline.bounds[klass] = new BowlineBound(klass);
 
-     Bowline.bounds[klass].push(el);
-     Bowline.bounds[klass].setup();
+    Bowline.bounds[klass].push(el);
+     
+     // Shortcut
+    Bowline[klass] = Bowline.bounds[klass];
   },
   
   unbind: function(el, klass){
+    // TODO
     // var array = Bowline.bounds[klass];
     // if(!array) return;
     // array = jQuery.grep(array, 
     //   function(n){ return n.el != el }
     // );
     // Bowline.bounds[klass] = array;
+  },
+  
+  openInspector: function(){
+    if(Bowline.enabled)
+      _app.openInspector();
   },
   
   // Bowline functions
@@ -286,46 +300,44 @@ var Bowline = {
   
   invokeCallback: function(id, res){
     Bowline.log("Callback:", id, res);
-    if(!Bowline.callbacks[id]) return true;
+    if(!Bowline.callbacks[id]) return;
     try {
       Bowline.callbacks[id](JSON.parse(res));
       delete Bowline.callbacks[id];
     } catch(e) { 
       Bowline.warn(e) 
     }
-    return true;
   },
   
   replace: function(klass, items){
-    Bowline.log(Bowline.bounds[klass])
-    if(!Bowline.bounds[klass]) return false;
+    if(!Bowline.bounds[klass]) return;
     Bowline.bounds[klass].replace(items);
-    return true;
   },
   
   created: function(klass, id, item){
-    if(!Bowline.bounds[klass]) return false;
+    if(!Bowline.bounds[klass]) return;
     Bowline.bounds[klass].create(id, item);
-    return true;
   },
   
   updated: function(klass, id, item){
-    if(!Bowline.bounds[klass]) return false;
+    if(!Bowline.bounds[klass]) return;
     if(!item.id) item.id = id;
     Bowline.bounds[klass].update(id, item);
-    return true;
   },
   
   removed: function(klass, id){
-    if(!Bowline.bounds[klass]) return false;
+    if(!Bowline.bounds[klass]) return;
     Bowline.bounds[klass].remove(id);
-    return true;
   },
   
   trigger: function(klass, event, data){
-    if(!Bowline.bounds[klass]) return false;
+    if(!Bowline.bounds[klass]) return;
     Bowline.bounds[klass].elements.trigger(event, data);
-    return true;
+  },
+  
+  element: function(klass, id){
+    if(!Bowline.bounds[klass]) return;
+    return Bowline.bounds[klass].findElement(id);
   },
   
   // System functions
@@ -350,20 +362,20 @@ var Bowline = {
 
 (function($){
   $.fn.invoke = function(){
-    if($(this).chain('active')){
-      var args = $.makeArray(arguments);
-      if($(this).data('bowline')){
-        // Class method
-        var klass = $(this).data('bowline');
-        args.unshift(klass);
-        Bowline.invoke.apply(Bowline, args);
-      } else {
-        // Instance method
-        var klass = $(this).item('root').data('bowline');
-        var id = $(this).item().id;
+    if($(this).chain("active")){
+      var args  = $.makeArray(arguments);
+      var element = $(this).item("root");
+      var klass = element.data("bowline");      
+      if(!klass) throw "Unknown class: " + klass;
+      
+      if(Bowline[klass].singleton){
+        var id = element.item().id;
         args.unshift(id);
         args.unshift(klass);
         Bowline.instanceInvoke.apply(Bowline, args);
+      } else {
+        args.unshift(klass);
+        Bowline.invoke.apply(Bowline, args); 
       }
     } else {
       throw 'Chain not active';

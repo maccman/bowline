@@ -139,73 +139,71 @@ module Bowline
             item.id
           ).call
         end
-        
-        protected
-          
-          # Returns class set by the 'bind' method
-          def klass
-            @klass || raise("klass not set - see bind method")
-          end
-          
-          # JavaScript proxy to the page. 
-          # See Bowline::Desktop::Proxy for more information.
-          # Example:
-          #   page.myFunc(1,2,3).call
-          def page
-            Bowline::Desktop::Proxy.new(
-              windows.length == 1 ? windows.first : windows
-            )
-          end
-          
-          # JavaScript proxy to the Bowline object.
-          # See Bowline::Desktop::Proxy for more information.
-          # Example:
-          #   bowline.log("msg").call
-          def bowline
-            page.Bowline
-          end
+                  
+        # Returns class set by the 'bind' method
+        def klass
+          @klass || raise("klass not set - see bind method")
+        end
       
-          # Javascript proxy to jQuery.
-          # See Bowline::Desktop::Proxy for more information.
-          # Example:
-          #   jquery.getJSON("http://example.com").call
-          def jquery
-            page.jQuery
-          end
-        
-          # See Bowline::logger
-          def logger
-            Bowline::logger
-          end
-          
-          # Trigger events on all elements
-          # bound to this binder.
-          # Example:
-          #   trigger(:reload, {:key => :value})
-          def trigger(event, data = nil)
-            bowline.trigger(
-              name,
-              format_event(event), 
-              data
-            ).call
-          end
-          
-          # Helper method to trigger a loading 
-          # event either side of a block:
-          #  loading {
-          #   # Slow code, e.g. http call
-          #  }
-          def loading(&block)
-            trigger(:loading, true)
-            yield
-            trigger(:loading, false)
-          end
-        
-          def format_event(name) #:nodoc:
-            name.is_a?(Array) ? 
-              name.join('.') : 
-                name.to_s
-          end
+        # JavaScript proxy to the page. 
+        # See Bowline::Desktop::Proxy for more information.
+        # Example:
+        #   page.myFunc(1,2,3).call
+        def page
+          Bowline::Desktop::Proxy.new(
+            windows.length == 1 ? windows.first : windows
+          )
+        end
+      
+        # JavaScript proxy to the Bowline object.
+        # See Bowline::Desktop::Proxy for more information.
+        # Example:
+        #   bowline.log("msg").call
+        def bowline
+          page.Bowline
+        end
+  
+        # Javascript proxy to jQuery.
+        # See Bowline::Desktop::Proxy for more information.
+        # Example:
+        #   jquery.getJSON("http://example.com").call
+        def jquery
+          page.jQuery
+        end
+    
+        # See Bowline::logger
+        def logger
+          Bowline::logger
+        end
+      
+        # Trigger events on all elements
+        # bound to this binder.
+        # Example:
+        #   trigger(:reload, {:key => :value})
+        def trigger(event, data = nil)
+          bowline.trigger(
+            name,
+            format_event(event), 
+            data
+          ).call
+        end
+      
+        # Helper method to trigger a loading 
+        # event either side of a block:
+        #  loading {
+        #   # Slow code, e.g. http call
+        #  }
+        def loading(&block)
+          trigger(:loading, true)
+          yield
+          trigger(:loading, false)
+        end
+    
+        def format_event(name) #:nodoc:
+          name.is_a?(Array) ? 
+            name.join('.') : 
+              name.to_s
+        end
       end
       
       # jQuery element object

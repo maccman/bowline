@@ -24,7 +24,7 @@ module Bowline
           # TODO - implement options, 
           # like :except and :only
           instance_eval <<-RUBY
-            def js_exposed?
+            def js_exposed?(meth)
               true
             end
             
@@ -61,10 +61,10 @@ module Bowline
             object = klass.constantize
           end
           trace "JS invoking: #{klass}.#{method}(#{args.join(',')})"
-          if object.respond_to?(:js_exposed?) && object.js_exposed?
+          if object.respond_to?(:js_exposed?) && object.js_exposed?(method)
             result = object.js_invoke(window, method, *args)
             if callback?
-              proxy  = Proxy.new(window)
+              proxy = Proxy.new(window)
               proxy.Bowline.invokeCallback(id, result.to_js.to_json)
               window.run_script(proxy.to_s)
             end
@@ -80,7 +80,7 @@ module Bowline
         result = JSON.parse(str)
         Message.new(window, result).invoke
       rescue => e
-        Bowline::Logging.log_error(e)
+        Bowline::Logging.log_error e
       end
       module_function :call
     end
