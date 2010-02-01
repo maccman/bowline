@@ -21,7 +21,7 @@ module Bowline
       if method_name =~ /(=|\?)$/
         case $1
         when "="
-          keys[$`] = arguments.first
+          keys[$`] = args.first
           dump!
         when "?"
           keys[$`]
