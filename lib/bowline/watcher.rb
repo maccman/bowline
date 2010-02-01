@@ -65,15 +65,20 @@ module Bowline
     end
   
     class Callback
-      attr_reader :event, :prok
-    
-      def initialize(watcher, event, prok)
-      	@watcher, @event, @prok = watcher, event, prok
+
+      attr_reader :event, :prok, :oneshot
+
+      def initialize(watcher, event, prok, oneshot = false)
+        @watcher = watcher
+        @event   = event
+        @prok    = prok
+        @oneshot = oneshot
       end
       
       # Execute callback
       def call(*args)
-      	@prok.call(*args)
+      	prok.call(*args)
+      	remove if oneshot
       end
       
       # Remove callback from watcher
@@ -87,8 +92,8 @@ module Bowline
     end
     
     # Add new method/proc to a specific event.
-    def append(event, method = nil, &block)
-      callback = Callback.new(self, event, method||block)
+    def append(event, method = nil, oneshot = false, &block)
+      callback = Callback.new(self, event, method||block, oneshot)
       (@listeners[event] ||= []) << callback
       callback
     end
