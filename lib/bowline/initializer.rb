@@ -245,14 +245,7 @@ module Bowline
     # Creates a class called AppConfig from configuration
     # variables found in config/application.yml
     def load_app_config
-      app_config = configuration.app_config
-      return unless app_config
-      Object.const_set("AppConfig", Class.new {
-        app_config.keys.each do |key|
-          cattr_accessor key
-          send("#{key}=", app_config[key])
-        end
-      })
+      Object.const_set("AppConfig", AppConfig.new(configuration.app_config_file))
     end
     
     def initialize_js
@@ -489,11 +482,6 @@ module Bowline
 
        Object.const_set(:RELATIVE_APP_ROOT, ::APP_ROOT.dup) unless defined?(::RELATIVE_APP_ROOT)
        ::APP_ROOT.replace @root_path
-     end
-     
-     def app_config
-       require 'erb'
-       YAML::load(ERB.new(IO.read(app_config_file)).result) if File.exists?(app_config_file)
      end
      
      # Loads and returns the contents of the #database_configuration_file. The
