@@ -30,7 +30,7 @@ module Bowline
       
       def url=(address)
         unless address.is_a?(URI)
-          address = URI.parse(path)
+          address = URI.parse(address)
         end
         self._url = address.to_s
       end
