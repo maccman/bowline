@@ -3,6 +3,7 @@ module Bowline
     attr_reader :keys, :path
     def initialize(path)
       @path = path
+      @keys = {}
       load!
     end
     
@@ -13,6 +14,11 @@ module Bowline
     
     def dump!
       File.open(path, "w+") {|f| f.write(YAML::dump(keys)) }
+    end
+    
+    def delete(key)
+      @keys.delete(key)
+      dump!
     end
     
     def method_missing(sym, *args)
