@@ -38,6 +38,10 @@ module Bowline
       # Enable user input to the window.
       
       ##
+      # :singleton-method: enable_developer
+      # Enable developer menu.
+      
+      ##
       # :singleton-method: chome=(bool)
       # Enable/disable window's chrome, 
       # i.e. the buttons & frame
@@ -89,6 +93,10 @@ module Bowline
       ##
       # :singleton-method: raise
       # Raise this window above all other ones.
+      
+      ##
+      # :singleton-method: refresh
+      # Refresh window.
       
       ##
       # :singleton-method: show
@@ -155,7 +163,7 @@ module Bowline
       
       ##
       # :singleton-method: show_inspector(console = false)
-      # Show WebInspector
+      # Show WebInspector.
     end
     
     class MainWindow #:nodoc:
