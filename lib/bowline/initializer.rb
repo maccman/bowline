@@ -257,7 +257,6 @@ module Bowline
       return unless Bowline::Desktop.enabled?
       MainWindow.setup
       MainWindow.name = configuration.name
-      MainWindow.file = configuration.index_path
     end
     
     def initialize_trap
@@ -402,11 +401,7 @@ module Bowline
      attr_accessor :helper_glob
      
      attr_accessor :initializer_glob
-     
-     # Set the path that MainWindow will load
-     # when the application starts.
-     attr_accessor :index_path
-     
+          
      # Set the application's name.
      # This is required.
      attr_accessor :name
@@ -455,7 +450,6 @@ module Bowline
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
-       self.index_path                   = default_index_path       
        self.publisher                    = default_publisher
        self.copyright                    = default_copyright
        
@@ -589,10 +583,6 @@ module Bowline
      
      def default_initalizer_glob
        File.join(root_path, *%w{ config initializers **/*.rb })
-     end
-     
-     def default_index_path
-       File.join(root_path, *%w{ public index.html })
      end
           
      def default_publisher
