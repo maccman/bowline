@@ -29,7 +29,6 @@ require 'bowline/ext/string'
 
 require 'bowline/logging'
 require 'bowline/watcher'
-require 'bowline/local_model'
 
 require 'bowline/platform'
 require 'bowline/library'

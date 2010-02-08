@@ -1,4 +1,6 @@
-class Tweet < Bowline::LocalModel
+require "supermodel"
+
+class Tweet < SuperModel::Base
   class << self
     def poll
       destroy_all

@@ -11,8 +11,8 @@ module Bowline
         # the binder's callbacks are executed and the view
         # updated accordingly.
         # 
-        # Classes inheriting fromActiveRecord and Bowline::LocalModel are 
-        # automatically compatable, but if you're using your own custom model
+        # Classes inheriting from ActiveRecord and SuperModel are 
+        # automatically compatible, but if you're using your own custom model
         # you need to make sure it responds to the following methods:
         #  * all                    - return all records
         #  * find(id)               - find record by id

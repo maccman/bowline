@@ -142,7 +142,7 @@ $.bowline.helper('name', 'arg1', ['arg2'])
 
 Bowline supports ActiveRecord and the Sqlite3 database. 
 The packaging for distributing databases is still in development though.
-Bowline also has a LocalModel class for models held in memory.
+You can use the SuperModel gem (http://github.com/maccman/supermodel) for models held in memory.
 
 = WINDOWS
 

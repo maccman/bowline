@@ -6,7 +6,7 @@ module Bowline::Generators
     
     def class_name
       if local
-        super + " < Bowline::LocalModel"
+        super + " < SuperModel::Base"
       else
         super + " < ActiveRecord::Base"
       end
