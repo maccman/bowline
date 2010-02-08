@@ -34,8 +34,8 @@ module Bowline
         # in order to return specific attributes for the view.
         def bind(klass)
           @klass = klass
-          @klass.after_update(method(:updated))
-          @klass.after_destroy(method(:removed))
+          @klass.after_update  {|rec| updated(rec) }
+          @klass.after_destroy {|rec| removed(rec) }
         end
       end
     end

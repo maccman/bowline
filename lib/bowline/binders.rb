@@ -139,7 +139,7 @@ module Bowline
             item.id
           ).call
         end
-                  
+
         # Returns class set by the 'bind' method
         def klass
           @klass || raise("klass not set - see bind method")
