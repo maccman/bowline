@@ -72,7 +72,14 @@ module Bowline
     end
     
     def load_gems
-      Bundler.require if defined?(Bundler)
+      if defined?(Bundler)
+        # API changed between 0.8 and 0.9
+        if defined?(Bundler.require_env)
+          Bundler.require_env
+        else
+          Bundler.require
+        end
+      end
     end
     
     # Set the paths from which Bowline will automatically load source files, and
