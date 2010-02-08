@@ -1,5 +1,6 @@
 require 'active_support'
 require 'active_support/all'
+require 'active_support/dependencies'
 
 Thread.abort_on_exception = true
 
@@ -27,8 +28,6 @@ require 'bowline/version'
 
 require 'bowline/ext/object'
 require 'bowline/ext/array'
-require 'bowline/ext/class'
-require 'bowline/ext/string'
 
 require 'bowline/logging'
 require 'bowline/watcher'
