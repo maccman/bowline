@@ -85,7 +85,6 @@ Gem::Specification.new do |s|
      "lib/bowline/helpers.rb",
      "lib/bowline/initializer.rb",
      "lib/bowline/library.rb",
-     "lib/bowline/local_model.rb",
      "lib/bowline/logging.rb",
      "lib/bowline/platform.rb",
      "lib/bowline/tasks/app.rake",
@@ -139,15 +138,18 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<templater>, [">= 0.3.2"])
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_runtime_dependency(%q<rubyzip2>, [">= 2.0.1"])
+      s.add_runtime_dependency(%q<supermodel>, [">= 0"])
     else
       s.add_dependency(%q<templater>, [">= 0.3.2"])
       s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
+      s.add_dependency(%q<supermodel>, [">= 0"])
     end
   else
     s.add_dependency(%q<templater>, [">= 0.3.2"])
     s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
     s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
+    s.add_dependency(%q<supermodel>, [">= 0"])
   end
 end
 
