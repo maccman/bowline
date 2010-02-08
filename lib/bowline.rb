@@ -57,5 +57,6 @@ require 'bowline/app_config'
 require 'bowline/initializer'
 
 require 'bowline/binders'
+require 'bowline/binders/observer'
 require 'bowline/binders/collection'
 require 'bowline/binders/singleton'

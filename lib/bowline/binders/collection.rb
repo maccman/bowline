@@ -28,10 +28,8 @@ module Bowline
         # in order to return specific attributes for the view.
         def bind(klass)
           @klass = klass
-          # LTODO - use a observer for this
-          @klass.after_create  {|rec| created(rec) }
-          @klass.after_update  {|rec| updated(rec) }
-          @klass.after_destroy {|rec| removed(rec) }
+          observer = Observer.new(self)
+          @klass.add_observer(observer)
         end
       end
     end

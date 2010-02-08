@@ -34,8 +34,8 @@ module Bowline
         # in order to return specific attributes for the view.
         def bind(klass)
           @klass = klass
-          @klass.after_update  {|rec| updated(rec) }
-          @klass.after_destroy {|rec| removed(rec) }
+          observer = Observer.new(self)
+          @klass.add_observer(observer)
         end
       end
     end
