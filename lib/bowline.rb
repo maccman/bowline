@@ -1,3 +1,6 @@
+require 'active_support'
+require 'active_support/all'
+
 Thread.abort_on_exception = true
 
 module Bowline

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2010-01-30}
+  s.date = %q{2010-02-08}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "assets/bowline.js",
      "assets/bowline.menu.js",
      "assets/bowline.state.js",
+     "assets/bowline.test.js",
      "assets/bowline.view.js",
      "assets/jquery.chain.js",
      "assets/jquery.dataset.js",
@@ -46,6 +47,7 @@ Gem::Specification.new do |s|
      "examples/twitter.html",
      "examples/users.rb",
      "lib/bowline.rb",
+     "lib/bowline/app_config.rb",
      "lib/bowline/binders.rb",
      "lib/bowline/binders/collection.rb",
      "lib/bowline/binders/singleton.rb",
@@ -135,16 +137,16 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<templater>, [">= 0.3.2"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 2.3.2"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_runtime_dependency(%q<rubyzip2>, [">= 2.0.1"])
     else
       s.add_dependency(%q<templater>, [">= 0.3.2"])
-      s.add_dependency(%q<activesupport>, [">= 2.3.2"])
+      s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
     end
   else
     s.add_dependency(%q<templater>, [">= 0.3.2"])
-    s.add_dependency(%q<activesupport>, [">= 2.3.2"])
+    s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
     s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
   end
 end
