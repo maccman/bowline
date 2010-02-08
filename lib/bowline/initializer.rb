@@ -273,6 +273,15 @@ module Bowline
       }
     end
     
+    def initialize_marshal
+      return unless defined?(SuperModel)
+      SuperModel::Marshal.path = configuration.marshal_path
+      SuperModel::Marshal.load
+      at_exit {
+        SuperModel::Marshal.dump
+      }
+    end
+    
     def process
       Bowline.configuration = configuration
       
@@ -312,6 +321,8 @@ module Bowline
       initialize_windows
       initialize_trap
       
+      initialize_marshal
+      
       Bowline.initialized = true
     end
     
@@ -348,6 +359,8 @@ module Bowline
      attr_accessor :cache_classes
      
      attr_accessor :binder_paths
+     
+     attr_accessor :marshal_path
      
      # The path to the database configuration file to use. (Defaults to
      # <tt>config/database.yml</tt>.)
@@ -450,6 +463,7 @@ module Bowline
        self.log_path                     = default_log_path
        self.log_level                    = default_log_level
        self.binder_paths                 = default_binder_paths
+       self.marshal_path                 = default_marshal_path
        self.cache_classes                = default_cache_classes
        self.whiny_nils                   = default_whiny_nils
        self.database_configuration_file  = default_database_configuration_file
@@ -570,6 +584,10 @@ module Bowline
      
      def default_binder_paths
        File.join(root_path, 'app', 'binders')
+     end
+     
+     def default_marshal_path
+       File.join(root_path, 'db', 'marshal.db')
      end
 
      def default_cache_classes
