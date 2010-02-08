@@ -72,7 +72,7 @@ module Bowline
     end
     
     def load_gems
-      Bundler.require_env if defined?(Bundler)
+      Bundler.require(:default) if defined?(Bundler)
     end
     
     # Set the paths from which Bowline will automatically load source files, and
