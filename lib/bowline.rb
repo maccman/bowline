@@ -1,6 +1,6 @@
 require 'active_support'
-require 'active_support/all'
 require 'active_support/dependencies'
+require 'active_support/core_ext/string/access'
 
 Thread.abort_on_exception = true
 
