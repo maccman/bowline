@@ -1,8 +1,8 @@
 module Bowline  
   module Version #:nodoc:
     MAJOR    = 0
-    MINOR    = 5
-    TINY     = 8
+    MINOR    = 6
+    TINY     = 0
     
     STRING   = [MAJOR, MINOR, TINY].join('.')
     
