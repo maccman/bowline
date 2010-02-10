@@ -65,7 +65,7 @@ namespace :libs do
     end
   end
     
-  task :setup => [:environment, "libs:download", "libs:unpack"]
+  task :setup => [:environment, "libs:download"]
   
   desc "Update Bowline's binary and pre-compiled libs"
   task :update => :environment do

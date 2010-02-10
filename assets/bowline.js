@@ -153,6 +153,7 @@ BowlineBound.fn.create = function(id, item){
 }
 
 BowlineBound.fn.update = function(id, item){
+  if(!item.id) item.id = id;
   if(this.singleton){
     this.elements.item(item);
   } else {
@@ -230,8 +231,6 @@ var Bowline = {
     };
 
     Bowline.log("New message:", msg);
-    
-    Bowline.log(JSON.stringify(msg))
     
     if(Bowline.enabled)
       _app.call(JSON.stringify(msg));
@@ -321,7 +320,6 @@ var Bowline = {
   
   updated: function(klass, id, item){
     if(!Bowline.bounds[klass]) return;
-    if(!item.id) item.id = id;
     Bowline.bounds[klass].update(id, item);
   },
   
@@ -392,7 +390,16 @@ var Bowline = {
     var args = $.makeArray(arguments);
     args.unshift(this);
     Bowline.unbind.apply(Bowline, args);
-  }  
+  };
+  
+  $.fn.bowlineSerialize = function(){
+    var array  = $(this).serializeArray();
+    var object = {};
+    $.each(array, function(){
+      object[this.name] = this.value;
+    });
+    return object;
+  };
 })(jQuery);
 
 jQuery(function($){

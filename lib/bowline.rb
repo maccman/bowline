@@ -2,6 +2,7 @@ require 'active_support'
 require 'active_support/dependencies'
 require 'active_support/core_ext/string/access'
 require 'active_support/core_ext/kernel/reporting'
+require 'active_support/core_ext/hash/indifferent_access'
 
 Thread.abort_on_exception = true
 
