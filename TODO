@@ -11,7 +11,6 @@ Add --version to bowline-gen
 
 Developer tools:
   F5 to reload page
-  Show inspector
   Reload ruby
 
 Tutorials:
@@ -21,9 +20,7 @@ Tutorials:
   CSS search box & placeholder
   
 - Don't run initializers during rake tasks
-- Find out why build is taking so long
 - Add first-run initializers
-- Add reload keyboard shortcut
 - Add some sort of production mode
 - Generate correct shebang on script files
 - Use App.root rather than APP_ROOT
