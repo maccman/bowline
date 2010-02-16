@@ -263,7 +263,7 @@ module Bowline
     def initialize_windows
       return unless Bowline::Desktop.enabled?
       MainWindow.setup
-      MainWindow.name = configuration.name
+      MainWindow.title = configuration.name
     end
     
     def initialize_trap
