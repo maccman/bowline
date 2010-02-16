@@ -45,8 +45,8 @@ http://groups.google.com/group/bowline-dev
 
 = REQUIREMENTS
 
-- Mac OSX (both Leopard & Snow Leopard)
-- Ruby 1.9 (Ruby 1.8.6 is supported, but we recommend you use 1.9 since that's the version your application will be using when it's run).
+- Mac OSX >=10.5 or Ubuntu
+- Ruby 1.9
 - Bowline gem
 
 The other required libraries, such as bowline-desktop, are downloaded later by Bowline - you don't need to worry about these.
