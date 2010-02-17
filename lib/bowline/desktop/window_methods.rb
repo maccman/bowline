@@ -41,7 +41,7 @@ module Bowline
         flags |= Window::FD_SAVE if options[:save]
         flags |= Window::FD_OVERWRITE_PROMPT if options[:overwrite_prompt]
         flags |= Window::FD_FILE_MUST_EXIST  if options[:file_must_exist]
-        _select_dir(
+        _select_file(
           options[:message],
           options[:default_path],
           options[:default_filename],
