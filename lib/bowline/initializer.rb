@@ -1,4 +1,5 @@
-require 'pathname'
+require "pathname"
+require "fileutils"
 
 module Bowline
   class << self
@@ -275,6 +276,7 @@ module Bowline
     
     def initialize_marshal
       return unless defined?(SuperModel)
+      FileUtils.mkdir_p(File.dirname(configuration.marshal_path))
       SuperModel::Marshal.path = configuration.marshal_path
       SuperModel::Marshal.load
       at_exit {
