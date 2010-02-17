@@ -49,6 +49,9 @@ http://groups.google.com/group/bowline-dev
 - Ruby 1.9
 - Bowline gem
 
+If you're on Ubuntu, you'll need to run:
+  apt-get install libwebkit-dev
+
 The other required libraries, such as bowline-desktop, are downloaded later by Bowline - you don't need to worry about these.
 
 = INSTALLATION
