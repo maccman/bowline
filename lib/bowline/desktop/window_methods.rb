@@ -35,7 +35,7 @@ module Bowline
         self._url = address.to_s
       end
       
-      def select_dir(options = {})
+      def select_file(options = {})
         flags = 0
         flags |= Window::FD_OPEN if options[:open]
         flags |= Window::FD_SAVE if options[:save]
