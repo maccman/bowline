@@ -24,6 +24,7 @@ module Bowline
 end
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
+$LOAD_PATH << File.join(Bowline.lib_path, 'vendor')
 
 require 'bowline/version'
 
