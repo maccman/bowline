@@ -39,7 +39,7 @@ module Bowline::Generators
     glob! "public/javascripts"
     glob! "public/stylesheets"
     
-    glob! "script"
+    glob! "script", [nil]
     
     file :jquery,    "../assets/jquery.js",        "public/javascripts/jquery.js"
     file :chainjs,   "../assets/jquery.chain.js",  "public/javascripts/jquery.chain.js"
