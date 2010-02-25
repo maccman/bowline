@@ -1,7 +1,7 @@
 # Edit this Gemfile to bundle your application's dependencies.
 
-gem "rubygems-update"
-gem "bundler", "=0.8.1"
+gem "rubygems-update", "= 1.3.5"
+gem "bundler08"
 gem "bowline"
 
 ## Bundle the gems you use:
