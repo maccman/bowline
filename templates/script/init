@@ -1,2 +1,2 @@
 <%= shebang %>
-require File.join(*%w[config environment])
+require File.join(File.dirname(__FILE__), *%w[.. config environment])
