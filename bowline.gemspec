@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2010-02-17}
+  s.date = %q{2010-02-25}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -66,6 +66,7 @@ Gem::Specification.new do |s|
      "lib/bowline/desktop/js.rb",
      "lib/bowline/desktop/misc.rb",
      "lib/bowline/desktop/network.rb",
+     "lib/bowline/desktop/path.rb",
      "lib/bowline/desktop/proxy.rb",
      "lib/bowline/desktop/runtime.rb",
      "lib/bowline/desktop/sound.rb",
@@ -123,14 +124,14 @@ Gem::Specification.new do |s|
 
       Thank you for installing Bowline.
       
-      If you're on linux, please install the WebKit library:
+      If you're on Linux, please install the WebKit library:
         sudo apt-get install libwebkit-dev
 
     **************************************************
 }
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Bowline GUI framework}
   s.test_files = [
     "examples/tweet.rb",
