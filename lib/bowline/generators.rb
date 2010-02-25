@@ -1,5 +1,6 @@
-gem 'templater', '>= 0.3.2'
-require 'templater'
+gem "templater", ">= 0.3.2"
+require "templater"
+require "rbconfig"
 
 module Bowline
   module Generators #:nodoc: all
@@ -20,6 +21,10 @@ module Bowline
         modules.reverse.each_with_index do |mod, i|
           concat(("  " * (indent + modules.size - i - 1)) + "end # #{mod}\n", block.binding)
         end
+      end
+      
+      def shebang
+        "#!/usr/bin/env #{RbConfig::CONFIG["RUBY_INSTALL_NAME"]}"
       end
       
       def self.source_root

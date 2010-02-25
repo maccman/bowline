@@ -1,2 +1,2 @@
-#!/usr/bin/env ruby
+<%= shebang %>
 require File.join(*%w[config environment])
