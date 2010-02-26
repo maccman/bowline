@@ -30,6 +30,6 @@ module Bowline
     rescue => e
       log_error e
     end
-    module_function :tick
+    module_function :tick    
   end
 end

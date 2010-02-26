@@ -55,20 +55,15 @@ module Bowline
             raise e
           end
       end
-
-      def poll
-        run_scripts
-      end
-      module_function :poll
       
-      def setup
+      def setup! #:nodoc:
         Desktop.on_idle(method(:poll))
       end
-      module_function :setup
+      module_function :setup!
     
       def eval(win, str, method = nil, &block)
         script = Script.new(win, str, method||block)
-        if Thread.current == Thread.main && script.ready?
+        if Runtime.main_thread? && script.ready?
           script.call
         else
           scripts << script
@@ -77,18 +72,17 @@ module Bowline
       module_function :eval
     
       private
-        def run_scripts
+        def poll
           ready_scripts = scripts.select(&:ready?)
           ready_scripts.each do |script|
             script.call
             scripts.delete(script)
           end
         end
-        module_function :run_scripts
+        module_function :poll
         
-        # TODO - thread safety, needs mutex
         def scripts
-          Thread.main[:scripts] ||= []
+          @scripts ||= []
         end
         module_function :scripts
     end

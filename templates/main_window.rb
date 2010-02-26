@@ -1,5 +1,5 @@
 class MainWindow < Bowline::Desktop::WindowManager
-  setup
+  setup!
   self.file   = :index
   self.width  = 300
   self.height = 400

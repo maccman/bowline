@@ -256,14 +256,15 @@ module Bowline
       Object.const_set("AppConfig", AppConfig.new(configuration.app_config_file))
     end
     
-    def initialize_js
+    def initialize_desktop
       return unless Bowline::Desktop.enabled?
-      Bowline::Desktop::JS.setup
+      Bowline::Desktop::Runtime.setup!
+      Bowline::Desktop::JS.setup!
     end
     
     def initialize_windows
       return unless Bowline::Desktop.enabled?
-      MainWindow.setup
+      MainWindow.setup!
       MainWindow.title = configuration.name
     end
     
@@ -319,7 +320,7 @@ module Bowline
       
       after_initialize
             
-      initialize_js
+      initialize_desktop
       initialize_windows
       initialize_trap
       

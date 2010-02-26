@@ -4,7 +4,7 @@ module Bowline
     # It's the usual way of interfacing with your application's windows, 
     # and all of Bowline's windows normally inherit from it.
     # 
-    # You'll need to call the setup method, before calling using this class.
+    # You'll need to call the setup! method, before calling using this class.
     # If the window is deallocated (i.e. closed), you'll need to call it again.
     # It's worth not calling the setup method before you need it, since it'll
     # increase the amount of CPU your application uses.
@@ -55,7 +55,7 @@ module Bowline
         # Call this method to allocate a new window.
         # You'll need to do this before using it, 
         # or after it has been closed.
-        def setup
+        def setup!
           return unless Desktop.enabled?
           return if @window && !@window.dealocated?
           if self.name == "MainWindow"
@@ -68,7 +68,7 @@ module Bowline
           @script_callback = Proc.new {|str|
             Bowline::Desktop::Bridge.call(self, str)
           }
-          @window.script_callback = @script_callback;
+          @window.script_callback = @script_callback
         end
         
         # Evaluate JavaScript in this window. Pass
