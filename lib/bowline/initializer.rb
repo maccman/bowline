@@ -257,27 +257,33 @@ module Bowline
     end
     
     def initialize_desktop
-      return unless Bowline::Desktop.enabled?
-      Bowline::Desktop::Runtime.setup!
-      Bowline::Desktop::JS.setup!
+      return unless Desktop.enabled?
+      Desktop::Runtime.setup!
+      Desktop::JS.setup!
     end
     
     def initialize_windows
-      return unless Bowline::Desktop.enabled?
+      return unless Desktop.enabled?
       MainWindow.setup!
       MainWindow.title = configuration.name
     end
     
     def initialize_trap
-      return unless Bowline::Desktop.enabled?
+      return unless Desktop.enabled?
       trap("INT") {
-        Bowline::Desktop::App.exit
+        Desktop::App.exit
       }
+    end
+    
+    def initialize_path
+      return unless Desktop.enabled?
+      # Dir::tmpdir/Tempfile uses this
+      ENV["TMPDIR"] = Desktop::Path.temp
+      FileUtils.mkdir_p(Desktop::Path.user_data)
     end
     
     def initialize_marshal
       return unless defined?(SuperModel)
-      FileUtils.mkdir_p(File.dirname(configuration.marshal_path))
       SuperModel::Marshal.path = configuration.marshal_path
       SuperModel::Marshal.load
       at_exit {
@@ -323,7 +329,7 @@ module Bowline
       initialize_desktop
       initialize_windows
       initialize_trap
-      
+      initialize_path
       initialize_marshal
       
       Bowline.initialized = true
@@ -590,7 +596,11 @@ module Bowline
      end
      
      def default_marshal_path
-       File.join(root_path, 'db', 'marshal.db')
+       if Desktop.enabled?
+         File.join(Desktop::Path.user_data, 'marshal.db')
+       else
+         File.join(root_path, 'db', 'marshal.db')
+       end
      end
 
      def default_cache_classes
