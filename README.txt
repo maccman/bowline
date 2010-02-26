@@ -12,7 +12,7 @@ Ruby, HTML and JS desktop application framework.
 * Uses Webkit
 * View in HTML/JavaScript
 * Binding between HTML & Ruby
-* Cross platform (only osx atm ;)
+* Cross platform (OSX & Ubuntu) - Windows soon
 
 = INTRODUCTION
 
@@ -114,12 +114,7 @@ Suffice to say, the HTML looks a bit like this:
       <a href="#" class="destroy">Delete</a>
     </div>
   </div>
-
-Now, were you to have a user object, you could do something like
-this to update the HTML.
-
-# TODO
-
+  
 = METHODS IN BINDERS
 
 You can call both class and instance methods of the binders.
@@ -189,7 +184,6 @@ Usage for a collection (of users):
         def admins
           # This just replaces all the listed
           # users with just admins
-          # TODO
           self.items = User.admins.all
         end
       end
