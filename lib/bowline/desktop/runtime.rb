@@ -1,17 +1,30 @@
+require "thread"
+
 module Bowline
   module Desktop
     module Runtime
-      def setup
-        Desktop.on_tick(method(:poll))
+      def setup! #:nodoc:
+        Desktop.on_idle(method(:poll))
       end
-      module_function :setup
+      module_function :setup!
       
-      def run_in_main_thread(method = nil, &block)
-        procs << method||block
+      # Run block/method in main thread
+      def main(method = nil, &block)
+        proc = method||block
+        if main_thread?
+          proc.call
+        else
+          procs << proc
+        end
       end
-      module_function :run_in_main_thread
+      module_function :main
       
-      private      
+      def main_thread?
+        Thread.current == Thread.main
+      end
+      module_function :main_thread?
+      
+      private
         def poll
           while proc = procs.shift
             proc.call
@@ -19,9 +32,8 @@ module Bowline
         end
         module_function :poll
       
-        # TODO - thread safety, needs mutex
         def procs
-          Thread.main[:procs] ||= []
+          @procs ||= []
         end
         module_function :procs 
     end
