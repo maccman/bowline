@@ -1,41 +1,28 @@
+require 'supermodel'
+
 module Bowline
-  class AppConfig
-    attr_reader :keys, :path
-    def initialize(path)
-      @path = path
-      @keys = {}
-      load!
-    end
+  class AppConfig < SuperModel::Base
+    include SuperModel::Marshal::Model
     
-    def load!
-      return unless File.exist?(path)
-      @keys = YAML::load(File.read(path))
-    end
-    
-    def dump!
-      File.open(path, "w+") {|f| f.write(YAML::dump(keys)) }
-    end
-    
-    def delete(key)
-      @keys.delete(key)
-      dump!
-    end
-    
-    def method_missing(sym, *args)
-      method_name = sym.to_s
-      
-      if method_name =~ /(=|\?)$/
-        case $1
-        when "="
-          keys[$`] = args.first
-          dump!
-        when "?"
-          keys[$`]
-        end
-      else
-        return keys[method_name] if keys.include?(method_name)
-        super
+    class << self
+      def instance
+        @instance ||= create
       end
+      
+      def marshal_records(record = nil)
+        self.instance.load(record.attributes) if record
+        self.instance
+      end
+      
+      def load!(path)
+        self.instance.load_path(path)
+        self.instance
+      end
+    end
+    
+    def load_path(path)
+      return unless path && File.exist?(path)
+      load(YAML::load(File.read(path)))
     end
   end
 end

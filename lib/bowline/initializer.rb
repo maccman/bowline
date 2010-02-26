@@ -253,7 +253,7 @@ module Bowline
     # Creates a class called AppConfig from configuration
     # variables found in config/application.yml
     def load_app_config
-      Object.const_set("AppConfig", AppConfig.new(configuration.app_config_file))
+      Object.const_set("AppConfig", AppConfig.load!(configuration.app_config_file))
     end
     
     def initialize_desktop
