@@ -15,7 +15,7 @@ module Bowline
       end
       
       def offline!
-        return unless @online
+        return if @online == false
         @online = false
         watcher.call(:on_offline)
         watcher.call(:on_change)
