@@ -2,11 +2,6 @@ module Bowline
   module Binders
     class Singleton < Base
       class << self
-        def setup(*args) #:nodoc
-          super(*args)
-          {:singleton => true}
-        end
-        
         alias :item= :items=
         
         # Associate the binder with a model to setup callbacks so 

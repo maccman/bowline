@@ -15,7 +15,7 @@ module Bowline
       end
       
       def after_destroy(rec)
-        binder.removed(rec)
+        binder.destroyed(rec)
       end
       
       def update(observed_method, object) #:nodoc:

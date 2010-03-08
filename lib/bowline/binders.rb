@@ -71,7 +71,7 @@ module Bowline
           if initial_items = initial
             self.items = initial_items
           end
-          Hash.new # Empty options
+          true
         end
         
         # Called by a window's JavaScript whenever that window is bound to this Binder.
@@ -133,8 +133,8 @@ module Bowline
         # Remove an item from the binder, updating the HTML.
         # This method is normally only called internally by 
         # the bound class's after_destroy callback.
-        def removed(item)
-          bowline.removed(
+        def destroyed(item)
+          bowline.destroyed(
             name, 
             item.id
           ).call
@@ -175,61 +175,16 @@ module Bowline
         def logger
           Bowline::logger
         end
-      
-        # Trigger events on all elements
-        # bound to this binder.
-        # Example:
-        #   trigger(:reload, {:key => :value})
-        def trigger(event, data = nil)
-          bowline.trigger(
-            name,
-            format_event(event), 
-            data
-          ).call
-        end
-      
-        # Helper method to trigger a loading 
-        # event either side of a block:
-        #  loading {
-        #   # Slow code, e.g. http call
-        #  }
-        def loading(&block)
-          trigger(:loading, true)
-          yield
-          trigger(:loading, false)
-        end
-    
-        def format_event(name) #:nodoc:
-          name.is_a?(Array) ? 
-            name.join('.') : 
-              name.to_s
-        end
       end
-      
-      # jQuery element object
-      attr_reader :element
-      
+            
       # Instance of the bound class' record
       attr_reader :item
 
       def initialize(id, *args) #:nodoc:
-        @element = self.class.bowline.element(
-                      self.class.name, id
-                   )
-        @item    = self.class.find(id)
+        @item = self.class.find(id)
       end
       
       protected
-        # Trigger jQuery events on this element.
-        # Example:
-        #   trigger(:highlight)
-        def trigger(event, data = nil)
-          element.trigger(
-            self.class.format_event(event), 
-            data
-          ).call
-        end
-        
         # Remove element from the view
         def remove!
           self.class.removed(item)

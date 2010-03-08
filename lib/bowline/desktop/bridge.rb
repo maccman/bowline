@@ -82,7 +82,8 @@ module Bowline
         result = JSON.parse(str)
         Message.new(window, result).invoke
       rescue => e
-        Bowline::Logging.log_error e
+        Bowline::Logging.trace(str)
+        Bowline::Logging.log_error(e)
       end
       module_function :call
     end
