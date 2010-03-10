@@ -4,4 +4,6 @@ unless Bowline::Library.ready?
   Rake::Task['libs:setup'].invoke
 end
 
+ENV["APP_ENV"] = "development"
+
 exec("#{Bowline::Library.desktop_path} #{APP_ROOT}")

@@ -1,2 +1,3 @@
 <%= shebang %>
-require File.join(File.dirname(__FILE__), *%w[.. config environment])
+require File.join(File.dirname(__FILE__), *%w[.. config boot])
+require "bowline/commands/init"
