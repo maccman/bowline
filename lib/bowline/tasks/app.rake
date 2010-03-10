@@ -1,9 +1,40 @@
 require 'fileutils'
 require 'erb'
 require 'rbconfig'
+require 'tempfile'
+require 'zip/zip'
 
 namespace :app do  
-  namespace :build do    
+  namespace :build do
+    task :zip => :environment do
+      unless Bowline::Library.ready?
+        Rake::Task["libs:setup"].invoke
+      end
+      
+      config = Bowline.configuration
+      build_path  = Bowline::Library.local_build_path
+      app_path    = File.join(build_path, "#{config.name}.zip")
+      FileUtils.rm_rf(app_path)
+      
+      dirs = Dir[Bowline.root.join("**/**").to_s]
+      dirs.delete(build_path)
+      dirs.delete(Bowline.root.join("log").to_s)
+      dirs.delete(Bowline.root.join(*%w{db migrate}).to_s)
+      dirs.delete_if {|i| i =~ /\.svn|\.DS_Store|\.git/ }
+      
+      Zip::ZipFile.open(app_path, Zip::ZipFile::CREATE) do |zf|
+        # This is horrible - but RubyZIP's API sucks
+        blank = Tempfile.new("blank")
+        zf.add("app_first_run", blank.path)
+        zf.add("app_production", blank.path)
+        
+        dirs.each do |dir|
+          name = dir.sub(Bowline.root.to_s + "/", "")
+          zf.add(name, dir)
+        end
+      end
+    end
+    
     task :osx => :environment do
       unless Bowline::Library.ready?
         Rake::Task["libs:setup"].invoke
@@ -32,7 +63,7 @@ namespace :app do
           # Make icon
           makeicns = File.join(assets_path, "makeicns")
           if config.icon
-            makeicns_in = File.expand_path(config.icon, APP_ROOT)
+            makeicns_in = File.expand_path(config.icon, Bowline.root)
           else
             makeicns_in = File.join(assets_path, "bowline.png")
           end
@@ -41,13 +72,15 @@ namespace :app do
           `#{makeicns} -in #{makeicns_in} -out #{makeicns_out}`
         
           # Copy App
-          dirs = Dir[File.join(APP_ROOT, '**')]
+          dirs = Dir[Bowline.root.join("**").to_s]
           dirs.delete(build_path)
-          dirs.delete(File.join(APP_ROOT, 'log'))
-          dirs.delete(File.join(APP_ROOT, 'tmp'))
-          dirs.delete(File.join(APP_ROOT, 'db', 'migrate'))
-          dirs.delete_if {|i| i =~ /\.svn|\.DS_Store/ }
-          FileUtils.cp_r(dirs, '.')
+          dirs.delete(Bowline.root.join("log").to_s)
+          dirs.delete(Bowline.root.join(*%w{db migrate}).to_s)
+          dirs.delete_if {|i| i =~ /\.svn|\.DS_Store|\.git/ }
+          FileUtils.cp_r(dirs, ".")
+          
+          FileUtils.touch("app_production")
+          FileUtils.touch("app_first_run")
         end
         
         # Copy Bowline binary & libs
