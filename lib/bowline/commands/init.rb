@@ -2,9 +2,9 @@ unless Bowline::Desktop.enabled?
   raise "Script not executed by bowline-desktop"
 end
 
-require "#{APP_ROOT}/config/environment"
+require Bowline.root.join(*%w{config environment})
 
-if ENV["IRB"]
+if ENV["APP_IRB"]
   require "irb"
   require "irb/completion"
   IRB.start

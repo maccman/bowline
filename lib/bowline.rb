@@ -7,24 +7,19 @@ require 'active_support/core_ext/hash/indifferent_access'
 Thread.abort_on_exception = true
 
 module Bowline
-  def lib_path
+  def library_path
     File.expand_path(
-      File.join(File.dirname(__FILE__), *%w[..])
+      File.join(File.dirname(__FILE__), "..")
     )
   end
-  module_function :lib_path
-  
-  def assets_path
-    File.join(lib_path, "assets")
-  end
-  module_function :assets_path
+  module_function :library_path  
   
   module Base
   end
 end
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH << File.join(Bowline.lib_path, 'vendor')
+$LOAD_PATH << File.join(Bowline.library_path, 'vendor')
 
 require 'bowline/version'
 

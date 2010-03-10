@@ -34,6 +34,18 @@ module Bowline
     def root
       Pathname.new(APP_ROOT) if defined?(APP_ROOT)
     end
+    
+    def public_path
+      root && root.join("public")
+    end
+    
+    def assets_path
+      File.join(library_path, "assets")
+    end
+    
+    def env
+      @env ||= ActiveSupport::StringInquirer.new(ENV["APP_ENV"] || "development")
+    end
   end
   
   class Initializer #:nodoc:
@@ -61,7 +73,14 @@ module Bowline
       @configuration = configuration
       @loaded_plugins = []
     end
-        
+    
+    def set_environment
+      production_path = Bowline.root.join("app_production")
+      ENV["APP_ENV"] ||= begin
+        production_path.exist? ? "production" : "development"
+      end
+    end
+    
     def require_frameworks
       configuration.frameworks.each { |framework| require(framework.to_s) }
     end
@@ -158,7 +177,7 @@ module Bowline
     # Loads support for "whiny nil" (noisy warnings when methods are invoked
     # on +nil+ values) if Configuration#whiny_nils is true.
     def initialize_whiny_nils
-      require('active_support/whiny_nil') if configuration.whiny_nils
+      require("active_support/whiny_nil") if configuration.whiny_nils
     end
     
     # Sets the default value for Time.zone, and turns on ActiveRecord::Base#time_zone_aware_attributes.
@@ -197,15 +216,29 @@ module Bowline
     end
         
     def load_plugins
-      Dir.glob(File.join(configuration.plugin_glob, 'init.rb')).sort.each do |path|
+      Dir.glob(File.join(configuration.plugin_glob, "init.rb")).sort.each do |path|
         config = configuration # Need local config variable
         eval(IO.read(path), binding, path)
       end
     end
     
+    def load_application_environment
+      require(Bowline.root.join(*%w{config environment}, Bowline.env))
+    end
+    
     def load_application_initializers
       Dir.glob(configuration.initializer_glob).sort.each do |initializer|
         load(initializer)
+      end
+    end
+    
+    def load_application_first_run
+      first_run = Bowline.root.join("app_first_run")
+      if first_run.exist?
+        first_run.unlink
+        Dir.glob(configuration.first_run_glob).sort.each do |initializer|
+          load(initializer)
+        end
       end
     end
     
@@ -294,6 +327,8 @@ module Bowline
     def process
       Bowline.configuration = configuration
       
+      set_environment
+      
       set_load_path
       load_gems
       
@@ -322,7 +357,9 @@ module Bowline
       load_application_classes
       load_application_helpers
             
+      load_application_environment
       load_application_initializers
+      load_application_first_run
       
       after_initialize
             
@@ -426,9 +463,8 @@ module Bowline
      attr_accessor :time_zone
      
      attr_accessor :plugin_glob
-     
      attr_accessor :helper_glob
-     
+     attr_accessor :first_run_glob
      attr_accessor :initializer_glob
           
      # Set the application's name.
@@ -480,6 +516,7 @@ module Bowline
        self.plugin_glob                  = default_plugin_glob
        self.helper_glob                  = default_helper_glob
        self.initializer_glob             = default_initalizer_glob
+       self.first_run_glob               = default_first_run_glob
        self.publisher                    = default_publisher
        self.copyright                    = default_copyright
        
@@ -621,6 +658,10 @@ module Bowline
      
      def default_initalizer_glob
        File.join(root_path, *%w{ config initializers **/*.rb })
+     end
+     
+     def default_first_run_glob
+       File.join(root_path, *%w{ config first_run **/*.rb })
      end
           
      def default_publisher

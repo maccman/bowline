@@ -5,11 +5,11 @@ module Bowline::Generators
     DESC
     
     def app_id
-      ['bowline', name].join('.')
+      ["bowline", name].join(".")
     end
     
     def destination_root
-      # Todo - only works relative
+      # TODO - only works relative
       File.join(@destination_root, base_name)
     end
     
@@ -19,7 +19,6 @@ module Bowline::Generators
     
     first_argument :name, :required => true, :desc => "application name"
 
-    empty_directory :tmp,     "tmp"    
     empty_directory :vendor,  "vendor"
     empty_directory :lib,     "lib"
     empty_directory :db,      "db"
@@ -60,7 +59,12 @@ module Bowline::Generators
       file(action.downcase.gsub(/[^a-z0-9]+/, '_').to_sym, action, action)
     }
     
+    glob "config/environment"
+    
     empty_directory :initializers, "config/initializers"
+    empty_directory :first_run,    "config/first_run"
+    
+    touch "app_first_run"
     
     file :readme, "../README.txt", "README"
   end
