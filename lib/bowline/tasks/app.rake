@@ -12,7 +12,10 @@ namespace :app do
       end
       
       config = Bowline.configuration
+      
       build_path  = Bowline::Library.local_build_path
+      FileUtils.mkdir_p(build_path)
+      
       app_path    = File.join(build_path, "#{config.name}.zip")
       FileUtils.rm_rf(app_path)
       
@@ -42,7 +45,7 @@ namespace :app do
       
       config = Bowline.configuration
       assets_path = File.join(Bowline.assets_path, "osx")
-      build_path  = Bowline::Library.local_build_path
+      build_path  = Bowline::Library.local_build_path.to_s
       app_path    = File.join(build_path, "#{config.name}.app")
       FileUtils.rm_rf(app_path)
       contents_path = File.join(app_path, "Contents")
@@ -72,10 +75,10 @@ namespace :app do
           `#{makeicns} -in #{makeicns_in} -out #{makeicns_out}`
         
           # Copy App
-          dirs = Dir[Bowline.root.join("**").to_s]
+          dirs = Dir[File.join(APP_ROOT, "**")]
           dirs.delete(build_path)
-          dirs.delete(Bowline.root.join("log").to_s)
-          dirs.delete(Bowline.root.join(*%w{db migrate}).to_s)
+          dirs.delete(File.join(APP_ROOT, "log"))
+          dirs.delete(File.join(APP_ROOT, *%w{db migrate}))
           dirs.delete_if {|i| i =~ /\.svn|\.DS_Store|\.git/ }
           FileUtils.cp_r(dirs, ".")
           
