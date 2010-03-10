@@ -34,14 +34,6 @@ def unzip(fpath, tpath)
   }
 end
 
-def sym_or_copy(from, to)
-  begin
-    FileUtils.ln_s(from, to)
-  rescue NotImplementedError
-    FileUtils.cp_r(from, to)
-  end
-end
-
 namespace :libs do  
   desc "Download Bowline's binary and pre-compiled libs"
   task :download => :environment do
