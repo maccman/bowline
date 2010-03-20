@@ -4,7 +4,7 @@ module Bowline
   module Desktop
     module Runtime
       def setup! #:nodoc:
-        Desktop.on_idle(method(:poll))
+        Desktop.on_tick(method(:poll))
       end
       module_function :setup!
       

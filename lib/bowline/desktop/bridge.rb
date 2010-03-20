@@ -30,8 +30,8 @@ module Bowline
               true
             end
             
-            def js_invoke(window, method, *args)
-              send(method, *args)
+            def js_invoke(window, callback, method, *args)
+              callback.call(send(method, *args))
             end
           RUBY
         end
@@ -40,19 +40,30 @@ module Bowline
       class Message #:nodoc:
         include Bowline::Logging
         
-        attr_reader :window, :id, :klass, :method, :args
+        attr_reader :window, :id, :klass, :method_name, :args
         
         def initialize(window, atts)
-          @window   = window
-          atts      = atts.with_indifferent_access
-          @id       = atts[:id]
-          @klass    = atts[:klass]
-          @method   = atts[:method].to_sym
-          @args     = atts[:args] || []
+          @window       = window
+          atts          = atts.with_indifferent_access
+          @id           = atts[:id]
+          @klass        = atts[:klass]
+          @method_name  = atts[:method].to_sym
+          @args         = atts[:args] || []
         end
         
         def callback?
           @id != -1
+        end
+        
+        def callback(result)
+          return unless callback?
+          proxy = Proxy.new(window)
+          proxy = proxy.Bowline.invokeCallback(
+            id, result.to_js.to_json
+          )
+          Runtime.main { 
+            window.run_script(proxy.to_s)
+          }
         end
 
         def invoke
@@ -62,14 +73,19 @@ module Bowline
             # TODO - security concerns with constantize
             object = klass.constantize
           end
-          trace "JS invoking: #{klass}.#{method}(#{args.join(',')})"
-          if object.respond_to?(:js_exposed?) && object.js_exposed?(method)
-            result = object.js_invoke(window, method, *args)
-            if callback?
-              proxy = Proxy.new(window)
-              proxy.Bowline.invokeCallback(id, result.to_js.to_json)
-              window.run_script(proxy.to_s)
-            end
+
+          trace "JS invoking: #{klass}.#{method_name}(#{args.join(',')})"
+
+          if object.respond_to?(:js_exposed?) && 
+              object.js_exposed?(method_name)
+            
+            object.js_invoke(
+              window, 
+              method(:callback), 
+              method_name, 
+              *args
+            )
+
           else
             raise "Method not allowed"
           end

@@ -61,8 +61,8 @@ module Bowline
       end
       module_function :setup!
     
-      def eval(win, str, method = nil, &block)
-        script = Script.new(win, str, method||block)
+      def eval(window, string, method = nil, &block)
+        script = Script.new(window, string, method||block)
         if Runtime.main_thread? && script.ready?
           script.call
         else

@@ -60,7 +60,60 @@ module Bowline
       extend Bowline::Desktop::Bridge::ClassMethods
       js_expose
       
-      class << self
+      module Async
+        protected
+        def async(*methods)
+          if block_given?
+            Thread.new(callback_proc) do |proc|
+              begin
+              self.callback_proc = proc
+              yield
+            rescue => e
+              Bowline::Logging.log_error(e)
+            end
+            end
+          else
+            methods.each do |method|
+              class_eval(<<-EOS, __FILE__, __LINE__)
+                def #{method}_with_async(*args, &block)
+                  async { #{method}_without_async(*args, &block) }
+                end
+              EOS
+              alias_method_chain method, :async
+            end
+          end
+        end
+      end
+      
+      extend  Async
+      include Async
+      class << self; extend Async; end
+      
+      class << self        
+        def callback_proc(proc = nil) #:nodoc:
+          Thread.current[:callback] = proc if proc
+          Thread.current[:callback]
+        end
+        alias_method :callback_proc=, :callback_proc
+        
+        def callback(result = nil)
+          result = yield if block_given?
+          callback_proc.call(result)
+        end
+        
+        def js_invoke(window, callback, method, *args) #:nodoc:
+          self.callback_proc = callback
+          if method == :setup
+            setup(window)
+          else
+            send(method, *args)
+          end
+        end
+                
+        def instance_invoke(id, method, *args) #:nodoc:
+          self.new(id).send(method, *args)
+        end
+        
         # An array of window currently bound.
         def windows
           @windows ||= []
@@ -71,7 +124,7 @@ module Bowline
           if initial_items = initial
             self.items = initial_items
           end
-          true
+          callback(true)
         end
         
         # Called by a window's JavaScript whenever that window is bound to this Binder.
@@ -82,18 +135,6 @@ module Bowline
         #     klass.all(:limit => 10)
         #   end
         def initial
-        end
-        
-        def js_invoke(window, method, *args) #:nodoc:
-          if method == :setup
-            setup(window)
-          else
-            send(method, *args)
-          end
-        end
-                
-        def instance_invoke(id, meth, *args) #:nodoc:
-          self.new(id).send(meth, *args)
         end
         
         # Calls .find on the klass sent to the bind method.
@@ -174,7 +215,7 @@ module Bowline
         # See Bowline::logger
         def logger
           Bowline::logger
-        end
+        end        
       end
             
       # Instance of the bound class' record
@@ -185,6 +226,15 @@ module Bowline
       end
       
       protected
+        def callback_proc(*args) #:nodoc
+          self.class.callback_proc(*args)
+        end
+        alias_method :callback_proc=, :callback_proc
+      
+        def callback(*args, &block)
+          self.class.callback(*args, &block)
+        end
+      
         # Remove element from the view
         def remove!
           self.class.removed(item)
