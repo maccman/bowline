@@ -223,7 +223,7 @@ module Bowline
     end
     
     def load_application_environment
-      require(Bowline.root.join(*%w{config environment}, Bowline.env))
+      require(Bowline.root.join(*%w{config environments}, Bowline.env))
     end
     
     def load_application_initializers

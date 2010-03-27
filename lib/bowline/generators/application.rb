@@ -59,7 +59,7 @@ module Bowline::Generators
       file(action.downcase.gsub(/[^a-z0-9]+/, '_').to_sym, action, action)
     }
     
-    glob "config/environment"
+    glob! "config/environments"
     
     empty_directory :initializers, "config/initializers"
     empty_directory :first_run,    "config/first_run"

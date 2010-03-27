@@ -2,6 +2,43 @@ gem "templater", ">= 0.3.2"
 require "templater"
 require "rbconfig"
 
+module Templater
+  module Actions
+    class Touch < Action
+
+      def initialize(generator, name, destination, options={})
+        self.generator = generator
+        self.name = name
+        self.destination = destination
+        self.options = options
+      end
+
+      def render
+        ''
+      end
+
+      def exists?
+        ::File.exists?(destination)
+      end
+  
+      def identical?
+        exists?
+      end
+  
+      def invoke!
+        callback(:before)
+        ::FileUtils.touch(destination)
+        callback(:after)
+      end
+    
+      def revoke!
+        ::FileUtils.rm_rf(::File.expand_path(destination))
+      end
+
+    end # Touch
+  end # Actions
+end # Templater
+
 module Bowline
   module Generators #:nodoc: all
     extend Templater::Manifold
@@ -25,6 +62,12 @@ module Bowline
       
       def shebang
         "#!/usr/bin/env #{RbConfig::CONFIG["RUBY_INSTALL_NAME"]}"
+      end
+      
+      def self.touch(name, destination)
+        empty_directories << Templater::ActionDescription.new(name) do |generator|
+          Templater::Actions::Touch.new(generator, name, destination)
+        end
       end
       
       def self.source_root
