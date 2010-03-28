@@ -353,6 +353,12 @@ module Bowline
       initialize_name
       load_app_config
       
+      initialize_desktop
+      initialize_windows
+      initialize_trap
+      initialize_path
+      initialize_marshal
+      
       load_plugins
       load_application_classes
       load_application_helpers
@@ -362,12 +368,6 @@ module Bowline
       load_application_first_run
       
       after_initialize
-            
-      initialize_desktop
-      initialize_windows
-      initialize_trap
-      initialize_path
-      initialize_marshal
       
       Bowline.initialized = true
     end
