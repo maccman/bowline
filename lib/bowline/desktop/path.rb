@@ -8,6 +8,12 @@ module Bowline
       # * Windows: "C:\Documents and Settings\username\My Documents"
       # * Mac: ~/Documents
       
+      # Get the users home dir
+      def home
+        Gem.user_home
+      end
+      module_function :home
+      
       ##
       # :singleton-method: data
       # Get the app's data dir.
@@ -16,11 +22,22 @@ module Bowline
       # * Mac: appinfo.app/Contents/SharedSupport bundle subdirectory
       
       ##
-      # :singleton-method: user_data
       # Get the app's user data dir.
       # * Unix: ~/.appinfo
       # * Windows: "C:\Documents and Settings\username\Application Data\appinfo"
       # * Mac: "~/Library/Application Support/appinfo".
+      def user_data
+        conf = Bowline.configuration
+        case Bowline::Platform.type
+        when :linux
+          File.join(home, "." + conf.name)
+        when :win32
+          File.join(home, "Application Data", conf.name)
+        when :osx
+          File.join(home, "Library", "Application Support", conf.name)
+        end
+      end
+      module_function :user_data
       
       ##
       # :singleton-method: temp
