@@ -309,15 +309,16 @@ module Bowline
     end
     
     def initialize_path
-      return unless Desktop.enabled?
       # Dir::tmpdir/Tempfile uses this
-      ENV["TMPDIR"] = Desktop::Path.temp
+      ENV["TMPDIR"] = Desktop::Path.temp if Desktop.enabled?
       FileUtils.mkdir_p(Desktop::Path.user_data)
     end
     
     def initialize_marshal
       return unless defined?(SuperModel)
-      SuperModel::Marshal.path = configuration.marshal_path
+      path = configuration.marshal_path
+      path = path.call if path.is_a?(Proc)
+      SuperModel::Marshal.path = path
       SuperModel::Marshal.load
       at_exit {
         SuperModel::Marshal.dump
@@ -353,15 +354,15 @@ module Bowline
       initialize_name
       load_app_config
       
+      load_plugins
+      load_application_classes
+      load_application_helpers
+      
       initialize_desktop
       initialize_windows
       initialize_trap
       initialize_path
       initialize_marshal
-      
-      load_plugins
-      load_application_classes
-      load_application_helpers
             
       load_application_environment
       load_application_initializers
@@ -633,11 +634,7 @@ module Bowline
      end
      
      def default_marshal_path
-       if Desktop.enabled?
-         File.join(Desktop::Path.user_data, 'marshal.db')
-       else
-         File.join(root_path, 'db', 'marshal.db')
-       end
+       Proc.new { File.join(Desktop::Path.user_data, 'marshal.db') }
      end
 
      def default_cache_classes
