@@ -121,6 +121,7 @@ module Bowline
         
         def setup(window) #:nodoc:
           self.windows << window
+          self.windows.uniq!
           if initial_items = initial
             self.items = initial_items
           end
