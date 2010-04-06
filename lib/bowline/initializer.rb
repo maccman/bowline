@@ -46,6 +46,10 @@ module Bowline
     def env
       @env ||= ActiveSupport::StringInquirer.new(ENV["APP_ENV"] || "development")
     end
+    
+    def irb?
+      !!ENV["APP_IRB"]
+    end
   end
   
   class Initializer #:nodoc:
