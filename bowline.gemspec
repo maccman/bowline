@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.6.2"
+  s.version = "0.6.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2010-02-25}
+  s.date = %q{2010-04-06}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -55,6 +55,7 @@ Gem::Specification.new do |s|
      "lib/bowline/commands/build.rb",
      "lib/bowline/commands/console.rb",
      "lib/bowline/commands/generate.rb",
+     "lib/bowline/commands/init.rb",
      "lib/bowline/commands/run.rb",
      "lib/bowline/desktop.rb",
      "lib/bowline/desktop/app.rb",
@@ -102,6 +103,8 @@ Gem::Specification.new do |s|
      "templates/config/boot.rb",
      "templates/config/database.yml",
      "templates/config/environment.rb",
+     "templates/config/environments/development.rb",
+     "templates/config/environments/production.rb",
      "templates/gitignore",
      "templates/helper.rb",
      "templates/main_window.rb",
