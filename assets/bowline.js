@@ -2,10 +2,9 @@
   Bowline JavaScript API
   
   This library lets you call Ruby methods, and bind up elements.
-  It requires jQuery, Chain.js and json2:
+  It requires jQuery and Chain.js:
     http://jquery.com
     http://github.com/raid-ox/chain.js
-    http://www.JSON.org/json2.js
   
   = Functions
   
