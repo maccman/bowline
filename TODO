@@ -18,10 +18,7 @@ Tutorials:
   CSS search box & placeholder
   
 - Don't run initializers during rake tasks
-- Add first-run initializers
-- Add some sort of production mode
-- Generate correct shebang on script files
-- Use App.root rather than APP_ROOT
+- Fix permissions on script files
 
 - strip exe (to make smaller)
 - remove framework headers
