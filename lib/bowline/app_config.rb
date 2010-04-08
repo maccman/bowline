@@ -9,8 +9,12 @@ module Bowline
         @instance ||= create
       end
       
-      def marshal_records(record = nil)
+      def marshal_records=(record)
         self.instance.load(record.attributes) if record
+        self.instance
+      end
+      
+      def marshal_records
         self.instance
       end
       
