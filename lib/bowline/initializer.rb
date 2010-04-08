@@ -366,11 +366,12 @@ module Bowline
       initialize_windows
       initialize_trap
       initialize_path
-      initialize_marshal
             
       load_application_environment
       load_application_initializers
       load_application_first_run
+      
+      initialize_marshal
       
       after_initialize
       
