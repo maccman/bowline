@@ -269,17 +269,6 @@ module Bowline
       end
     end
     
-    # For Ruby 1.8, this initialization sets $KCODE to 'u' to enable the
-    # multibyte safe operations. Plugin authors supporting other encodings
-    # should override this behaviour and set the relevant +default_charset+
-    # on ActionController::Base.
-    #
-    # For Ruby 1.9, this does nothing. Specify the default encoding in the Ruby
-    # shebang line if you don't want UTF-8.
-    def initialize_encoding
-      $KCODE='u' if RUBY_VERSION < '1.9'
-    end
-    
     def initialize_name
       unless configuration.name
         raise "You must provide an application name in environment.rb"
@@ -343,7 +332,6 @@ module Bowline
       initialize_dependency_mechanism
       disable_dependency_loading
       
-      initialize_encoding
       initialize_database
       
       initialize_logger
@@ -363,6 +351,7 @@ module Bowline
       load_application_helpers
       
       initialize_desktop
+      initialize_marshal
       initialize_windows
       initialize_trap
       initialize_path
@@ -370,8 +359,6 @@ module Bowline
       load_application_environment
       load_application_initializers
       load_application_first_run
-      
-      initialize_marshal
       
       after_initialize
       
