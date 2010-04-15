@@ -63,7 +63,7 @@ module Bowline::Generators
     empty_directory :initializers, "config/initializers"
     empty_directory :first_run,    "config/first_run"
     
-    touch "app_first_run"
+    touch "app_first_run", "app_first_run"
     
     file :readme, "../README.txt", "README"
   end
