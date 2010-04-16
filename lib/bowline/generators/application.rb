@@ -39,6 +39,7 @@ module Bowline::Generators
     glob! "public/stylesheets"
     
     glob! "script", [nil]
+    chmod "script", :mode => 0755
     
     file :jquery,    "../assets/jquery.js",        "public/javascripts/jquery.js"
     file :chainjs,   "../assets/jquery.chain.js",  "public/javascripts/jquery.chain.js"
@@ -63,7 +64,7 @@ module Bowline::Generators
     empty_directory :initializers, "config/initializers"
     empty_directory :first_run,    "config/first_run"
     
-    touch "app_first_run", "app_first_run"
+    touch "app_first_run"
     
     file :readme, "../README.txt", "README"
   end

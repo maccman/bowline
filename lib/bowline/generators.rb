@@ -6,23 +6,22 @@ module Templater
   module Actions
     class Touch < Action
 
-      def initialize(generator, name, destination, options={})
-        self.generator = generator
-        self.name = name
+      def initialize(generator, destination, options={})
+        self.generator   = generator
         self.destination = destination
-        self.options = options
+        self.options     = options
       end
 
       def render
         ''
       end
-
+      
       def exists?
-        ::File.exists?(destination)
+        false
       end
   
       def identical?
-        exists?
+        false
       end
   
       def invoke!
@@ -30,12 +29,39 @@ module Templater
         ::FileUtils.touch(destination)
         callback(:after)
       end
-    
-      def revoke!
-        ::FileUtils.rm_rf(::File.expand_path(destination))
-      end
 
     end # Touch
+    
+    class Chmod < Action
+
+      attr_accessor :mode
+      
+      def initialize(generator, destination, options={})
+        self.generator   = generator
+        self.destination = destination
+        self.options     = options
+        self.mode        = self.options[:mode] || 0755
+      end
+
+      def render
+        ''
+      end
+      
+      def exists?
+        false
+      end
+  
+      def identical?
+        false
+      end
+  
+      def invoke!
+        callback(:before)
+        ::FileUtils.chmod_R(self.mode, destination)
+        callback(:after)
+      end
+
+    end # Chmod
   end # Actions
 end # Templater
 
@@ -64,9 +90,15 @@ module Bowline
         "#!/usr/bin/env #{RbConfig::CONFIG["RUBY_INSTALL_NAME"]}"
       end
       
-      def self.touch(name, destination)
-        empty_directories << Templater::ActionDescription.new(name) do |generator|
-          Templater::Actions::Touch.new(generator, name, destination)
+      def self.touch(destination, options = {})
+        empty_directories << Templater::ActionDescription.new("touch") do |generator|
+          Templater::Actions::Touch.new(generator, destination, options)
+        end
+      end
+      
+      def self.chmod(destination, options = {})
+        files << Templater::ActionDescription.new("chmod") do |generator|
+          Templater::Actions::Chmod.new(generator, destination, options)
         end
       end
       
