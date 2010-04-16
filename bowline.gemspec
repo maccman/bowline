@@ -149,17 +149,20 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<templater>, [">= 0.3.2"])
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_runtime_dependency(%q<rubyzip2>, [">= 2.0.1"])
+      s.add_runtime_dependency(%q<bundler>, [">= 0.9.19"])
       s.add_runtime_dependency(%q<supermodel>, [">= 0"])
     else
       s.add_dependency(%q<templater>, [">= 0.3.2"])
       s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
+      s.add_dependency(%q<bundler>, [">= 0.9.19"])
       s.add_dependency(%q<supermodel>, [">= 0"])
     end
   else
     s.add_dependency(%q<templater>, [">= 0.3.2"])
     s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
     s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
+    s.add_dependency(%q<bundler>, [">= 0.9.19"])
     s.add_dependency(%q<supermodel>, [">= 0"])
   end
 end
