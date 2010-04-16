@@ -83,6 +83,7 @@ App console:
 >> script/console
 
 Run application:
+>> bundle package
 >> script/run
 
 Build package for distribution:
