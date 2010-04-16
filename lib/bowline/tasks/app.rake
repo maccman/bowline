@@ -80,6 +80,10 @@ namespace :app do
           dirs.delete(File.join(APP_ROOT, "log"))
           dirs.delete(File.join(APP_ROOT, *%w{db migrate}))
           dirs.delete_if {|i| i =~ /\.svn|\.DS_Store|\.git/ }
+          
+          bundle_dir = File.join(APP_ROOT, ".bundle")
+          dirs << bundle_dir if File.exist?(bundle_dir)
+          
           FileUtils.cp_r(dirs, ".")
           
           FileUtils.touch("app_production")
