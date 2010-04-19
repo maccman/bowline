@@ -61,7 +61,7 @@ module Bowline
         # or after it has been closed.
         def setup!
           return unless Desktop.enabled?
-          return if deallocated?
+          return if allocated?
           if self.name == "MainWindow"
             @window = MainWindow.get
           else
@@ -73,6 +73,7 @@ module Bowline
             Bowline::Desktop::Bridge.call(self, str)
           }
           @window.script_callback = @script_callback
+          true
         end
         
         # Evaluate JavaScript in this window. Pass
