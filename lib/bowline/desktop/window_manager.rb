@@ -53,7 +53,7 @@ module Bowline
         end
         
         def deallocated?
-          @window && @window.deallocated?
+          !@window || @window.deallocated?
         end
         
         # Call this method to allocate a new window.
