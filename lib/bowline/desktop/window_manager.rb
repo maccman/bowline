@@ -49,7 +49,11 @@ module Bowline
         end
         
         def allocated?
-          !!@window
+          !deallocated?
+        end
+        
+        def deallocated?
+          @window && @window.deallocated?
         end
         
         # Call this method to allocate a new window.
@@ -57,7 +61,7 @@ module Bowline
         # or after it has been closed.
         def setup!
           return unless Desktop.enabled?
-          return if @window && !@window.dealocated?
+          return if deallocated?
           if self.name == "MainWindow"
             @window = MainWindow.get
           else

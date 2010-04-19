@@ -65,7 +65,7 @@ module Bowline
       
       # Window was shut; setup!
       # needs to be called again
-      def dealocated?
+      def deallocated?
         id == -1
       end
       

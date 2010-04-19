@@ -63,9 +63,9 @@ module Bowline
       # Internal ID for the window. 
       
       ##
-      # :singleton-method: dealocated?
-      # Returns true if the window has been dealocated. 
-      # Calling methods on dealocated windows has no effect. 
+      # :singleton-method: deallocated?
+      # Returns true if the window has been deallocated. 
+      # Calling methods on deallocated windows has no effect. 
       # Instead, you'll need to create a new instance.
       
       ##
