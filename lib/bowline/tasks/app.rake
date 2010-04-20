@@ -26,7 +26,7 @@ namespace :app do
       dirs.delete_if {|i| i =~ /\.svn|\.DS_Store|\.git/ }
 
       bundle_dir = Bowline.root.join(".bundle")
-      dirs << bundle_dir.to_s if bundle_dir.exist?
+      dirs += Dir[bundle_dir.join("**/**").to_s] if bundle_dir.exist?
       
       Zip::ZipFile.open(app_path, Zip::ZipFile::CREATE) do |zf|
         # This is horrible - but RubyZIP's API sucks
