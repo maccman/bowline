@@ -7,6 +7,7 @@ module Bowline
     def configuration
       @@configuration
     end
+    alias_method :conf, :configuration
 
     def configuration=(configuration) #:nodoc:
       @@configuration = configuration
