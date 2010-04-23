@@ -74,7 +74,7 @@ module Bowline
             object = klass.constantize
           end
 
-          trace "JS invoking: #{klass}.#{method_name}(#{args.join(',')})"
+          debug "JS invoking: #{klass}.#{method_name}(#{args.join(',')})"
 
           if object.respond_to?(:js_exposed?) && 
               object.js_exposed?(method_name)

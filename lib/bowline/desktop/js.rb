@@ -20,7 +20,7 @@ module Bowline
       
         def call
           if Desktop.enabled?
-            trace "JS eval on #{window}: #{script}"
+            debug "JS eval on #{window}: #{script}"
             if multiple_windows?
               windows.each {|w| w.run_script(script) }
               raise "Can't return from multiple windows" if prok
@@ -30,7 +30,7 @@ module Bowline
             end
             result
           else
-            trace "Pseudo JS eval on #{window}: #{script}"
+            debug "Pseudo JS eval on #{window}: #{script}"
             prok.call(nil) if prok
           end
         end
@@ -51,7 +51,7 @@ module Bowline
               JSON.parse(str)
             end
           rescue => e
-            trace "Parsing: #{str}"
+            debug "Parsing: #{str}"
             raise e
           end
       end

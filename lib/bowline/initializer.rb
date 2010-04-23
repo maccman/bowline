@@ -228,7 +228,9 @@ module Bowline
     end
     
     def load_application_environment
-      require(Bowline.root.join(*%w{config environments}, Bowline.env))
+      config = configuration
+      path   = Bowline.root.join(*%w{config environments}, Bowline.env + ".rb").to_s
+      eval(IO.read(path), binding, path)
     end
     
     def load_application_initializers
@@ -327,6 +329,8 @@ module Bowline
       set_load_path
       load_gems
       
+      load_application_environment
+      
       require_frameworks
       set_autoload_paths
       add_plugin_load_paths
@@ -356,8 +360,7 @@ module Bowline
       initialize_windows
       initialize_trap
       initialize_path
-            
-      load_application_environment
+      
       load_application_initializers
       load_application_first_run
       
