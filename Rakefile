@@ -10,7 +10,7 @@ begin
     gemspec.add_dependency('templater',     '>= 0.3.2')
     gemspec.add_dependency('activesupport', '>= 3.0.0.beta')
     gemspec.add_dependency('rubyzip2',      '>= 2.0.1')
-    gemspec.add_dependency('bundler',       '>=0.9.19')
+    gemspec.add_dependency('bundler08',     '>= 0.8.5')
     gemspec.add_dependency('supermodel')
     
     gemspec.post_install_message = <<-POST_INSTALL_MESSAGE
