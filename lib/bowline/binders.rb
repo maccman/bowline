@@ -66,11 +66,11 @@ module Bowline
           if block_given?
             Thread.new(callback_proc) do |proc|
               begin
-              self.callback_proc = proc
-              yield
-            rescue => e
-              Bowline::Logging.log_error(e)
-            end
+                self.callback_proc = proc
+                yield
+              rescue => e
+                Bowline::Logging.log_error(e)
+              end
             end
           else
             methods.each do |method|
