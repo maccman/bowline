@@ -22,6 +22,12 @@ module Bowline
         self.instance.load_path(path)
         self.instance
       end
+      
+      def reset!
+        @instance = nil
+      end
+      alias_method :destroy_all, :reset!
+      alias_method :delete_all,  :reset!
     end
     
     def load_path(path)
