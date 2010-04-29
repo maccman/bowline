@@ -55,6 +55,17 @@ module Bowline
     #   </script>
     #
     # For more documentation on Bowline's JavaScript API, see bowline.js
+    
+    def active(binder = nil) #:nodoc:
+      @active ||= []
+      if binder
+        @active << binder
+        @active.uniq!
+      end
+      @active
+    end
+    module_function :active
+    
     class Base
       extend Bowline::Watcher::Base
       extend Bowline::Desktop::Bridge::ClassMethods
@@ -89,7 +100,7 @@ module Bowline
       include Async
       class << self; extend Async; end
       
-      class << self        
+      class << self
         def callback_proc(proc = nil) #:nodoc:
           Thread.current[:callback] = proc if proc
           Thread.current[:callback]
@@ -115,17 +126,25 @@ module Bowline
         end
         
         # An array of window currently bound.
-        def windows
+        def windows(window = nil)
           @windows ||= []
+          if window
+            @windows << window
+            @windows.uniq!
+          end
+          @windows
         end
         
         def setup(window) #:nodoc:
-          self.windows << window
-          self.windows.uniq!
-          if initial_items = initial
-            self.items = initial_items
-          end
+          Binders.active(self)
+          windows(window)
+          populate
           callback(true)
+        end
+        
+        # Populate initial items
+        def populate(items = initial)
+          self.items = items if items
         end
         
         # Called by a window's JavaScript whenever that window is bound to this Binder.
