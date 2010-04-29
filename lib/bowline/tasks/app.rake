@@ -19,14 +19,16 @@ namespace :app do
       app_path    = File.join(build_path, "#{config.name}.zip")
       FileUtils.rm_rf(app_path)
       
-      dirs = Dir[Bowline.root.join("**/**").to_s]
+      dirs = Dir[Bowline.root.join("**").to_s]
       dirs.delete(build_path)
       dirs.delete(Bowline.root.join("log").to_s)
       dirs.delete(Bowline.root.join(*%w{db migrate}).to_s)
       dirs.delete_if {|i| i =~ /\.svn|\.DS_Store|\.git/ }
 
       bundle_dir = Bowline.root.join(".bundle")
-      dirs += Dir[bundle_dir.join("**/**").to_s] if bundle_dir.exist?
+      dirs += bundle_dir if bundle_dir.exist?
+      
+      dirs = Dir[*dirs.map {|d| "#{d}/**" }]
       
       Zip::ZipFile.open(app_path, Zip::ZipFile::CREATE) do |zf|
         # This is horrible - but RubyZIP's API sucks
