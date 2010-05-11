@@ -41,9 +41,11 @@ module Bowline::Generators
     glob! "script", [nil]
     chmod "script", :mode => 0755
     
-    file :jquery,    "../assets/jquery.js",        "public/javascripts/jquery.js"
-    file :chainjs,   "../assets/jquery.chain.js",  "public/javascripts/jquery.chain.js"
-    file :bowlinejs, "../assets/bowline.js",       "public/javascripts/bowline.js"
+    file :jquery,         "../assets/jquery.js",        "public/javascripts/jquery.js"
+    file :chainjs,        "../assets/jquery.chain.js",  "public/javascripts/jquery.chain.js"
+    file :superclassjs,   "../assets/superclass.js",    "public/javascripts/superclass.js"
+    file :bowlinejs,      "../assets/bowline.js",       "public/javascripts/bowline.js"
+    file :bowlinechainjs, "../assets/bowline.chain.js", "public/javascripts/bowline.chain.js"
     
     empty_directory :app, "app"
     empty_directory :models, "app/models"
