@@ -5,11 +5,7 @@ module Bowline::Generators
     DESC
     
     def class_name
-      if local
-        super + " < SuperModel::Base"
-      else
-        super + " < ActiveRecord::Base"
-      end
+      super + " < SuperModel::Base"
     end
     
     def modules
@@ -17,7 +13,6 @@ module Bowline::Generators
     end
     
     first_argument :name, :required => true, :desc => "model name"
-    second_argument :local, :required => false
     
     template :model do |template|
       template.source       = "model.rb"

@@ -103,7 +103,7 @@ Which will generate code a bit like this:
 
 Now, in the view you can bind HTML to this collection, by
 using the following javascript:
-  $('#users').bowlineBind('UsersBinder');
+  $('#users').bowlineChain('UsersBinder');
   
 You should probably become familiar with Chain.js (which bowline uses for binding): http://wiki.github.com/raid-ox/chain.js/
 
@@ -220,7 +220,7 @@ Usage for a collection (of users):
   		jQuery(function($){
   		  $.bowline.ready(function(){
           // Bind the element users to UserBinder
-      	  var users = $('#users').bowlineBind('UsersBinder', function(){
+      	  var users = $('#users').bowlineChain('UsersBinder', function(){
       	    var self = $(this);
       	    self.find('.destroy').click(function(){
       	      self.invoke('destroy');
@@ -274,8 +274,11 @@ Usage for a collection (of users):
   Install the Twitter gem:
   >> sudo gem install twitter
 
-  Add the Twitter gem to config/environment.rb: 
-     config.gem "twitter"
+  Add the Twitter gem to Gemfile: 
+     gem "twitter"
+     
+  Bundle gems:
+  >> gem bundle
 
   run:
   >> script/run

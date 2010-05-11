@@ -11,7 +11,7 @@ begin
     gemspec.add_dependency('activesupport', '>= 3.0.0.beta')
     gemspec.add_dependency('rubyzip2',      '>= 2.0.1')
     gemspec.add_dependency('bundler08',     '>= 0.8.5')
-    gemspec.add_dependency('supermodel')
+    gemspec.add_dependency('supermodel',    '>= 0.1.3')
     
     gemspec.post_install_message = <<-POST_INSTALL_MESSAGE
     #{'*'*50}
@@ -25,7 +25,7 @@ begin
     POST_INSTALL_MESSAGE
   end
 rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler not available. Install it with: sudo gem install jeweler"
 end
 
 task :write_version do 
