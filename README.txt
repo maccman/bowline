@@ -46,13 +46,15 @@ http://groups.google.com/group/bowline-dev
 = REQUIREMENTS
 
 - Mac OSX >=10.5 or Ubuntu
-- Ruby 1.9
+- Ruby 1.9 (32 bit atm)
 - Bowline gem
 
 If you're on Ubuntu, you'll need to run:
   apt-get install libwebkit-dev
 
 The other required libraries, such as bowline-desktop, are downloaded later by Bowline - you don't need to worry about these.
+
+Unfortunately, if you're using Ruby C extensions, you'll need to have Ruby compiled in 32 bit mode (which isn't the default on Snow Leopard). This will be fixed shortly.
 
 = INSTALLATION
 
