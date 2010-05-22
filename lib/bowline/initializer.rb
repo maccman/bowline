@@ -229,7 +229,7 @@ module Bowline
     
     def load_application_environment
       config = configuration
-      path   = Bowline.root.join(*%w{config environments}, Bowline.env + ".rb").to_s
+      path   = Bowline.root.join("config", "environments", Bowline.env + ".rb").to_s
       eval(IO.read(path), binding, path)
     end
     
