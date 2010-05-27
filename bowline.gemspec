@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bowline}
-  s.version = "0.9.2"
+  s.version = "0.9.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex MacCaw"]
-  s.date = %q{2010-05-22}
+  s.date = %q{2010-05-27}
   s.default_executable = %q{bowline-gen}
   s.description = %q{Ruby/JS GUI framework}
   s.email = %q{alex@leadthinking.com}
@@ -146,21 +146,21 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<templater>, [">= 0.3.2"])
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_runtime_dependency(%q<rubyzip2>, [">= 2.0.1"])
-      s.add_runtime_dependency(%q<bundler08>, [">= 0.8.5"])
       s.add_runtime_dependency(%q<supermodel>, [">= 0.1.3"])
+      s.add_runtime_dependency(%q<bowline-bundler>, [">= 0.0.1"])
     else
       s.add_dependency(%q<templater>, [">= 0.3.2"])
       s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
-      s.add_dependency(%q<bundler08>, [">= 0.8.5"])
       s.add_dependency(%q<supermodel>, [">= 0.1.3"])
+      s.add_dependency(%q<bowline-bundler>, [">= 0.0.1"])
     end
   else
     s.add_dependency(%q<templater>, [">= 0.3.2"])
     s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
     s.add_dependency(%q<rubyzip2>, [">= 2.0.1"])
-    s.add_dependency(%q<bundler08>, [">= 0.8.5"])
     s.add_dependency(%q<supermodel>, [">= 0.1.3"])
+    s.add_dependency(%q<bowline-bundler>, [">= 0.0.1"])
   end
 end
 

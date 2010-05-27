@@ -9,7 +9,7 @@ if File.exist?("#{environment}.rb")
 
 # Use RubyGems
 else  
-  require "bundler"
+  require "bowline/bundler"
   Bundler.setup
 end
 

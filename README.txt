@@ -85,7 +85,7 @@ App console:
 >> script/console
 
 Run application:
->> bundle package
+>> bowline-bundle
 >> script/run
 
 Build package for distribution:
@@ -161,7 +161,7 @@ http://github.com/maccman/bowline-desktop
 = DISTRIBUTING
 
 Once your app is ready for a release, you should run the following command to make sure all the gems required have been vendorised:
-  gem bundle
+  bowline-bundle
 
 Then, run:
   ./script/build
@@ -280,7 +280,7 @@ Usage for a collection (of users):
      gem "twitter"
      
   Bundle gems:
-  >> gem bundle
+  >> bowline-bundle
 
   run:
   >> script/run
