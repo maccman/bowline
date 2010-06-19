@@ -8,9 +8,8 @@ if File.exist?("#{environment}.rb")
   require environment
 
 # Use RubyGems
-else  
-  require "bowline/bundler"
-  Bundler.setup
+else
+  abort "Please run 'bowline-bundle'"
 end
 
 require "bowline"
