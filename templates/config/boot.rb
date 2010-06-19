@@ -9,7 +9,7 @@ if File.exist?("#{environment}.rb")
 
 # Use RubyGems
 else
-  abort "Please run 'bowline-bundle'"
+  abort "Please run 'bowline-bundle install'"
 end
 
 require "bowline"
