@@ -26,7 +26,7 @@ namespace :app do
       dirs.delete_if {|i| i =~ /\.svn|\.DS_Store|\.git/ }
 
       bundle_dir = Bowline.root.join(".bundle")
-      dirs += bundle_dir if bundle_dir.exist?
+      dirs << bundle_dir if bundle_dir.exist?
       
       dirs = Dir[*dirs.map {|d| "#{d}/**/**" }]
       
