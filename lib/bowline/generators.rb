@@ -103,7 +103,7 @@ module Bowline
       end
       
       def self.source_root
-        File.join(File.dirname(__FILE__), *%w[.. .. templates])
+        File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. templates]))
       end
     end
     

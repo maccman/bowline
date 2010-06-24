@@ -29,7 +29,7 @@ rescue LoadError
 end
 
 task :write_version do 
-  require File.join(File.dirname(__FILE__), *%w[lib bowline])
+  require File.expand_path(File.join(File.dirname(__FILE__), *%w[lib bowline]))
   File.open('VERSION', 'w') {|f| f.write Bowline::Version::STRING }
 end
 
