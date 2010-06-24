@@ -2,7 +2,7 @@ require 'fileutils'
 require 'erb'
 require 'rbconfig'
 require 'tempfile'
-require 'zip/zip'
+require 'zipruby'
 
 namespace :app do  
   namespace :build do
@@ -26,15 +26,13 @@ namespace :app do
       dirs.delete_if {|d| d.include?(Bowline.root.join(*%w{db migrate}).to_s) }      
       dirs.delete_if {|i| i =~ /\.svn|\.DS_Store|\.git/ }
       
-      Zip::ZipFile.open(app_path, Zip::ZipFile::CREATE) do |zf|
-        # This is horrible - but RubyZIP's API sucks
-        blank = Tempfile.new("blank")
-        zf.add("app_first_run", blank.path)
-        zf.add("app_production", blank.path)
+      Zip::Archive.open(app_path, Zip::CREATE) do |zf|
+        zf.add_buffer("app_first_run",  "")
+        zf.add_buffer("app_production", "")
         
         dirs.each do |dir|
           name = dir.sub(Bowline.root.to_s + "/", "")
-          zf.add(name, dir)
+          zf.add_file(dir, name)
         end
       end
     end
