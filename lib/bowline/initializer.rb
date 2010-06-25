@@ -242,7 +242,7 @@ module Bowline
     def load_application_first_run
       first_run = Bowline.root.join("app_first_run")
       if first_run.exist?
-        first_run.unlink if Bowline.root.writable?
+        first_run.unlink if Bowline.root.writable_real?
         Dir.glob(configuration.first_run_glob).sort.each do |initializer|
           load(initializer)
         end
