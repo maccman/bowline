@@ -91,7 +91,7 @@ module Bowline
     end
     
     def set_load_path
-      load_paths = configuration.load_paths
+      load_paths = configuration.autoload_paths
       load_paths.reverse_each { |dir| $LOAD_PATH.unshift(dir) if File.directory?(dir) }
       $LOAD_PATH.uniq!
     end
@@ -110,27 +110,16 @@ module Bowline
     # Set the paths from which Bowline will automatically load source files, and
     # the load_once paths.
     def set_autoload_paths
-      ActiveSupport::Dependencies.load_paths = configuration.load_paths.uniq
-      ActiveSupport::Dependencies.load_once_paths = configuration.load_once_paths.uniq
-
-      extra = ActiveSupport::Dependencies.load_once_paths - ActiveSupport::Dependencies.load_paths
-      unless extra.empty?
-        abort <<-end_error
-          load_once_paths must be a subset of the load_paths.
-          Extra items in load_once_paths: #{extra * ','}
-        end_error
-      end
-
-      # Freeze the arrays so future modifications will fail rather than do nothing mysteriously
-      configuration.load_once_paths.freeze
+      ActiveSupport::Dependencies.autoload_paths      = configuration.autoload_paths.uniq
+      ActiveSupport::Dependencies.autoload_once_paths = configuration.autoload_once_paths.uniq
     end
     
     def add_plugin_load_paths
       Dir.glob(File.join(configuration.plugin_glob, 'lib')).sort.each do |path|
         $LOAD_PATH << path
-        ActiveSupport::Dependencies.load_paths << path
+        ActiveSupport::Dependencies.autoload_paths << path
         unless configuration.reload_plugins?
-          ActiveSupport::Dependencies.load_once_paths << path
+          ActiveSupport::Dependencies.autoload_once_paths << path
         end
       end
       $LOAD_PATH.uniq!
@@ -413,15 +402,15 @@ module Bowline
      
      # An array of additional paths to prepend to the load path. By default,
      # all +app+, +lib+, +vendor+ and mock paths are included in this list.
-     attr_accessor :load_paths
+     attr_accessor :autoload_paths
 
      # An array of paths from which Bowline will automatically load from only once.
      # All elements of this array must also be in +load_paths+.
-     attr_accessor :load_once_paths
+     attr_accessor :autoload_once_paths
      
      # An array of paths from which Bowline will eager load on boot if cache
      # classes is enabled. All elements of this array must also be in
-     # +load_paths+.
+     # +autoload_paths+.
      attr_accessor :eager_load_paths
      
      # The log level to use for the default Bowline logger. 
@@ -498,8 +487,8 @@ module Bowline
        set_root_path!
        
        self.frameworks                   = default_frameworks
-       self.load_paths                   = default_load_paths
-       self.load_once_paths              = default_load_once_paths
+       self.autoload_paths               = default_autoload_paths
+       self.autoload_once_paths          = default_autoload_once_paths
        self.dependency_loading           = default_dependency_loading
        self.eager_load_paths             = default_eager_load_paths
        self.log_path                     = default_log_path
@@ -572,7 +561,7 @@ module Bowline
        [:active_support, :bowline]
      end
         
-     def default_load_paths
+     def default_autoload_paths
        paths = []
 
        # Followed by the standard includes.
@@ -591,7 +580,7 @@ module Bowline
      end
      
      # Doesn't matter since plugins aren't in load_paths yet.
-     def default_load_once_paths
+     def default_autoload_once_paths
        []
      end
      
