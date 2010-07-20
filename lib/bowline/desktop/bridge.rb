@@ -67,14 +67,14 @@ module Bowline
         end
 
         def invoke
+          debug "JS invoking: #{klass}.#{method_name}(#{args.join(',')})"
+
           if klass == "_window"
             object = window
           else
             # TODO - security concerns with constantize
             object = klass.constantize
           end
-
-          debug "JS invoking: #{klass}.#{method_name}(#{args.join(',')})"
 
           if object.respond_to?(:js_exposed?) && 
               object.js_exposed?(method_name)
