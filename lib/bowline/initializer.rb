@@ -110,8 +110,14 @@ module Bowline
     # Set the paths from which Bowline will automatically load source files, and
     # the load_once paths.
     def set_autoload_paths
-      ActiveSupport::Dependencies.autoload_paths      = configuration.autoload_paths.uniq
-      ActiveSupport::Dependencies.autoload_once_paths = configuration.autoload_once_paths.uniq
+      # Rails 3 master support
+      if ActiveSupport::Dependencies.respond_to?(:autoload_paths)
+        ActiveSupport::Dependencies.autoload_paths      = configuration.autoload_paths.uniq
+        ActiveSupport::Dependencies.autoload_once_paths = configuration.autoload_once_paths.uniq
+      else
+        ActiveSupport::Dependencies.load_paths      = configuration.autoload_paths.uniq
+        ActiveSupport::Dependencies.load_once_paths = configuration.autoload_once_paths.uniq        
+      end
     end
     
     def add_plugin_load_paths
