@@ -8,7 +8,7 @@ begin
     gemspec.description = "Ruby/JS GUI framework"
     gemspec.authors = ["Alex MacCaw"]
     gemspec.add_dependency('templater',      '>= 0.3.2')
-    gemspec.add_dependency('activesupport',  '>= 3.0.0.beta')
+    gemspec.add_dependency('activesupport',  '>= 3.0.0.beta4')
     gemspec.add_dependency('rubyzip2',       '>= 2.0.1')
     gemspec.add_dependency('supermodel',     '>= 0.1.3')
     gemspec.add_dependency('bowline-bundler','>= 0.0.1')
