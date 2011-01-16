@@ -9,8 +9,11 @@ def download(url)
   name = url.split("/").last
   file = Tempfile.new("download_#{name}")
   url  = URI.parse(url)
-  req  = Net::HTTP::Get.new(url.path)
-  res  = Net::HTTP.start(url.host, url.port) {|http|
+  # use http_proxy environment variable if set
+  proxy = URI.parse(ENV['http_proxy']) rescue nil
+  net  = proxy ? Net::HTTP::Proxy(proxy.host, proxy.post) : Net::HTTP
+  req  = net::Get.new(url.path)
+  res  = net.start(url.host, url.port) {|http|
     http.request(req) {|resp|
       pbar = ProgressBar.new("", resp.content_length || 0)
       resp.read_body {|seg|
